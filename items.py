@@ -1,4 +1,4 @@
-from pynput.keyboard import Key
+import pygame
 
 
 class Item:
@@ -60,19 +60,19 @@ class DownStair(Stair):
         super().__init__(item_info)
 
 
-class NPC(Item):
+class Creature(Item):
+    # subclass: Warrior, Monster, NPC
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class NPC(Creature):
     # subclass: Fairy
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
 
 class Fairy(NPC):
-    def __init__(self, item_info: dict):
-        super().__init__(item_info)
-
-
-class Creature(Item):
-    # subclass: Warrior, Monster
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -92,18 +92,19 @@ class Warrior(Creature):
 
     def move(self, key, map):
         next_pos = [0, 0, 0]
-        if key == Key.left:
+        if key == pygame.K_LEFT:
             next_pos = [0, 0, -1]
-        elif key == Key.right:
+        elif key == pygame.K_RIGHT:
             next_pos = [0, 0, 1]
-        elif key == Key.up:
+        elif key == pygame.K_UP:
             next_pos = [0, -1, 0]
-        elif key == Key.down:
+        elif key == pygame.K_DOWN:
             next_pos = [0, 1, 0]
         next_pos = [next_pos[i] + self.position[i] for i in range(3)]
-        if next_pos[1] < 0 or next_pos[2] < 0 or next_pos[1] > map.height or next_pos[2] > map.width:
+        if next_pos[1] < 0 or next_pos[2] < 0 or next_pos[1] >= map.height or next_pos[2] >= map.width:
             return
-        if issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]]), Barrier):
+        next_type = type(map.array[next_pos[0]][next_pos[1]][next_pos[2]])
+        if issubclass(next_type, Barrier):
             return
         map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
         map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
