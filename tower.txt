@@ -1,1 +1,382 @@
-{"tower_structure":{"height":11,"width":11,"total_level":1,"level_structure":[[["Wall","Star","Star","Star","Star","UpStair","Star","Star","Star","Star","Wall"],["Wall","Star","Star","Star","Star","Floor","Star","Star","Star","Star","Wall"],["Wall","Star","Star","Star","Star","Floor","Star","Star","Star","Star","Wall"],["Wall","Star","Star","Star","Star","Floor","Star","Star","Star","Star","Wall"],["Wall","Star","Star","Star","Star","Floor","Star","Star","Star","Star","Wall"],["Wall","Star","Star","Star","Star","Floor","Star","Star","Star","Star","Wall"],["Wall","Wall","Star","Star","Star","Floor","Star","Star","Star","Wall","Wall"],["Wall","Wall","Wall","Wall","Wall","YellowDoor","Wall","Wall","Wall","Wall","Wall"],["Lava","Wall","Lava","Wall","Floor","Fairy","Floor","Wall","Lava","Wall","Lava"],["Lava","Lava","Lava","Lava","Lava","Warrior","Lava","Lava","Lava","Lava","Lava"],["Lava","Lava","Lava","Lava","Lava","Floor","Lava","Lava","Lava","Lava","Lava"]],[["UpStair","Floor","YellowKey","GreenSlime","RedSlime","GreenSlime","Floor","Floor","Floor","Floor","Floor"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall","Wall","Wall","Wall","Floor"],["RedBottle","Floor","Skeleton","YellowDoor","Floor","Wall","RedBottle","YellowKey","RedBottle","Wall","Floor"],["YellowKey","Skeleton","RedGem","Wall","Floor","Wall","RedBottle","YellowKey","RedBottle","Wall","Floor"],["Wall","YellowDoor","Wall","Wall","Floor","Wall","Wall","Wall","BlackSlime","Wall","Floor"],["YellowKey","SkeletonSolider","Floor","Wall","Floor","YellowDoor","PrimaryWizard","GreenSlime","SmallBat","Wall","Floor"],["BlueGem","Floor","BlueKey","Wall","Floor","Wall","Wall","Wall","Wall","Wall","Floor"],["Wall","YellowDoor","Wall","Wall","Floor","Floor","Floor","Floor","Floor","Floor","Floor"],["Floor","SkeletonSolider","Floor","Wall","Wall","RedDoor","Wall","Wall","Wall","YellowDoor","Wall"],["RedBottle","BlueBottle","YellowKey","Wall","RedKey","Floor","Floor","Wall","YellowKey","Orc","BlueKey"],["RedBottle","Detector","YellowKey","Wall","Floor","DownStair","Floor","Wall","YellowKey","YellowKey","YellowKey"]]]},"item_info":{"Warrior":{"position":[0,9,5],"level":1,"hp":1000,"attack":10,"defense":10,"gold":0,"exp":0,"keys":[0,0,0]},"RedSlime":{"attack":1,"defense":0,"hp":20,"exp":2,"gold":1}}}
+{
+  "tower_structure": {
+    "height": 11,
+    "width": 11,
+    "total_level": 2,
+    "level_structure": [
+      [
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "UpStair",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Star",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Wall",
+          "Star",
+          "Star",
+          "Star",
+          "Floor",
+          "Star",
+          "Star",
+          "Star",
+          "Wall",
+          "Wall"
+        ],
+        [
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "YellowDoor",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall"
+        ],
+        [
+          "Lava",
+          "Wall",
+          "Lava",
+          "Wall",
+          "Floor",
+          "Fairy",
+          "Floor",
+          "Wall",
+          "Lava",
+          "Wall",
+          "Lava"
+        ],
+        [
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Warrior",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava"
+        ],
+        [
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Floor",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava",
+          "Lava"
+        ]
+      ],
+      [
+        [
+          "UpStair",
+          "Floor",
+          "YellowKey",
+          "GreenSlime",
+          "RedSlime",
+          "GreenSlime",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor"
+        ],
+        [
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "RedBottle",
+          "Floor",
+          "Skeleton",
+          "YellowDoor",
+          "Floor",
+          "Wall",
+          "RedBottle",
+          "YellowKey",
+          "RedBottle",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "YellowKey",
+          "Skeleton",
+          "RedGem",
+          "Wall",
+          "Floor",
+          "Wall",
+          "RedBottle",
+          "YellowKey",
+          "RedBottle",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "Wall",
+          "YellowDoor",
+          "Wall",
+          "Wall",
+          "Floor",
+          "Wall",
+          "Wall",
+          "Wall",
+          "BlackSlime",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "YellowKey",
+          "SkeletonSolider",
+          "Floor",
+          "Wall",
+          "Floor",
+          "YellowDoor",
+          "PrimaryWizard",
+          "GreenSlime",
+          "SmallBat",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "BlueGem",
+          "Floor",
+          "BlueKey",
+          "Wall",
+          "Floor",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Wall",
+          "Floor"
+        ],
+        [
+          "Wall",
+          "YellowDoor",
+          "Wall",
+          "Wall",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor",
+          "Floor"
+        ],
+        [
+          "Floor",
+          "SkeletonSolider",
+          "Floor",
+          "Wall",
+          "Wall",
+          "RedDoor",
+          "Wall",
+          "Wall",
+          "Wall",
+          "YellowDoor",
+          "Wall"
+        ],
+        [
+          "RedBottle",
+          "BlueBottle",
+          "YellowKey",
+          "Wall",
+          "RedKey",
+          "Floor",
+          "Floor",
+          "Wall",
+          "YellowKey",
+          "Orc",
+          "BlueKey"
+        ],
+        [
+          "RedBottle",
+          "Detector",
+          "YellowKey",
+          "Wall",
+          "Floor",
+          "DownStair",
+          "Floor",
+          "Wall",
+          "YellowKey",
+          "YellowKey",
+          "YellowKey"
+        ]
+      ]
+    ]
+  },
+  "item_info": {
+    "Warrior": {
+      "position": [
+        0,
+        9,
+        5
+      ],
+      "level": 1,
+      "hp": 1000,
+      "attack": 10,
+      "defense": 10,
+      "gold": 0,
+      "exp": 0,
+      "keys": [
+        0,
+        0,
+        0
+      ]
+    },
+    "RedSlime": {
+      "hp": 70,
+      "attack": 15,
+      "defense": 2,
+      "gold": 1,
+      "exp": 1
+    },
+    "GreenSlime": {
+      "hp": 50,
+      "attack": 20,
+      "defense": 1,
+      "gold": 1,
+      "exp": 1
+    },
+    "BlackSlime": {
+      "hp": 200,
+      "attack": 35,
+      "defense": 10,
+      "gold": 5,
+      "exp": 5
+    },
+    "Skeleton": {
+      "hp": 110,
+      "attack": 25,
+      "defense": 5,
+      "gold": 5,
+      "exp": 4
+    },
+    "SkeletonSolider": {
+      "hp": 150,
+      "attack": 40,
+      "defense": 20,
+      "gold": 8,
+      "exp": 6
+    },
+    "PrimaryWizard": {
+      "hp": 125,
+      "attack": 50,
+      "defense": 25,
+      "gold": 10,
+      "exp": 7
+    },
+    "Orc": {
+      "hp": 300,
+      "attack": 75,
+      "defense": 45,
+      "gold": 13,
+      "exp": 10
+    },
+    "SmallBat": {
+      "hp": 100,
+      "attack": 20,
+      "defense": 5,
+      "gold": 3,
+      "exp": 3
+    },
+    "BigBat": {
+      "hp": 150,
+      "attack": 65,
+      "defense": 30,
+      "gold": 10,
+      "exp": 8
+    }
+  }
+}
