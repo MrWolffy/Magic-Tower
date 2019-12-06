@@ -300,14 +300,23 @@ class Warrior(Item):
         next_type = type(map.array[next_pos[0]][next_pos[1]][next_pos[2]])
         if issubclass(next_type, Barrier):
             return
+        elif issubclass(next_type, Door):
+            idx = {'YellowDoor': 0, 'BlueDoor': 1, 'RedDoor': 2}[next_type.__name__]
+            if self.keys[idx] == 0:
+                return
+            else:
+                self.keys[idx] -= 1
+                map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
+                return
         elif next_type.__name__ == 'UpStair':
             self.move_to_new_floor(self.position[0] + 1, 'up', map)
+            return
         elif next_type.__name__ == 'DownStair':
             self.move_to_new_floor(self.position[0] - 1, 'down', map)
-        else:
-            map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
-            map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
-            self.position = next_pos
+            return
+        map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
+        map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
+        self.position = next_pos
 
     def move_to_new_floor(self, level, mode, map):
         map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
