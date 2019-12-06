@@ -1,4 +1,5 @@
 import pygame
+import math
 
 # structure of objects:
 #
@@ -308,6 +309,14 @@ class Warrior(Item):
                 self.keys[idx] -= 1
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
                 return
+        elif issubclass(next_type, Monster):
+            flag, est_damage = self.can_beat(map.array[next_pos[0]][next_pos[1]][next_pos[2]])
+            if flag:
+                self.hp -= est_damage
+                map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
+                return
+            else:
+                return
         elif next_type.__name__ == 'UpStair':
             self.move_to_new_floor(self.position[0] + 1, 'up', map)
             return
@@ -338,6 +347,17 @@ class Warrior(Item):
         elif next_pos[2] > map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]+1]), Floor):
             self.position[2] += 1
         map.array[self.position[0]][self.position[1]][self.position[2]] = self
+
+    def can_beat(self, monster: Monster):
+        if self.attack <= monster.defense:
+            return False, 0x3f3f3f3f
+        elif self.defense >= monster.attack:
+            return True, 0
+        my_damage_per_round = self.attack - monster.defense
+        monster_damage_per_round = monster.attack - self.defense
+        rounds_count = math.ceil(monster.hp / my_damage_per_round)
+        monster_damage = rounds_count * monster_damage_per_round
+        return monster_damage < self.hp, monster_damage
 
 
 class Container:

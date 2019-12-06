@@ -6,8 +6,13 @@ import pygame
 import time
 
 
-t0 = time.process_time()
-TIME_FLAG = 0
+def read_image():
+    imglist = {}
+    dirlist = os.listdir('UI')
+    for dir in dirlist:
+        if dir.endswith('.png'):
+            imglist[dir[:-4]] = pygame.image.load('UI/' + dir)
+    return imglist
 
 
 def build_tower(tower_info):
@@ -29,13 +34,11 @@ def build_tower(tower_info):
 
 
 if __name__ == '__main__':
+    t0 = time.process_time()
+    TIME_FLAG = 0
     tower_info = json.loads(''.join(open('tower.txt').readlines()))
     game = build_tower(tower_info)
-    imglist = {}
-    dirlist = os.listdir('UI')
-    for dir in dirlist:
-        if dir.endswith('.png'):
-            imglist[dir[:-4]] = pygame.image.load('UI/' + dir)
+    imglist = read_image()
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 10), 0, 32)
