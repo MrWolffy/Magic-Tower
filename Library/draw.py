@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 import pygame
 from Library.items import *
 
 
 def draw_map(level, imglist, screen, game, time_flag):
-    global TIME_FLAG
     for i in range(game.map.width):
         for j in range(game.map.height):
             screen.blit(imglist['Floor'], ((i + 6) * 32, (j + 1) * 32 + 5))
