@@ -1,5 +1,5 @@
 import pygame
-from items import *
+from Library.items import *
 
 
 def draw_map(level, imglist, screen, game, time_flag):
@@ -60,7 +60,7 @@ def draw_info_background(imglist, screen):
 def draw_info_content(warrior: Warrior, imglist, screen):
     arial_font = [None]
     for i in range(1, 33):
-        arial_font.append(pygame.font.Font('Arial.ttf', i))
+        arial_font.append(pygame.font.Font('Library/Arial.ttf', i))
     # first
     warrior_image = imglist['Warrior'].subsurface((0, 0), (32, 32))
     screen.blit(pygame.transform.scale(warrior_image, (40, 40)), (40, 40))

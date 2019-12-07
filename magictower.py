@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
-from draw import *
+from Library.draw import *
+from Library.items import *
 import os
 import pygame
 import time
@@ -36,7 +37,7 @@ def build_tower(tower_info):
 if __name__ == '__main__':
     t0 = time.process_time()
     TIME_FLAG = 0
-    tower_info = json.loads(''.join(open('tower.txt').readlines()))
+    tower_info = json.loads(''.join(open('Library/tower.txt').readlines()))
     game = build_tower(tower_info)
     imglist = read_image()
     pygame.init()
@@ -59,7 +60,6 @@ if __name__ == '__main__':
                     draw_map(game.warrior.position[0], imglist, screen, game, TIME_FLAG)
                     draw_info(game.warrior, imglist, screen, game)
                     # game.map.debug(game.warrior.position[0])
-                    break
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
