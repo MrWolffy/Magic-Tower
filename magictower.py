@@ -37,7 +37,7 @@ def build_tower(tower_info):
 if __name__ == '__main__':
     t0 = time.process_time()
     TIME_FLAG = 0
-    tower_info = json.loads(''.join(open('Library/tower.txt').readlines()))
+    tower_info = json.loads(''.join(open('Library/tower.json').readlines()))
     game = build_tower(tower_info)
     imglist = read_image()
     pygame.init()

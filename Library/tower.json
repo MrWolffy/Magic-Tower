@@ -409,7 +409,8 @@
           "Wall",
           "Floor",
           "Wall",
-          "Floor"
+          "Floor",
+          "Wall"
         ],
         [
           "Floor",
@@ -421,7 +422,8 @@
           "Wall",
           "Floor",
           "Wall",
-          "Floor"
+          "Floor",
+          "Wall"
         ],
         [
           "UpStair",
@@ -433,7 +435,8 @@
           "Wall",
           "Elder",
           "Wall",
-          "Merchant"
+          "Merchant",
+          "Wall"
         ]
       ]
     ]
@@ -447,22 +450,22 @@
       ],
       "level": 1,
       "hp": 1000,
-      "attack": 10,
-      "defense": 10,
+      "attack": 100,
+      "defense": 100,
       "gold": 0,
       "exp": 0,
       "keys": [
-        5,
-        1,
-        1
+        10,
+        10,
+        10
       ]
     },
     "RedSlime": {
       "hp": 70,
       "attack": 15,
       "defense": 2,
-      "gold": 1,
-      "exp": 1
+      "gold": 2,
+      "exp": 2
     },
     "GreenSlime": {
       "hp": 50,
@@ -519,6 +522,20 @@
       "defense": 30,
       "gold": 10,
       "exp": 8
+    },
+    "GoldGuard": {
+      "hp": 850,
+      "attack": 350,
+      "defense": 200,
+      "gold": 45,
+      "exp": 40
+    },
+    "GoldHeader": {
+      "hp": 900,
+      "attack": 750,
+      "defense": 650,
+      "gold": 77,
+      "exp": 70
     }
   }
 }

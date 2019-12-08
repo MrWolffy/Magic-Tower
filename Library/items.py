@@ -7,7 +7,7 @@ import math
 # Item
 #   Floor
 #   Barrier: Wall, Lava, Star
-#   Door: YellowDoor, BlueDoor, RedDoor
+#   Door: YellowDoor, BlueDoor, RedDoor, SpecialDoor, IronFence
 #   Prop
 #       Bottle: RedBottle, BlueBottle
 #       Key: YellowKey, BlueKey, RedKey
@@ -23,7 +23,7 @@ import math
 #           _Orc: Orc
 #           Bat: SmallBat
 #           Solider: GoldGuard, GoldHeader
-#       NPC: Fairy
+#       NPC: Fairy, Elder, Merchant
 #   Warrior
 
 
@@ -76,6 +76,16 @@ class BlueDoor(Door):
 
 
 class RedDoor(Door):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class SpecialDoor(Door):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class IronFence(Door):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -209,6 +219,16 @@ class Fairy(NPC):
         super().__init__(item_info)
 
 
+class Elder(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Merchant(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Monster(Creature):
     # subclass: RedSlime ...
     def __init__(self, item_info: dict):
@@ -338,7 +358,9 @@ class Warrior(Item):
         if issubclass(next_type, Barrier):
             return
         elif issubclass(next_type, Door):
-            idx = {'YellowDoor': 0, 'BlueDoor': 1, 'RedDoor': 2}[next_type.__name__]
+            idx = {'YellowDoor': 0, 'BlueDoor': 1, 'RedDoor': 2}.get(next_type.__name__)
+            if idx is None:
+                return
             if self.keys[idx] == 0:
                 return
             else:
@@ -399,7 +421,7 @@ class Warrior(Item):
 
     def can_beat(self, monster: Monster):
         if self.attack <= monster.defense:
-            return False, 0x3f3f3f3f
+            return False, "???"
         elif self.defense >= monster.attack:
             return True, 0
         my_damage_per_round = self.attack - monster.defense
