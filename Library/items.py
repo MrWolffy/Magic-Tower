@@ -12,7 +12,7 @@ import math
 #       Bottle: RedBottle, BlueBottle
 #       Key: YellowKey, BlueKey, RedKey
 #       Gem: RedGem, BlueGem
-#       Equipment
+#       Equipment: IronSword
 #       Special: Detector
 #   Stair: UpStair, DownStair
 #   Creature
@@ -23,7 +23,7 @@ import math
 #           _Orc: Orc
 #           Bat: SmallBat
 #           Solider: GoldGuard, GoldHeader
-#       NPC: Fairy, Elder, Merchant
+#       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight
 #   Warrior
 
 
@@ -176,6 +176,14 @@ class Equipment(Prop):
         super().__init__(item_info)
 
 
+class IronSword(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.attack += 10
+
+
 class Special(Prop):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
@@ -225,6 +233,21 @@ class Elder(NPC):
 
 
 class Merchant(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Shop(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class ShopLeft(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class ShopRight(NPC):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -341,15 +364,10 @@ class Warrior(Item):
         self.keys = info['keys']
 
     def move(self, key, map):
-        next_pos = [0, 0, 0]
-        if key == pygame.K_LEFT:
-            next_pos = [0, 0, -1]
-        elif key == pygame.K_RIGHT:
-            next_pos = [0, 0, 1]
-        elif key == pygame.K_UP:
-            next_pos = [0, -1, 0]
-        elif key == pygame.K_DOWN:
-            next_pos = [0, 1, 0]
+        next_pos = {pygame.K_LEFT: [0, 0, -1],
+                    pygame.K_RIGHT: [0, 0, 1],
+                    pygame.K_UP: [0, -1, 0],
+                    pygame.K_DOWN: [0, 1, 0]}[key]
         next_pos = [next_pos[i] + self.position[i] for i in range(3)]
         if next_pos[1] < 0 or next_pos[2] < 0 or next_pos[1] >= map.height or next_pos[2] >= map.width:
             return
@@ -370,7 +388,6 @@ class Warrior(Item):
         elif issubclass(next_type, Prop):
             if not issubclass(next_type, Special):
                 next_obj.used_by(self)
-                map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
             else:
                 pass
             map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
@@ -378,10 +395,9 @@ class Warrior(Item):
         elif issubclass(next_type, Stair):
             if next_type.__name__ == 'UpStair':
                 self.move_to_new_floor(self.position[0] + 1, 'up', map)
-                return
             elif next_type.__name__ == 'DownStair':
                 self.move_to_new_floor(self.position[0] - 1, 'down', map)
-                return
+            return
         elif issubclass(next_type, Monster):
             flag, est_damage = self.can_beat(next_obj)
             if flag:
@@ -389,11 +405,9 @@ class Warrior(Item):
                 self.exp += next_obj.exp
                 self.gold += next_obj.gold
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
-                return
-            else:
-                return
+            return
         elif issubclass(next_type, NPC):
-            pass
+            return 
         map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
         map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
         self.position = next_pos
@@ -415,7 +429,7 @@ class Warrior(Item):
             self.position[2] -= 1
         elif next_pos[1] < map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]+1][next_pos[2]]), Floor):
             self.position[1] += 1
-        elif next_pos[2] > map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]+1]), Floor):
+        elif next_pos[2] < map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]+1]), Floor):
             self.position[2] += 1
         map.array[self.position[0]][self.position[1]][self.position[2]] = self
 
@@ -426,7 +440,7 @@ class Warrior(Item):
             return True, 0
         my_damage_per_round = self.attack - monster.defense
         monster_damage_per_round = monster.attack - self.defense
-        rounds_count = math.ceil(monster.hp / my_damage_per_round)
+        rounds_count = math.floor(monster.hp / my_damage_per_round)
         monster_damage = rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
 

@@ -2,7 +2,7 @@
   "tower_structure": {
     "height": 11,
     "width": 11,
-    "total_level": 3,
+    "total_level": 4,
     "level_structure": [
       [
         [
@@ -438,6 +438,19 @@
           "Merchant",
           "Wall"
         ]
+      ],
+      [
+        ["IronSword", "RedSlime", "YellowKey", "Wall", "ShopLeft", "Shop", "ShopRight", "Wall", "Wall", "Wall", "Wall"],
+        ["RedSlime", "YellowKey", "Floor", "Wall", "Floor", "Floor", "Floor", "Wall", "Floor", "SmallBat", "Floor"],
+        ["YellowKey", "Skeleton", "Floor", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "Floor", "Wall", "Floor"],
+        ["Wall", "YellowDoor", "Wall", "Wall", "Floor", "Skeleton", "Floor", "Wall", "YellowKey", "Wall", "RedSlime"],
+        ["Floor", "Floor", "Floor", "Wall", "Wall", "Wall", "Floor", "Wall", "YellowKey", "Wall", "SmallBat"],
+        ["GreenSlime", "Wall", "Floor", "SmallBat", "RedSlime", "SmallBat", "Floor", "Wall", "YellowKey", "Wall", "RedSlime"],
+        ["GreenSlime", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor", "Floor", "Floor", "Wall", "Floor"],
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "Floor"],
+        ["Wall", "Wall", "Wall", "Wall", "SmallBat", "Wall", "RedSlime", "Floor", "RedSlime", "Wall", "Floor"],
+        ["Wall", "Floor", "Floor", "Floor", "Floor", "Wall", "BlueGem", "SmallBat", "YellowKey", "Wall", "Floor"],
+        ["DownStair", "Floor", "Wall", "Wall", "Wall", "Wall", "RedGem", "BlueBottle", "YellowKey", "Wall", "UpStair"]
       ]
     ]
   },
