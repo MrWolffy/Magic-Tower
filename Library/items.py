@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 import math
+from Library.others import *
 
 # structure of objects:
 #
@@ -10,25 +11,29 @@ import math
 #   Door: YellowDoor, BlueDoor, RedDoor, SpecialDoor, IronFence
 #   Prop
 #       Bottle: RedBottle, BlueBottle
-#       Key: YellowKey, BlueKey, RedKey
+#       Key: YellowKey, BlueKey, RedKey, KeyKit
 #       Gem: RedGem, BlueGem
-#       Equipment: IronSword
-#       Special: Detector
+#       Equipment: IronSword, IronShield, SteelSword, SteelShield, QingFengSword
+#                  GoldenShield
+#       OtherProp: SmallWing, GoldCoin
+#       Special: Detector, Cross, Aircraft
 #   Stair: UpStair, DownStair
 #   Creature
 #       Monster
-#           Slime: RedSlime, GreenSlime, BlackSlime
-#           _Skeleton: Skeleton, SkeletonSolider
-#           Wizard: PrimaryWizard
-#           _Orc: Orc
-#           Bat: SmallBat
-#           Solider: GoldGuard, GoldHeader
-#       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight
+#           Slime: RedSlime, GreenSlime, BlackSlime, BigSlime
+#           _Skeleton: Skeleton, SkeletonSolider, SkeletonHeader
+#           Wizard: PrimaryWizard, AdvancedWizard, HempWizard, RedWizard, SoulWizard
+#           _Orc: Orc, OrcSolider
+#           Bat: SmallBat, BigBat, RedBat
+#           Solider: PrimarySolider, AdvancedSolider, StoneMan, WhiteSolider,
+#                    GoldGuard, GoldHeader, DoubleSwordSolider, DarkGuard, DarkSolider,
+#                    DarkHeader, SoulWarrior, ShadowSolider
+#           Boss: RedBoss
+#       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight, Thief
 #   Warrior
 
 
 class Item:
-    # subclass: Floor, Barrier, Door, Prop, Stair, Creature, Warrior
     def __init__(self, item_info: dict):
         pass
 
@@ -39,7 +44,6 @@ class Floor(Item):
 
 
 class Barrier(Item):
-    # subclass: Wall, Lava, Star
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -60,7 +64,6 @@ class Star(Barrier):
 
 
 class Door(Item):
-    # subclass: YellowDoor, BlueDoor, RedDoor
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -88,17 +91,16 @@ class SpecialDoor(Door):
 class IronFence(Door):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
+        self.can_open = False
 
 
 class Prop(Item):
-    # subclass: Bottle, Key, Gem, Equipment, Special
     def __init__(self, item_info: dict):
         super().__init__(item_info)
         self.buff = ''
 
 
 class Bottle(Prop):
-    # subclass: RedBottle, BlueBottle
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -120,7 +122,6 @@ class BlueBottle(Bottle):
 
 
 class Key(Prop):
-    # subclass: YellowKey, BlueKey, RedKey
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -149,8 +150,17 @@ class RedKey(Key):
         warrior.keys[2] += 1
 
 
+class KeyKit(Key):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.keys[0] += 1
+        warrior.keys[1] += 1
+        warrior.keys[2] += 1
+
+
 class Gem(Prop):
-    # subclass: RedGem, BlueGem
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -184,6 +194,70 @@ class IronSword(Equipment):
         warrior.attack += 10
 
 
+class IronShield(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.defense += 10
+
+
+class SteelSword(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.attack += 30
+
+
+class SteelShield(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.defense += 30
+
+
+class QingFengSword(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.attack += 70
+
+
+class GoldenShield(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.defense += 85
+
+
+class OtherProp(Prop):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class SmallWing(OtherProp):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.level += 1
+        warrior.hp += 1000
+        warrior.attack += 7
+        warrior.defense += 7
+
+
+class GoldCoin(OtherProp):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.gold += 300
+
+
 class Special(Prop):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
@@ -194,8 +268,17 @@ class Detector(Special):
         super().__init__(item_info)
 
 
+class Cross(Special):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Aircraft(Special):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Stair(Item):
-    # subclass: UpStair, DownStair
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -211,13 +294,11 @@ class DownStair(Stair):
 
 
 class Creature(Item):
-    # subclass: Monster, NPC
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
 
 class NPC(Creature):
-    # subclass: Fairy
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -252,8 +333,12 @@ class ShopRight(NPC):
         super().__init__(item_info)
 
 
+class Thief(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Monster(Creature):
-    # subclass: RedSlime ...
     def __init__(self, item_info: dict):
         super().__init__(item_info)
         info = item_info[type(self).__name__]
@@ -265,7 +350,6 @@ class Monster(Creature):
 
 
 class Slime(Monster):
-    # subclass: RedSlime, GreenSlime, BlackSlime
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -285,8 +369,12 @@ class BlackSlime(Slime):
         super().__init__(item_info)
 
 
+class BigSlime(Slime):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class _Skeleton(Monster):
-    # subclass: Skeleton, SkeletonSolider
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -301,8 +389,12 @@ class SkeletonSolider(_Skeleton):
         super().__init__(item_info)
 
 
+class SkeletonHeader(_Skeleton):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Wizard(Monster):
-    # subclass: PrimaryWizard
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -312,8 +404,22 @@ class PrimaryWizard(Wizard):
         super().__init__(item_info)
 
 
+class AdvancedWizard(Wizard):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class HempWizard(Wizard):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class RedWizard(Wizard):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class _Orc(Monster):
-    # subclass: Orc
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -323,8 +429,12 @@ class Orc(_Orc):
         super().__init__(item_info)
 
 
+class OrcSolider(_Orc):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Bat(Monster):
-    # subclass: SmallBat
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -334,8 +444,42 @@ class SmallBat(Bat):
         super().__init__(item_info)
 
 
+class BigBat(Bat):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class RedBat(Bat):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
 class Solider(Monster):
-    # subclass: GoldGuard, GoldHeader
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class PrimarySolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class IntermediateSolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class AdvancedSolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class StoneMan(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class WhiteSolider(Solider):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -346,6 +490,46 @@ class GoldGuard(Solider):
 
 
 class GoldHeader(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class DoubleSwordSolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class DarkGuard(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class DarkSolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class DarkHeader(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class SoulWarrior(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class ShadowSolider(Solider):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Boss(Monster):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class RedBoss(Boss):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -378,13 +562,13 @@ class Warrior(Item):
         elif issubclass(next_type, Door):
             idx = {'YellowDoor': 0, 'BlueDoor': 1, 'RedDoor': 2}.get(next_type.__name__)
             if idx is None:
+                if next_type.__name__ == 'IronFence' and next_obj.can_open:
+                    map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
                 return
-            if self.keys[idx] == 0:
-                return
-            else:
+            if self.keys[idx] != 0:
                 self.keys[idx] -= 1
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
-                return
+            return
         elif issubclass(next_type, Prop):
             if not issubclass(next_type, Special):
                 next_obj.used_by(self)
@@ -407,7 +591,8 @@ class Warrior(Item):
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
             return
         elif issubclass(next_type, NPC):
-            return 
+            next_obj.talk_to(next_obj, self, map)
+            return
         map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
         map.array[self.position[0]][self.position[1]][self.position[2]] = Floor({})
         self.position = next_pos
@@ -424,24 +609,32 @@ class Warrior(Item):
                     break
         self.position = next_pos.copy()
         if next_pos[1] > 0 and issubclass(type(map.array[next_pos[0]][next_pos[1]-1][next_pos[2]]), Floor):
-            self.position[1] -= 1
-        elif next_pos[2] > 0 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]-1]), Floor):
-            self.position[2] -= 1
-        elif next_pos[1] < map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]+1][next_pos[2]]), Floor):
-            self.position[1] += 1
+            self.position[1] -= 1   # up
         elif next_pos[2] < map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]+1]), Floor):
-            self.position[2] += 1
+            self.position[2] += 1   # right
+        elif next_pos[2] > 0 and issubclass(type(map.array[next_pos[0]][next_pos[1]][next_pos[2]-1]), Floor):
+            self.position[2] -= 1   # left
+        elif next_pos[1] < map.height - 1 and issubclass(type(map.array[next_pos[0]][next_pos[1]+1][next_pos[2]]), Floor):
+            self.position[1] += 1   # down
         map.array[self.position[0]][self.position[1]][self.position[2]] = self
 
     def can_beat(self, monster: Monster):
+        monster_damage = 0
+        monster_name = type(monster).__name__
+        if monster_name == 'HempWizard':
+            monster_damage += 100
+        elif monster_name == 'RedWizard':
+            monster_damage += 300
+        elif monster_name == 'WhiteSolider':
+            monster_damage += math.floor(self.hp * 0.25)
         if self.attack <= monster.defense:
             return False, "???"
         elif self.defense >= monster.attack:
-            return True, 0
+            return True, monster_damage
         my_damage_per_round = self.attack - monster.defense
         monster_damage_per_round = monster.attack - self.defense
         rounds_count = math.floor(monster.hp / my_damage_per_round)
-        monster_damage = rounds_count * monster_damage_per_round
+        monster_damage += rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
 
 
@@ -466,3 +659,5 @@ class Game:
     def __init__(self, map, warrior):
         self.map = map
         self.warrior = warrior
+
+

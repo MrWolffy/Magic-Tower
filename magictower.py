@@ -39,6 +39,8 @@ if __name__ == '__main__':
     TIME_FLAG = 0
     tower_info = json.loads(''.join(open('Library/tower.json').readlines()))
     game = build_tower(tower_info)
+    add_additional_function(game)
+    # game.map.array = [game.map.array[0], game.map.array[4]]
     img_list = read_image()
     pygame.init()
     clock = pygame.time.Clock()

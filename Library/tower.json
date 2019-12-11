@@ -2,442 +2,46 @@
   "tower_structure": {
     "height": 11,
     "width": 11,
-    "total_level": 4,
+    "total_level": 12,
     "level_structure": [
       [
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "UpStair",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Star",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Wall",
-          "Star",
-          "Star",
-          "Star",
-          "Floor",
-          "Star",
-          "Star",
-          "Star",
-          "Wall",
-          "Wall"
-        ],
-        [
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall"
-        ],
-        [
-          "Lava",
-          "Wall",
-          "Lava",
-          "Wall",
-          "Floor",
-          "Fairy",
-          "Floor",
-          "Wall",
-          "Lava",
-          "Wall",
-          "Lava"
-        ],
-        [
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Warrior",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava"
-        ],
-        [
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Floor",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava",
-          "Lava"
-        ]
+        ["Wall", "Star", "Star", "Star", "Star", "UpStair", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Wall"],
+        ["Wall", "Wall", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Wall", "Wall"],
+        ["Wall", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "Wall", "Wall", "Wall"],
+        ["Lava", "Wall", "Lava", "Wall", "Floor", "Fairy", "Floor", "Wall", "Lava", "Wall", "Lava"],
+        ["Lava", "Lava", "Lava", "Lava", "Lava", "Warrior", "Lava", "Lava", "Lava", "Lava", "Lava"],
+        ["Lava", "Lava", "Lava", "Lava", "Lava", "Floor", "Lava", "Lava", "Lava", "Lava", "Lava"]
       ],
       [
-        [
-          "UpStair",
-          "Floor",
-          "YellowKey",
-          "GreenSlime",
-          "RedSlime",
-          "GreenSlime",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor"
-        ],
-        [
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "RedBottle",
-          "Floor",
-          "Skeleton",
-          "YellowDoor",
-          "Floor",
-          "Wall",
-          "RedBottle",
-          "YellowKey",
-          "RedBottle",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "YellowKey",
-          "Skeleton",
-          "RedGem",
-          "Wall",
-          "Floor",
-          "Wall",
-          "RedBottle",
-          "YellowKey",
-          "RedBottle",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "Floor",
-          "Wall",
-          "Wall",
-          "Wall",
-          "BlackSlime",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "YellowKey",
-          "SkeletonSolider",
-          "Floor",
-          "Wall",
-          "Floor",
-          "YellowDoor",
-          "PrimaryWizard",
-          "GreenSlime",
-          "SmallBat",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "BlueGem",
-          "Floor",
-          "BlueKey",
-          "Wall",
-          "Floor",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Floor"
-        ],
-        [
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor"
-        ],
-        [
-          "Floor",
-          "SkeletonSolider",
-          "Floor",
-          "Wall",
-          "Wall",
-          "RedDoor",
-          "Wall",
-          "Wall",
-          "Wall",
-          "YellowDoor",
-          "Wall"
-        ],
-        [
-          "RedBottle",
-          "BlueBottle",
-          "YellowKey",
-          "Wall",
-          "RedKey",
-          "Floor",
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "Orc",
-          "BlueKey"
-        ],
-        [
-          "RedBottle",
-          "Detector",
-          "YellowKey",
-          "Wall",
-          "Floor",
-          "DownStair",
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "YellowKey",
-          "YellowKey"
-        ]
+        ["UpStair", "Floor", "YellowKey", "GreenSlime", "RedSlime", "GreenSlime", "Floor", "Floor", "Floor", "Floor", "Floor"],
+        ["Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor"],
+        ["RedBottle", "Floor", "Skeleton", "YellowDoor", "Floor", "Wall", "RedBottle", "YellowKey", "RedBottle", "Wall", "Floor"],
+        ["YellowKey", "Skeleton", "RedGem", "Wall", "Floor", "Wall", "RedBottle", "YellowKey", "RedBottle", "Wall", "Floor"],
+        ["Wall", "YellowDoor", "Wall", "Wall", "Floor", "Wall", "Wall", "Wall", "BlackSlime", "Wall", "Floor"],
+        ["YellowKey", "SkeletonSolider", "Floor", "Wall", "Floor", "YellowDoor", "PrimaryWizard", "GreenSlime", "SmallBat", "Wall", "Floor"],
+        ["BlueGem", "Floor", "BlueKey", "Wall", "Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor"],
+        ["Wall", "YellowDoor", "Wall", "Wall", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor"],
+        ["Floor", "SkeletonSolider", "Floor", "Wall", "Wall", "RedDoor", "Wall", "Wall", "Wall", "YellowDoor", "Wall"],
+        ["RedBottle", "BlueBottle", "YellowKey", "Wall", "RedKey", "Floor", "Floor", "Wall", "YellowKey", "Orc", "BlueKey"],
+        ["RedBottle", "Detector", "YellowKey", "Wall", "Floor", "DownStair", "Floor", "Wall", "YellowKey", "YellowKey", "YellowKey"]
       ],
       [
-        [
-          "DownStair",
-          "Wall",
-          "Floor",
-          "GoldHeader",
-          "Floor",
-          "Wall",
-          "RedGem",
-          "BlueGem",
-          "YellowKey",
-          "RedKey",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "BlueGem",
-          "Wall",
-          "BlueBottle",
-          "Wall",
-          "RedGem",
-          "BlueGem",
-          "YellowKey",
-          "BlueKey",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "RedGem",
-          "BlueGem",
-          "YellowKey",
-          "GoldGuard",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "Wall",
-          "Wall",
-          "Wall",
-          "YellowDoor",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "Floor",
-          "Wall",
-          "Floor",
-          "Floor",
-          "Floor",
-          "YellowDoor",
-          "Floor",
-          "Floor",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "SpecialDoor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Floor",
-          "Wall",
-          "Floor",
-          "GoldGuard",
-          "Floor",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowDoor",
-          "Wall",
-          "Wall",
-          "BlueDoor",
-          "Wall",
-          "IronFence",
-          "Wall",
-          "IronFence",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "BlueBottle",
-          "RedBottle",
-          "Wall",
-          "Floor",
-          "Wall",
-          "Floor",
-          "Wall"
-        ],
-        [
-          "Floor",
-          "Wall",
-          "YellowKey",
-          "Wall",
-          "BlueBottle",
-          "RedBottle",
-          "Wall",
-          "Floor",
-          "Wall",
-          "Floor",
-          "Wall"
-        ],
-        [
-          "UpStair",
-          "Wall",
-          "RedGem",
-          "Wall",
-          "BlueBottle",
-          "RedBottle",
-          "Wall",
-          "Elder",
-          "Wall",
-          "Merchant",
-          "Wall"
-        ]
+        ["DownStair", "Wall", "Floor", "GoldHeader", "Floor", "Wall", "RedGem", "BlueGem", "YellowKey", "RedKey", "Wall"],
+        ["Floor", "Wall", "BlueGem", "Wall", "BlueBottle", "Wall", "RedGem", "BlueGem", "YellowKey", "BlueKey", "Wall"],
+        ["Floor", "Wall", "YellowKey", "Wall", "YellowKey", "Wall", "RedGem", "BlueGem", "YellowKey", "GoldGuard", "Wall"],
+        ["Floor", "Wall", "YellowKey", "Wall", "YellowKey", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall"],
+        ["Floor", "Wall", "Floor", "Wall", "Floor", "Floor", "Floor", "YellowDoor", "Floor", "Floor", "Wall"],
+        ["Floor", "Wall", "YellowDoor", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "YellowDoor", "Wall", "Wall"],
+        ["Floor", "SpecialDoor", "Floor", "Floor", "Floor", "Floor", "Wall", "Floor", "GoldGuard", "Floor", "Wall"],
+        ["Floor", "Wall", "YellowDoor", "Wall", "Wall", "BlueDoor", "Wall", "IronFence", "Wall", "IronFence", "Wall"],
+        ["Floor", "Wall", "YellowKey", "Wall", "BlueBottle", "RedBottle", "Wall", "Floor", "Wall", "Floor", "Wall"],
+        ["Floor", "Wall", "YellowKey", "Wall", "BlueBottle", "RedBottle", "Wall", "Floor", "Wall", "Floor", "Wall"],
+        ["UpStair", "Wall", "RedGem", "Wall", "BlueBottle", "RedBottle", "Wall", "Elder", "Wall", "Merchant", "Wall"]
       ],
       [
         ["IronSword", "RedSlime", "YellowKey", "Wall", "ShopLeft", "Shop", "ShopRight", "Wall", "Wall", "Wall", "Wall"],
@@ -451,6 +55,110 @@
         ["Wall", "Wall", "Wall", "Wall", "SmallBat", "Wall", "RedSlime", "Floor", "RedSlime", "Wall", "Floor"],
         ["Wall", "Floor", "Floor", "Floor", "Floor", "Wall", "BlueGem", "SmallBat", "YellowKey", "Wall", "Floor"],
         ["DownStair", "Floor", "Wall", "Wall", "Wall", "Wall", "RedGem", "BlueBottle", "YellowKey", "Wall", "UpStair"]
+      ],
+      [
+        ["Floor", "BlackSlime", "Floor", "Wall", "Floor", "Thief", "Floor", "Wall", "Floor", "BlackSlime", "Floor"],
+        ["YellowDoor", "Wall", "YellowDoor", "Wall", "Floor", "Floor", "Floor", "Wall", "YellowDoor", "Wall", "YellowDoor"],
+        ["Floor", "Wall", "Floor", "Wall", "Wall", "IronFence", "Wall", "Wall", "Floor", "Wall", "Floor"],
+        ["Floor", "Wall", "Skeleton", "Wall", "BigBat", "RedBat", "BigBat", "Wall", "Skeleton", "Wall", "Floor"],
+        ["SmallBat", "Wall", "RedBottle", "Wall", "BlueGem", "BigBat", "BlueGem", "Wall", "RedBottle", "Wall", "SmallBat"],
+        ["SmallBat", "Wall", "RedBottle", "Wall", "Wall", "RedDoor", "Wall", "Wall", "RedBottle", "Wall", "SmallBat"],
+        ["RedSlime", "Wall", "Floor", "Wall", "Orc", "PrimarySolider", "Orc", "Wall", "Floor", "Wall", "Floor"],
+        ["Floor", "Wall", "Floor", "Wall", "RedGem", "Orc", "RedGem", "Wall", "Floor", "Wall", "Floor"],
+        ["Floor", "Wall", "Floor", "Wall", "Wall", "BlueDoor", "Wall", "Wall", "Floor", "Wall", "Floor"],
+        ["Floor", "Wall", "Floor", "Wall", "YellowKey", "Floor", "YellowKey", "Wall", "Floor", "Wall", "Floor"],
+        ["UpStair", "Wall", "Floor", "BlackSlime", "Floor", "Floor", "Floor", "BlackSlime", "Floor", "Wall", "DownStair"]
+      ],
+      [
+        ["KeyKit", "Wall", "RedBottle", "Wall", "BlueBottle", "PrimaryWizard", "Floor", "Floor", "PrimaryWizard", "YellowKey", "BlueKey"],
+        ["Floor", "Wall", "RedGem", "Wall", "PrimaryWizard", "Floor", "Floor", "Floor", "Floor", "PrimaryWizard", "YellowKey"],
+        ["BigBat", "Wall", "Floor", "Wall", "SkeletonSolider", "Floor", "Wall", "Wall", "YellowDoor", "Wall", "Wall"],
+        ["Floor", "YellowDoor", "PrimaryWizard", "Wall", "IronShield", "SkeletonSolider", "Wall", "Floor", "Orc", "SkeletonSolider", "Merchant"],
+        ["BigBat", "Wall", "Floor", "Wall", "Wall", "Wall", "Wall", "Floor", "Floor", "Floor", "SkeletonSolider"],
+        ["RedGem", "Wall", "Floor", "Floor", "Floor", "SmallBat", "Skeleton", "Floor", "Floor", "Floor", "Floor"],
+        ["BlueGem", "Wall", "Wall", "BlackSlime", "Wall", "Wall", "Wall", "Wall", "Floor", "Floor", "Floor"],
+        ["Floor", "Elder", "Wall", "BlackSlime", "Wall", "Floor", "Floor", "Floor", "Orc", "PrimarySolider", "Floor"],
+        ["Wall", "Wall", "Wall", "SmallBat", "Wall", "YellowDoor", "Wall", "BlueDoor", "Wall", "YellowDoor", "Wall"],
+        ["Floor", "Floor", "Wall", "Floor", "Wall", "SmallBat", "Wall", "BlueGem", "YellowDoor", "Floor", "Wall"],
+        ["DownStair", "Floor", "SmallBat", "Floor", "Floor", "Floor", "Wall", "YellowKey", "Wall", "UpStair", "Wall"]
+      ],
+      [
+        ["SmallWing", "SkeletonHeader", "Wall", "BlueGem", "Wall", "YellowKey", "BigSlime", "GoldCoin", "Wall", "BlueBottle", "BlueBottle"],
+        ["SkeletonHeader", "YellowKey", "Wall", "RedGem", "Wall", "Floor", "YellowKey", "BigSlime", "Wall", "StoneMan", "BlueBottle"],
+        ["YellowKey", "RedBat", "BlueDoor", "Floor", "BlueDoor", "RedBat", "Floor", "YellowKey", "Wall", "Floor", "StoneMan"],
+        ["Floor", "Floor", "Wall", "PrimarySolider", "Wall", "Floor", "Floor", "Floor", "Wall", "RedWizard", "Floor"],
+        ["Wall", "Wall", "Wall", "RedDoor", "Wall", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall"],
+        ["Floor", "Floor", "AdvancedWizard", "Floor", "YellowKey", "YellowKey", "YellowKey", "Floor", "AdvancedWizard", "Floor", "Floor"],
+        ["Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
+        ["Floor", "Wall", "BigBat", "YellowDoor", "BigBat", "Floor", "Floor", "Floor", "Floor", "Floor", "Wall"],
+        ["Floor", "Wall", "YellowDoor", "Wall", "YellowDoor", "Wall", "Wall", "Wall", "Wall", "BlueDoor", "Wall"],
+        ["Floor", "Wall", "BigBat", "Wall", "Floor", "Floor", "Wall", "Wall", "Floor", "Floor", "Wall"],
+        ["Floor", "Floor", "Floor", "Wall", "UpStair", "Floor", "YellowDoor", "YellowDoor", "Floor", "DownStair", "Wall"]
+      ],
+      [
+        ["UpStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Wall", "Wall", "Wall"],
+        ["Wall", "Wall", "Floor", "RedBat", "Wall", "BlueDoor", "Wall", "SkeletonHeader", "Floor", "Wall", "Wall"],
+        ["Wall", "Floor", "RedBat", "BlueGem", "Wall", "WhiteSolider", "Wall", "RedGem", "SkeletonHeader", "Floor", "Wall"],
+        ["Floor", "Floor", "Wall", "Wall", "Wall", "IronFence", "Wall", "Wall", "Wall", "Floor", "Floor"],
+        ["Floor", "Floor", "BlueDoor", "WhiteSolider", "IronFence", "Cross", "IronFence", "WhiteSolider", "BlueDoor", "Floor", "Floor"],
+        ["Floor", "Wall", "Wall", "Wall", "Wall", "IronFence", "Wall", "Wall", "Wall", "Wall", "Floor"],
+        ["Floor", "Wall", "RedBottle", "RedGem", "Wall", "WhiteSolider", "Wall", "BlueGem", "RedBottle", "Wall", "Floor"],
+        ["Floor", "Wall", "YellowKey", "RedBottle", "Wall", "BlueDoor", "Wall", "RedBottle", "YellowKey", "Wall", "Floor"],
+        ["Floor", "Wall", "Wall", "BlueKey", "BlueKey", "BlueBottle", "BlueKey", "BlueKey", "Wall", "Wall", "Floor"],
+        ["Floor", "Floor", "Wall", "Wall", "Wall", "RedDoor", "Wall", "Wall", "Wall", "Floor", "Floor"],
+        ["Wall", "Floor", "Floor", "YellowDoor", "DownStair", "Floor", "Floor", "YellowDoor", "Floor", "Floor", "Wall"]
+      ],
+      [
+        ["DownStair", "Wall", "Floor", "Floor", "Floor", "Floor", "Wall", "Floor", "YellowKey", "SkeletonHeader", "Floor"],
+        ["Floor", "Wall", "Floor", "Wall", "Wall", "YellowKey", "Wall", "YellowKey", "Wall", "Wall", "Floor"],
+        ["Floor", "Wall", "Floor", "Wall", "Floor", "Floor", "BlueDoor", "Floor", "Floor", "Wall", "RedGem"],
+        ["Floor", "Wall", "Floor", "Wall", "HempWizard", "Wall", "Wall", "Wall", "BigBat", "Wall", "BlackSlime"],
+        ["BigBat", "Wall", "Floor", "Wall", "RedBottle", "Wall", "UpStair", "Floor", "Floor", "Wall", "BlackSlime"],
+        ["RedBat", "Wall", "BlueGem", "Wall", "RedBottle", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor"],
+        ["BigBat", "Wall", "BlackSlime", "Wall", "Floor", "Floor", "Floor", "Wall", "Floor", "RedBat", "Floor"],
+        ["Floor", "Wall", "BlackSlime", "Wall", "Wall", "Wall", "PrimarySolider", "Wall", "YellowDoor", "Wall", "Wall"],
+        ["Floor", "Wall", "Floor", "SkeletonHeader", "Floor", "Wall", "SkeletonHeader", "Wall", "Floor", "Floor", "Floor"],
+        ["Floor", "Wall", "Wall", "Wall", "YellowDoor", "Wall", "Floor", "Wall", "Wall", "Wall", "Floor"],
+        ["Floor", "Floor", "HempWizard", "Floor", "Floor", "Wall", "Floor", "BigSlime", "WhiteSolider", "BigSlime", "Floor"]
+      ],
+      [
+        ["Aircraft", "YellowKey", "Floor", "Wall", "Wall", "Wall", "Floor", "Floor", "Floor", "Wall", "Floor"],
+        ["YellowKey", "Floor", "OrcSolider", "YellowDoor", "Floor", "Floor", "Floor", "Wall", "Floor", "YellowDoor", "SkeletonHeader"],
+        ["Wall", "YellowDoor", "Wall", "Wall", "Floor", "Wall", "Wall", "Wall", "Floor", "Wall", "YellowKey"],
+        ["Floor", "Floor", "Floor", "Wall", "Floor", "Wall", "Floor", "Floor", "Floor", "Wall", "YellowKey"],
+        ["Floor", "Floor", "Floor", "RedDoor", "Floor", "Wall", "DownStair", "Wall", "Floor", "Wall", "RedBottle"],
+        ["Wall", "BlueDoor", "Wall", "Wall", "Floor", "Wall", "Wall", "Wall", "Floor", "Wall", "Wall"],
+        ["BlueGem", "RedWizard", "RedGem", "Wall", "HempWizard", "Wall", "UpStair", "Wall", "Floor", "Wall", "RedBottle"],
+        ["Wall", "YellowDoor", "Wall", "Wall", "Floor", "Floor", "Floor", "YellowDoor", "Floor", "Wall", "YellowKey"],
+        ["SkeletonHeader", "RedBottle", "SkeletonHeader", "Wall", "Wall", "BlueDoor", "Wall", "Wall", "Floor", "Wall", "YellowKey"],
+        ["BlueKey", "SkeletonHeader", "RedBottle", "Wall", "StoneMan", "HempWizard", "StoneMan", "Wall", "Floor", "YellowDoor", "SkeletonHeader"],
+        ["QingFengSword", "BlueKey", "SkeletonHeader", "YellowDoor", "BlueBottle", "StoneMan", "BlueBottle", "Wall", "Floor", "Wall", "Floor"]
+      ],
+      [
+        ["Floor", "Wall", "Wall", "BlueGem", "OrcSolider", "Wall", "OrcSolider", "RedGem", "Wall", "Wall", "Floor"],
+        ["Floor", "Floor", "Wall", "Wall", "YellowDoor", "Wall", "YellowDoor", "Wall", "Wall", "Floor", "RedWizard"],
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Wall", "Floor", "Floor", "Floor", "RedWizard", "BlueBottle"],
+        ["Floor", "Wall", "Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor", "Wall", "Wall"],
+        ["BigBat", "Wall", "Floor", "Floor", "YellowKey", "YellowKey", "YellowKey", "Floor", "Floor", "Wall", "YellowKey"],
+        ["RedBat", "Wall", "Floor", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "YellowKey"],
+        ["BigBat", "Wall", "Floor", "IronFence", "Floor", "DownStair", "Wall", "Floor", "YellowDoor", "RedBat", "Floor"],
+        ["Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall", "Wall", "Floor"],
+        ["Floor", "Wall", "RedBottle", "BlueGem", "RedGem", "Wall", "Floor", "RedBat", "Floor", "Wall", "YellowKey"],
+        ["Floor", "Wall", "RedBottle", "BlueGem", "RedGem", "RedDoor", "HempWizard", "Wall", "HempWizard", "Wall", "YellowKey"],
+        ["UpStair", "Wall", "RedBottle", "BlueGem", "RedGem", "Wall", "BlueKey", "Wall", "BlueKey", "Wall", "RedBottle"]
+      ],
+      [
+        ["RedBottle", "Wall", "YellowKey", "Wall", "BlueKey", "Wall", "RedKey", "Wall", "BlueBottle", "GoldenShield", "BlueBottle"],
+        ["RedBottle", "Wall", "YellowKey", "Wall", "BlueKey", "Wall", "RedKey", "Wall", "DarkSolider", "AdvancedSolider", "DarkSolider"],
+        ["RedBottle", "Wall", "YellowKey", "Wall", "BlueKey", "Wall", "RedKey", "Wall", "Floor", "DarkSolider", "Wall"],
+        ["YellowDoor", "Wall", "YellowDoor", "Wall", "YellowDoor", "Wall", "YellowDoor", "Wall", "Wall", "BlueDoor", "Wall"],
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Wall", "Floor", "Floor", "Floor", "Floor", "Floor"],
+        ["YellowDoor", "Wall", "Wall", "BlueDoor", "Wall", "Wall", "Wall", "BlueDoor", "Wall", "Wall", "YellowDoor"],
+        ["BlueGem", "Wall", "Floor", "DarkSolider", "BlueBottle", "DoubleSwordSolider", "BlueBottle", "DarkSolider", "Floor", "Wall", "RedGem"],
+        ["BlueGem", "Wall", "OrcSolider", "Wall", "Wall", "Wall", "Wall", "Wall", "OrcSolider", "Wall", "RedGem"],
+        ["BlueGem", "Wall", "OrcSolider", "Wall", "ShopLeft", "Shop", "ShopRight", "Wall", "OrcSolider", "Wall", "RedGem"],
+        ["Wall", "Wall", "RedDoor", "Wall", "RedBottle", "Floor", "RedBottle", "Wall", "RedDoor", "Wall", "Wall"],
+        ["DownStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "UpStair"]
       ]
     ]
   },
@@ -463,8 +171,8 @@
       ],
       "level": 1,
       "hp": 1000,
-      "attack": 100,
-      "defense": 100,
+      "attack": 2550,
+      "defense": 2550,
       "gold": 0,
       "exp": 0,
       "keys": [
@@ -494,6 +202,13 @@
       "gold": 5,
       "exp": 5
     },
+    "BigSlime": {
+      "hp": 700,
+      "attack": 250,
+      "defense": 125,
+      "gold": 32,
+      "exp": 30
+    },
     "Skeleton": {
       "hp": 110,
       "attack": 25,
@@ -508,6 +223,13 @@
       "gold": 8,
       "exp": 6
     },
+    "SkeletonHeader": {
+      "hp": 400,
+      "attack": 90,
+      "defense": 50,
+      "gold":15,
+      "exp": 12
+    },
     "PrimaryWizard": {
       "hp": 125,
       "attack": 50,
@@ -515,12 +237,47 @@
       "gold": 10,
       "exp": 7
     },
+    "AdvancedWizard": {
+      "hp": 100,
+      "attack": 200,
+      "defense": 110,
+      "gold": 30,
+      "exp": 25
+    },
+    "HempWizard": {
+      "hp": 250,
+      "attack": 120,
+      "defense": 70,
+      "gold": 20,
+      "exp": 17
+    },
+    "RedWizard": {
+      "hp": 500,
+      "attack": 400,
+      "defense": 260,
+      "gold": 47,
+      "exp": 45
+    },
+    "SoulWizard": {
+      "hp": 1500,
+      "attack": 830,
+      "defense": 730,
+      "gold": 80,
+      "exp": 70
+    },
     "Orc": {
       "hp": 300,
       "attack": 75,
       "defense": 45,
       "gold": 13,
       "exp": 10
+    },
+    "OrcSolider": {
+      "hp": 900,
+      "attack": 450,
+      "defense": 330,
+      "gold": 50,
+      "exp": 50
     },
     "SmallBat": {
       "hp": 100,
@@ -536,6 +293,41 @@
       "gold": 10,
       "exp": 8
     },
+    "RedBat": {
+      "hp": 550,
+      "attack": 160,
+      "defense": 90,
+      "gold": 25,
+      "exp": 20
+    },
+    "PrimarySolider": {
+      "hp": 450,
+      "attack": 150,
+      "defense": 90,
+      "gold": 22,
+      "exp": 19
+    },
+    "AdvancedSolider": {
+      "hp": 1500,
+      "attack": 560,
+      "defense": 460,
+      "gold": 60,
+      "exp": 60
+    },
+    "StoneMan": {
+      "hp": 500,
+      "attack": 115,
+      "defense": 65,
+      "gold": 15,
+      "exp": 15
+    },
+    "WhiteSolider": {
+      "hp": 1300,
+      "attack": 300,
+      "defense": 150,
+      "gold": 40,
+      "exp": 35
+    },
     "GoldGuard": {
       "hp": 850,
       "attack": 350,
@@ -549,6 +341,55 @@
       "defense": 650,
       "gold": 77,
       "exp": 70
+    },
+    "DoubleSwordSolider": {
+      "hp": 1200,
+      "attack": 620,
+      "defense": 520,
+      "gold": 65,
+      "exp": 75
+    },
+    "DarkGuard": {
+      "hp": 1250,
+      "attack": 500,
+      "defense": 460,
+      "gold": 60,
+      "exp": 60
+    },
+    "DarkSolider": {
+      "hp": 2000,
+      "attack": 680,
+      "defense": 590,
+      "gold": 70,
+      "exp": 65
+    },
+    "DarkHeader": {
+      "hp": 2500,
+      "attack": 900,
+      "defense": 850,
+      "gold": 84,
+      "exp": 75
+    },
+    "SoulWarrior": {
+      "hp": 1200,
+      "attack": 980,
+      "defense": 900,
+      "gold": 88,
+      "exp": 75
+    },
+    "ShadowSolider": {
+      "hp": 3100,
+      "attack": 1150,
+      "defense": 1050,
+      "gold": 92,
+      "exp": 80
+    },
+    "RedBoss": {
+      "hp": 15000,
+      "attack": 1000,
+      "defense": 1000,
+      "gold": 100,
+      "exp": 100
     }
   }
 }
