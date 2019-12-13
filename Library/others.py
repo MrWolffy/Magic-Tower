@@ -2,16 +2,17 @@
 import Library.items as items
 
 
-def fairy_talk1(fairy, warrior, map):
+def fairy_talk1(self, warrior, map):
     warrior.keys[0] += 1
     warrior.keys[1] += 1
     warrior.keys[2] += 1
     map.array[0][8][5] = items.Floor({})
-    map.array[0][8][4] = fairy
-    fairy.talk_to = fairy_talk2
+    map.array[0][8][4] = self
+    self.talk_to = fairy_talk2
 
 
 def fairy_talk2(self, warrior, map):
+    # map.array[20][7][5] = items.UpStair({})
     pass
 
 
@@ -46,5 +47,10 @@ def add_additional_function(game):
     game.map.array[2][7][9].can_open = True
     game.map.array[4][2][5].can_open = True
     game.map.array[10][6][3].can_open = True
+    game.map.array[13][6][3].can_open = True
+    game.map.array[14][4][5].can_open = True
+    game.map.array[18][5][5].can_open = True
+    game.map.array[19][6][2].can_open = True
+    game.map.array[19][6][8].can_open = True
 
 

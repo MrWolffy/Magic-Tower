@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from Library.draw import *
-from Library.items import *
+# from Library.items import *
 import os
 import pygame
 import time
@@ -26,6 +26,7 @@ def build_tower(tower_info):
     for i in range(level):
         for j in range(height):
             for k in range(width):
+                # print(i, j, k)
                 map.array[i][j][k] = \
                     eval(tower_structure['level_structure'][i][j][k] + '(item_info)')
     warrior_position = item_info['Warrior']['position']
@@ -35,20 +36,18 @@ def build_tower(tower_info):
 
 
 if __name__ == '__main__':
-    t0 = time.process_time()
     TIME_FLAG = 0
     tower_info = json.loads(''.join(open('Library/tower.json').readlines()))
     game = build_tower(tower_info)
     add_additional_function(game)
-    # game.map.array = [game.map.array[0], game.map.array[4]]
+    game.map.array = [game.map.array[0], game.map.array[21]]
     img_list = read_image()
     pygame.init()
-    clock = pygame.time.Clock()
     screen = pygame.display.set_mode(((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 10), 0, 32)
     init_interface(img_list, screen, game, TIME_FLAG)
     while True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = divmod(int((t1 - ts) * 3), 4)[1]
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             draw_map(game.warrior.position[0], img_list, screen, game, TIME_FLAG)

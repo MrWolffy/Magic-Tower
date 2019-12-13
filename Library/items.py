@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import pygame
 import math
+import time
 from Library.others import *
+import random
 
 # structure of objects:
 #
@@ -14,9 +16,9 @@ from Library.others import *
 #       Key: YellowKey, BlueKey, RedKey, KeyKit
 #       Gem: RedGem, BlueGem
 #       Equipment: IronSword, IronShield, SteelSword, SteelShield, QingFengSword
-#                  GoldenShield
-#       OtherProp: SmallWing, GoldCoin
-#       Special: Detector, Cross, Aircraft
+#                  GoldenShield, SacredSword, SacredShield
+#       OtherProp: SmallWing, GoldCoin, BigWing, HolyWater
+#       Special: Detector, Cross, Aircraft, Hoe
 #   Stair: UpStair, DownStair
 #   Creature
 #       Monster
@@ -27,9 +29,9 @@ from Library.others import *
 #           Bat: SmallBat, BigBat, RedBat
 #           Solider: PrimarySolider, AdvancedSolider, StoneMan, WhiteSolider,
 #                    GoldGuard, GoldHeader, DoubleSwordSolider, DarkGuard, DarkSolider,
-#                    DarkHeader, SoulWarrior, ShadowSolider
-#           Boss: RedBoss
-#       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight, Thief
+#                    DarkHeader, SoulSolider, ShadowSolider
+#           Boss: RedBoss, DarkBoss
+#       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight, Thief, Princess
 #   Warrior
 
 
@@ -234,6 +236,22 @@ class GoldenShield(Equipment):
         warrior.defense += 85
 
 
+class SacredSword(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.defense += 150
+
+
+class SacredShield(Equipment):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.defense += 190
+
+
 class OtherProp(Prop):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
@@ -246,8 +264,8 @@ class SmallWing(OtherProp):
     def used_by(self, warrior):
         warrior.level += 1
         warrior.hp += 1000
-        warrior.attack += 7
-        warrior.defense += 7
+        warrior.attack += 10
+        warrior.defense += 10
 
 
 class GoldCoin(OtherProp):
@@ -256,6 +274,25 @@ class GoldCoin(OtherProp):
 
     def used_by(self, warrior):
         warrior.gold += 300
+
+
+class BigWing(OtherProp):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.level += 3
+        warrior.hp += 3000
+        warrior.attack += 30
+        warrior.defense += 30
+
+
+class HolyWater(OtherProp):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+    def used_by(self, warrior):
+        warrior.hp *= 2
 
 
 class Special(Prop):
@@ -274,6 +311,11 @@ class Cross(Special):
 
 
 class Aircraft(Special):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Hoe(Special):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -334,6 +376,11 @@ class ShopRight(NPC):
 
 
 class Thief(NPC):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class Princess(NPC):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -415,6 +462,11 @@ class HempWizard(Wizard):
 
 
 class RedWizard(Wizard):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class SoulWizard(Wizard):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -514,7 +566,7 @@ class DarkHeader(Solider):
         super().__init__(item_info)
 
 
-class SoulWarrior(Solider):
+class SoulSolider(Solider):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -530,6 +582,11 @@ class Boss(Monster):
 
 
 class RedBoss(Boss):
+    def __init__(self, item_info: dict):
+        super().__init__(item_info)
+
+
+class DarkBoss(Boss):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
 
@@ -585,7 +642,7 @@ class Warrior(Item):
         elif issubclass(next_type, Monster):
             flag, est_damage = self.can_beat(next_obj)
             if flag:
-                self.hp -= est_damage
+                self.fight_with(next_obj)
                 self.exp += next_obj.exp
                 self.gold += next_obj.gold
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
@@ -626,7 +683,9 @@ class Warrior(Item):
         elif monster_name == 'RedWizard':
             monster_damage += 300
         elif monster_name == 'WhiteSolider':
-            monster_damage += math.floor(self.hp * 0.25)
+            monster_damage += math.floor(self.hp / 4)
+        elif monster_name == 'SoulWizard':
+            monster_damage += math.floor(self.hp / 3)
         if self.attack <= monster.defense:
             return False, "???"
         elif self.defense >= monster.attack:
@@ -636,6 +695,26 @@ class Warrior(Item):
         rounds_count = math.floor(monster.hp / my_damage_per_round)
         monster_damage += rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
+
+    def fight_with(self, monster: Monster):
+        monster_name = type(monster).__name__
+        if monster_name == 'HempWizard':
+            self.hp -= 100
+        elif monster_name == 'RedWizard':
+            self.hp -= 300
+        elif monster_name == 'WhiteSolider':
+            self.hp -= math.floor(self.hp / 4)
+        elif monster_name == 'SoulWizard':
+            self.hp -= math.floor(self.hp / 3)
+        my_damage_per_round = self.attack - monster.defense
+        monster_damage_per_round = max(monster.attack - self.defense, 0)
+        while monster.hp > 0:
+            rand = random.random()
+            if rand < self.level * 0.005:
+                monster.hp = max(monster.hp - 2 * my_damage_per_round, 0)
+            else:
+                monster.hp = max(monster.hp - my_damage_per_round, 0)
+            self.hp -= monster_damage_per_round
 
 
 class Container:
@@ -656,8 +735,12 @@ class Container:
 
 
 class Game:
-    def __init__(self, map, warrior):
+    def __init__(self, map: Container, warrior: Warrior):
+        global ts
         self.map = map
         self.warrior = warrior
+        ts = time.process_time()
 
+
+ts = 0
 

@@ -2,7 +2,7 @@
   "tower_structure": {
     "height": 11,
     "width": 11,
-    "total_level": 12,
+    "total_level": 22,
     "level_structure": [
       [
         ["Wall", "Star", "Star", "Star", "Star", "UpStair", "Star", "Star", "Star", "Star", "Wall"],
@@ -159,6 +159,136 @@
         ["BlueGem", "Wall", "OrcSolider", "Wall", "ShopLeft", "Shop", "ShopRight", "Wall", "OrcSolider", "Wall", "RedGem"],
         ["Wall", "Wall", "RedDoor", "Wall", "RedBottle", "Floor", "RedBottle", "Wall", "RedDoor", "Wall", "Wall"],
         ["DownStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "UpStair"]
+      ],
+      [
+        ["Merchant", "BlueGem", "Wall", "Floor", "GoldGuard", "GoldHeader", "GoldGuard", "Floor", "Wall", "BlueBottle", "Hoe"],
+        ["RedGem", "Floor", "Wall", "Floor", "Wall", "YellowDoor", "Wall", "Floor", "Wall", "Floor", "BlueBottle"],
+        ["Floor", "Floor", "Wall", "Floor", "Wall", "GoldHeader", "Wall", "Floor", "Wall", "Floor", "Floor"],
+        ["Floor", "DoubleSwordSolider", "Wall", "Floor", "Wall", "YellowKey", "Wall", "Floor", "Wall", "SoulSolider", "Floor"],
+        ["DoubleSwordSolider", "DarkSolider", "Wall", "Floor", "Wall", "YellowKey", "Wall", "Floor", "Wall", "SoulWizard", "SoulSolider"],
+        ["Wall", "BlueDoor", "Wall", "Floor", "Wall", "RedBottle", "Wall", "Floor", "Wall", "BlueDoor", "Wall"],
+        ["Floor", "Floor", "Floor", "Floor", "Wall", "RedBottle", "Wall", "Floor", "Floor", "Floor", "Floor"],
+        ["Wall", "Wall", "Wall", "Floor", "Wall", "Wall", "Wall", "Floor", "Wall", "Wall", "Wall"],
+        ["BlueGem", "DoubleSwordSolider", "YellowDoor", "DarkGuard", "DarkGuard", "AdvancedSolider", "DarkGuard", "DarkGuard", "YellowDoor", "DoubleSwordSolider", "RedGem"],
+        ["Wall", "Wall", "Wall", "Wall", "Wall", "BlueDoor", "Wall", "Wall", "Wall", "Wall", "Wall"],
+        ["UpStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "DownStair"]
+      ],
+      [
+        ["Floor", "DoubleSwordSolider", "Floor", "Floor", "Floor", "Floor", "Floor", "Wall", "Floor", "DarkSolider", "Floor"],
+        ["Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "YellowDoor", "Wall", "Floor", "Wall", "Floor"],
+        ["Floor", "Wall", "Floor", "Floor", "DarkGuard", "Floor", "Floor", "Wall", "Floor", "Wall", "Floor"],
+        ["BlueBottle", "Wall", "RedDoor", "Wall", "Wall", "Wall", "Floor", "Wall", "Floor", "Wall", "Floor"],
+        ["GoldGuard", "Wall", "Floor", "Floor", "DarkSolider", "Wall", "DarkGuard", "Wall", "RedGem", "Wall", "Floor"],
+        ["GoldHeader", "Wall", "Floor", "DarkHeader", "IronFence", "Wall", "AdvancedSolider", "Wall", "RedGem", "Wall", "Floor"],
+        ["GoldGuard", "Wall", "DarkSolider", "IronFence", "Elder", "Wall", "DarkGuard", "Wall", "RedGem", "Wall", "BlueGem"],
+        ["Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor", "Wall", "Floor", "Wall", "BlueGem"],
+        ["Floor", "GoldGuard", "Floor", "Wall", "Floor", "Floor", "Floor", "DarkSolider", "Floor", "Wall", "BlueGem"],
+        ["Wall", "Wall", "Floor", "Wall", "BlueBottle", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor"],
+        ["DownStair", "Floor", "Floor", "BlueDoor", "Floor", "UpStair", "Wall", "BigWing", "DarkHeader", "YellowDoor", "Floor"]
+      ],
+      [
+        ["Wall", "Floor", "SoulSolider", "KeyKit", "UpStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Wall"],
+        ["Wall", "Floor", "BlueBottle", "Wall", "Wall", "Wall", "Wall", "Wall", "BlueBottle", "Floor", "Wall"],
+        ["Wall", "Floor", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Floor", "Wall"],
+        ["Wall", "Floor", "Wall", "Wall", "Wall", "HolyWater", "Wall", "Wall", "Wall", "Floor", "Wall"],
+        ["Wall", "Floor", "Wall", "Wall", "Wall", "IronFence", "Wall", "Wall", "Wall", "Floor", "Wall"],
+        ["Wall", "Floor", "RedBottle", "Wall", "Wall", "DarkSolider", "Wall", "Wall", "RedBottle", "Floor", "Wall"],
+        ["Wall", "Floor", "Star", "Star", "Wall", "DarkHeader", "Wall", "Star", "Star", "Floor", "Wall"],
+        ["Wall", "Floor", "Star", "Star", "Wall", "DarkSolider", "Wall", "Star", "Star", "Floor", "Wall"],
+        ["Wall", "Floor", "Star", "Star", "Wall", "BlueDoor", "Wall", "Star", "Star", "Floor", "Wall"],
+        ["Wall", "DarkGuard", "AdvancedSolider", "DarkGuard", "BlueDoor", "Floor", "BlueDoor", "DarkGuard", "AdvancedSolider", "DarkGuard", "Wall"],
+        ["Wall", "Wall", "Wall", "Wall", "Wall", "DownStair", "Wall", "Wall", "Wall", "Wall", "Wall"]
+      ],
+      [
+        ["Floor", "Floor", "Floor", "Floor", "DownStair", "Star", "UpStair", "Floor", "Floor", "Floor", "Floor"],
+        ["Floor", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Wall", "Wall", "Wall", "Wall", "Wall", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Wall", "Wall", "Elder", "Wall", "Merchant", "Wall", "Wall", "Star", "Floor"],
+        ["Floor", "Star", "Wall", "Wall", "BlueGem", "Wall", "BlueGem", "Wall", "Wall", "Star", "Floor"],
+        ["Floor", "Star", "Wall", "Wall", "RedGem", "Wall", "RedGem", "Wall", "Wall", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Wall", "Floor", "Wall", "Floor", "Wall", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Wall", "YellowDoor", "Wall", "YellowDoor", "Wall", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Star", "Floor", "Floor", "Floor", "Star", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Star", "Star", "RedDoor", "Star", "Star", "Star", "Star", "Floor"],
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor"]
+      ],
+      [
+        ["Star", "Star", "Star", "Star", "Star", "Floor", "DownStair", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Wall", "RedDoor", "Wall", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Elder", "Floor", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "RedBoss", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "Floor", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "UpStair", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Wall", "Wall", "Wall", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"]
+      ],
+      [
+        ["Star", "SoulSolider", "DarkHeader", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "SoulSolider"],
+        ["Star", "DarkHeader", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Floor"],
+        ["Star", "Floor", "Star", "SoulSolider", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "SoulSolider"],
+        ["Star", "Floor", "Star", "Floor", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Floor", "Star", "Floor", "Star", "SoulSolider", "Floor", "Floor", "Floor", "SoulSolider", "Star"],
+        ["Star", "Floor", "Star", "SoulSolider", "Floor", "Floor", "Star", "Star", "Star", "Floor", "Star"],
+        ["Star", "Floor", "Star", "Star", "Star", "Star", "Star", "SoulSolider", "Floor", "SoulSolider", "Star"],
+        ["Star", "DarkHeader", "Star", "Star", "Star", "DownStair", "Star", "Floor", "Star", "Star", "Star"],
+        ["Star", "SoulSolider", "DarkHeader", "Floor", "ShadowSolider", "Floor", "Star", "SoulSolider", "Floor", "Floor", "SoulSolider"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Floor"],
+        ["UpStair", "Floor", "ShadowSolider", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "SoulSolider"]
+      ],
+      [
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Wall", "Wall", "Wall", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "Princess", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "IronFence", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "RedDoor", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Wall", "Wall", "RedDoor", "Wall", "Wall", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["DownStair", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor"]
+      ],
+      [
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor"],
+        ["Floor", "Star", "Floor", "Star", "Star", "Star", "Star", "Star", "Floor", "Star", "Floor"],
+        ["Floor", "Star", "Floor", "Star", "Star", "Star", "Star", "Star", "Floor", "Star", "Floor"],
+        ["Floor", "Star", "Floor", "Star", "Star", "UpStair", "Star", "Star", "Floor", "Star", "Floor"],
+        ["Floor", "Star", "Floor", "Star", "Star", "Floor", "Star", "Star", "Floor", "Star", "Floor"],
+        ["Floor", "Star", "RedBoss", "Star", "Star", "Floor", "Star", "Star", "RedBoss", "Star", "Floor"],
+        ["Floor", "Star", "IronFence", "Star", "Star", "DarkBoss", "Star", "Star", "IronFence", "Star", "Floor"],
+        ["Floor", "Star", "SacredSword", "Star", "Star", "Floor", "Star", "Star", "SacredShield", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Floor"],
+        ["Floor", "Star", "Star", "Star", "Star", "Floor", "Star", "Star", "Star", "Star", "Floor"],
+        ["Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "DownStair"]
+      ],
+      [
+        ["ShadowSolider", "RedGem", "WhiteSolider", "RedBottle", "DarkHeader", "RedKey", "DarkHeader", "RedBottle", "WhiteSolider", "RedGem", "ShadowSolider"],
+        ["BlueGem", "Star", "YellowKey", "Star", "BlueKey", "Star", "BlueKey", "Star", "YellowKey", "Star", "BlueBottle"],
+        ["Star", "BlueGem", "WhiteSolider", "Floor", "SoulSolider", "Floor", "SoulSolider", "Floor", "WhiteSolider", "BlueGem", "Star"],
+        ["RedBottle", "Star", "YellowKey", "Star", "Floor", "DownStair", "Floor", "Star", "YellowKey", "Star", "RedBottle"],
+        ["DarkHeader", "BlueKey", "SoulSolider", "Floor", "Floor", "Floor", "Floor", "Floor", "SoulSolider", "BlueKey", "DarkHeader"],
+        ["RedKey", "Star", "Floor", "Star", "Floor", "Star", "Floor", "Star", "Floor", "Star", "RedKey"],
+        ["DarkHeader", "BlueKey", "SoulSolider", "Floor", "Floor", "Floor", "Floor", "Floor", "SoulSolider", "BlueKey", "DarkHeader"],
+        ["RedBottle", "Star", "YellowKey", "Star", "Floor", "Floor", "Floor", "Star", "YellowKey", "Star", "RedBottle"],
+        ["Star", "BlueGem", "WhiteSolider", "Floor", "SoulSolider", "Floor", "SoulSolider", "Floor", "WhiteSolider", "BlueGem", "Star"],
+        ["BlueGem", "Star", "YellowKey", "Star", "BlueKey", "Star", "BlueKey", "Star", "YellowKey", "Star", "BlueBottle"],
+        ["ShadowSolider", "RedGem", "WhiteSolider", "RedBottle", "DarkHeader", "RedKey", "DarkHeader", "RedBottle", "WhiteSolider", "RedGem", "ShadowSolider"]
+      ],
+      [
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Floor", "Floor", "Star", "DarkBoss", "Star", "Floor", "Floor", "Star", "Star"],
+        ["Star", "Floor", "Floor", "Star", "Star", "SoulWizard", "Star", "Star", "Floor", "Floor", "Star"],
+        ["Star", "Floor", "Floor", "Floor", "Star", "SoulWizard", "Star", "Floor", "Floor", "Floor", "Star"],
+        ["Star", "Star", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Star", "Star"],
+        ["Star", "Star", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Floor", "Star", "Star"],
+        ["Star", "Star", "Star", "Floor", "Floor", "Star", "Floor", "Floor", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "IronFence", "DownStair", "IronFence", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"],
+        ["Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star", "Star"]
       ]
     ]
   },
@@ -370,7 +500,7 @@
       "gold": 84,
       "exp": 75
     },
-    "SoulWarrior": {
+    "SoulSolider": {
       "hp": 1200,
       "attack": 980,
       "defense": 900,
@@ -390,6 +520,13 @@
       "defense": 1000,
       "gold": 100,
       "exp": 100
+    },
+    "DarkBoss": {
+      "hp": 30000,
+      "attack": 1700,
+      "defense": 1500,
+      "gold": 250,
+      "exp": 220
     }
   }
 }
