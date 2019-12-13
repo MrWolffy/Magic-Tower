@@ -2,16 +2,16 @@
 import Library.items as items
 
 
-def fairy_talk1(self, warrior, map):
+def fairy_lv0_talk1(self, warrior, map):
     warrior.keys[0] += 1
     warrior.keys[1] += 1
     warrior.keys[2] += 1
     map.array[0][8][5] = items.Floor({})
     map.array[0][8][4] = self
-    self.talk_to = fairy_talk2
+    self.talk_to = fairy_lv0_talk2
 
 
-def fairy_talk2(self, warrior, map):
+def fairy_lv0_talk2(self, warrior, map):
     # map.array[20][7][5] = items.UpStair({})
     pass
 
@@ -37,7 +37,7 @@ def thief_talk2(thief, warrior, map):
 
 def add_additional_function(game):
     # add NPC dialogs
-    game.map.array[0][8][5].talk_to = fairy_talk1
+    game.map.array[0][8][5].talk_to = fairy_lv0_talk1
     game.map.array[2][10][7].talk_to = elder_talk_lv2
     game.map.array[2][10][9].talk_to = merchant_talk_lv2
     game.map.array[4][0][5].talk_to = thief_talk1

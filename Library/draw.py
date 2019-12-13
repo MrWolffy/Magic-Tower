@@ -3,11 +3,31 @@ import pygame
 from Library.items import *
 
 
+def draw_rectangle_border(screen, point1, point2):
+    rect = pygame.rect.Rect(point1, (point2[0] - point1[0], point2[1] - point1[1]))
+    map_border = [(rect.left - 2, rect.top - 2),
+                  (rect.right, rect.top - 2),
+                  (rect.right, rect.bottom),
+                  (rect.left - 2, rect.bottom)]
+    pygame.draw.lines(screen, (190, 107, 39), True, map_border, 4)
+
+
+def fill_rectangle(screen, point1, point2, img):
+    rect = pygame.rect.Rect(point1, (point2[0] - point1[0], point2[1] - point1[1]))
+    width = divmod(rect.width, 32)
+    height = divmod(rect.height, 32)
+    for i in range(width[0]):
+        for j in range(height[0]):
+            screen.blit(img, (rect.left + i * 32, rect.top + j * 32))
+        if height[1] != 0:
+            screen.blit(img.subsurface((0, 0), (32, height[1])),
+                        (rect.left + i * 32, rect.top + height[0] * 32))
+
+
 def draw_map(level, imglist, screen, game, time_flag):
-    for i in range(game.map.width):
-        for j in range(game.map.height):
-            screen.blit(imglist['Floor'], ((i + 6) * 32, (j + 1) * 32 + 5))
-    pygame.display.update()
+    fill_rectangle(screen, (6 * 32, 32 + 5),
+                   ((game.map.width + 5) * 32, ((game.map.height + 1) * 32 + 5)),
+                   imglist['Floor'])
     for i in range(game.map.width):
         for j in range(game.map.height):
             temp_type = type(game.map.array[level][j][i])
@@ -25,35 +45,15 @@ def draw_map(level, imglist, screen, game, time_flag):
 
 def draw_info_background(imglist, screen):
     # first
-    info_border = [(32 - 2, 32 + 5 - 2),
-                   (5 * 32, 32 + 5 - 2),
-                   (5 * 32, 6 * 32 + 5),
-                   (32 - 2, 6 * 32 + 5)]
-    pygame.draw.lines(screen, (190, 107, 39), True, info_border, 4)
-    for i in range(1, 5):
-        for j in range(1, 6):
-            screen.blit(imglist['Floor'], (i * 32, j * 32 + 5))
-        screen.blit(imglist['Floor'].subsurface((0, 0), (32, 8)), (i * 32, 5 * 32 + 5))
+    draw_rectangle_border(screen, (32, 32 + 5), (5 * 32, 6 * 32 + 5))
+    fill_rectangle(screen, (32, 32 + 5), (32 * 5, 32 * 6 + 5), imglist['Floor'])
     # second
-    info_border = [(32 - 2, 6 * 32 + 5 + 8 - 2),
-                   (5 * 32, 6 * 32 + 5 + 8 - 2),
-                   (5 * 32, 10 * 32 + 5 + 8),
-                   (32 - 2, 10 * 32 + 5 + 8)]
-    pygame.draw.lines(screen, (190, 107, 39), True, info_border, 4)
-    for i in range(1, 5):
-        for j in range(6, 10):
-            screen.blit(imglist['Floor'], (i * 32, j * 32 + 5 + 8))
-        screen.blit(imglist['Floor'].subsurface((0, 0), (32, 8)), (i * 32, 5 * 32 + 5))
+    draw_rectangle_border(screen, (32, 6 * 32 + 5), (5 * 32, 10 * 32 + 8 + 5))
+    fill_rectangle(screen, (32, 32 * 6 + 5), (32 * 5, 32 * 10 + 8 + 5), imglist['Floor'])
     pygame.draw.line(screen, (190, 107, 39), (32, 9 * 32 + 5 + 8), (5 * 32, 9 * 32 + 5 + 8), 4)
     # third
-    info_border = [(32 - 2, 11 * 32 - 8 - 2),
-                   (5 * 32, 11 * 32 - 8 - 2),
-                   (5 * 32, 12 * 32 + 8),
-                   (32 - 2, 12 * 32 + 8)]
-    pygame.draw.lines(screen, (190, 107, 39), True, info_border, 4)
-    for i in range(1, 5):
-        screen.blit(imglist['Floor'], (i * 32, 11 * 32 - 8))
-        screen.blit(imglist['Floor'].subsurface((0, 0), (32, 16)), (i * 32, 12 * 32 - 8))
+    draw_rectangle_border(screen, (32, 11 * 32 - 8), (5 * 32, 12 * 32 + 8))
+    fill_rectangle(screen, (32, 11 * 32 - 8), (5 * 32, 12 * 32 + 8), imglist['Floor'])
     pygame.display.update()
 
 
@@ -142,14 +142,9 @@ def draw_info(warrior, imglist, screen, game):
 def init_interface(imglist, screen, game, time_flag):
     screen.fill((0, 0, 0))
     bg = pygame.image.load('UI/Background.png')
-    for i in range(game.map.width + 7):
-        for j in range(game.map.height + 2):
-            screen.blit(bg, (i * 32, j * 32 + 5))
-    map_border = [(6 * 32 - 2, 32 + 5 - 2),
-                  ((game.map.width + 6) * 32, 32 + 5 - 2),
-                  ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5),
-                  (6 * 32 - 2, (game.map.height + 1) * 32 + 5)]
-    pygame.draw.lines(screen, (190, 107, 39), True, map_border, 4)
-    pygame.display.update()
+    fill_rectangle(screen, (0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
+    draw_rectangle_border(screen, (6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
     draw_map(game.warrior.position[0], imglist, screen, game, time_flag)
     draw_info(game.warrior, imglist, screen, game)
+
+
