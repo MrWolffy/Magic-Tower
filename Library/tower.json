@@ -3213,7 +3213,11 @@
         10,
         10,
         10
-      ]
+      ],
+      "chinese_name": "勇士"
+    },
+    "Fairy": {
+      "chinese_name": "仙子"
     },
     "RedSlime": {
       "hp": 70,

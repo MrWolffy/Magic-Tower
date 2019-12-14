@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import pygame
 import math
 import time
@@ -33,6 +34,11 @@ import random
 #           Boss: RedBoss, DarkBoss
 #       NPC: Fairy, Elder, Merchant, Shop, ShopLeft, ShopRight, Thief, Princess
 #   Warrior
+
+
+t0 = 0
+info = json.loads(''.join(open('Library/tower.json').readlines()))
+indicator = {}
 
 
 class Item:
@@ -388,12 +394,7 @@ class Princess(NPC):
 class Monster(Creature):
     def __init__(self, item_info: dict):
         super().__init__(item_info)
-        info = item_info[type(self).__name__]
-        self.attack = info['attack']
-        self.defense = info['defense']
-        self.hp = info['hp']
-        self.exp = info['exp']
-        self.gold = info['gold']
+        self.hp = item_info[type(self).__name__]['hp']
 
 
 class Slime(Monster):
@@ -604,7 +605,7 @@ class Warrior(Item):
         self.gold = info['gold']
         self.keys = info['keys']
 
-    def move(self, key, map):
+    def move(self, key, map, screen):
         next_pos = {pygame.K_LEFT: [0, 0, -1],
                     pygame.K_RIGHT: [0, 0, 1],
                     pygame.K_UP: [0, -1, 0],
@@ -643,8 +644,8 @@ class Warrior(Item):
             flag, est_damage = self.can_beat(next_obj)
             if flag:
                 self.fight_with(next_obj)
-                self.exp += next_obj.exp
-                self.gold += next_obj.gold
+                self.exp += info['item_info'][next_type.__name__]['exp']
+                self.gold += info['item_info'][next_type.__name__]['gold']
                 map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({})
             return
         elif issubclass(next_type, NPC):
@@ -686,13 +687,13 @@ class Warrior(Item):
             monster_damage += math.floor(self.hp / 4)
         elif monster_name == 'SoulWizard':
             monster_damage += math.floor(self.hp / 3)
-        if self.attack <= monster.defense:
+        if self.attack <= info['item_info'][monster_name]['defense']:
             return False, "???"
-        elif self.defense >= monster.attack:
+        elif self.defense >= info['item_info'][monster_name]['attack']:
             return True, monster_damage
-        my_damage_per_round = self.attack - monster.defense
-        monster_damage_per_round = monster.attack - self.defense
-        rounds_count = math.floor(monster.hp / my_damage_per_round)
+        my_damage_per_round = self.attack - info['item_info'][monster_name]['defense']
+        monster_damage_per_round = info['item_info'][monster_name]['attack'] - self.defense
+        rounds_count = math.floor(info['item_info'][monster_name]['hp'] / my_damage_per_round)
         monster_damage += rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
 
@@ -706,8 +707,8 @@ class Warrior(Item):
             self.hp -= math.floor(self.hp / 4)
         elif monster_name == 'SoulWizard':
             self.hp -= math.floor(self.hp / 3)
-        my_damage_per_round = self.attack - monster.defense
-        monster_damage_per_round = max(monster.attack - self.defense, 0)
+        my_damage_per_round = self.attack - info['item_info'][monster_name]['defense']
+        monster_damage_per_round = max(info['item_info'][monster_name]['attack'] - self.defense, 0)
         while monster.hp > 0:
             rand = random.random()
             if rand < self.level * 0.005:
@@ -735,12 +736,14 @@ class Container:
 
 
 class Game:
-    def __init__(self, map: Container, warrior: Warrior):
-        global ts
+    def __init__(self, map: Container, warrior: Warrior, tower_info: dict):
+        global t0, info
         self.map = map
         self.warrior = warrior
-        ts = time.process_time()
+        t0 = time.process_time()
+        indicator.clear()
 
 
-ts = 0
+
+
 
