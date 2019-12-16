@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
 from Library.draw import *
-# from Library.items import *
 import pygame
 import time
 
@@ -18,17 +16,19 @@ def build_tower(tower_info):
             for k in range(width):
                 # print(i, j, k)
                 map.array[i][j][k] = \
-                    eval(tower_structure['level_structure'][i][j][k] + '(item_info)')
+                    eval(tower_structure['level_structure'][i][j][k] +
+                         '(item_info, [' + str(i) + ', ' + str(j) + ', ' + str(k) + '])')
     warrior_position = item_info['Warrior']['position']
     warrior = map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
-    game = Game(map, warrior, tower_info)
+    game = Game(map, warrior)
     return game
 
 
 if __name__ == '__main__':
-    TIME_FLAG = 0
+    global TIME_FLAG
     game = build_tower(info)
     add_additional_function(game)
+    game.map.array = [game.map.array[0], game.map.array[3]]
     pygame.init()
     init_interface(game, TIME_FLAG)
     while True:
@@ -43,13 +43,16 @@ if __name__ == '__main__':
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
-                    game.warrior.move(event.key, game.map, screen)
+                    game.warrior.move(event.key, game)
                     draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
-                    draw_info(game.warrior, game)
+                    draw_info(game)
                     # game.map.debug(game.warrior.position[0])
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
+                elif event.key == pygame.K_l:
+                    if game.indicator.get('warrior_get_detector'):
+                        draw_detector_info()
             time.sleep(0.01)
 
 

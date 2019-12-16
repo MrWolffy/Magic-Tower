@@ -5,6 +5,8 @@ from Library.items import *
 
 arial_font = [None]
 screen = None
+TIME_FLAG = 0
+t0 = time.process_time()
 
 
 def read_image():
@@ -138,9 +140,9 @@ def draw_info_content(warrior: Warrior):
     pygame.display.update()
 
 
-def draw_info(warrior, game):
+def draw_info(game):
     draw_info_background()
-    draw_info_content(warrior)
+    draw_info_content(game.warrior)
 
 
 def init_interface(game, time_flag):
@@ -153,29 +155,37 @@ def init_interface(game, time_flag):
     fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
     draw_rectangle_border((6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
     draw_map(game.map.array[game.warrior.position[0]], time_flag)
-    draw_info(game.warrior, game)
+    draw_info(game)
 
 
-def speak(item, pos, content):
+def speak(item, content, game: items.Game):
     def adjust_pos(pos):
         rect = pygame.rect.Rect((0, 0), (7.5 * 32, 2 * 32 + 8))
         rect.center = ((pos[1] + 6.5) * 32, ((pos[0] + 1.5) * 32 + 5))
         return rect
 
-    pos = adjust_pos(pos)
-    draw_rectangle_border(pos.topleft, pos.bottomright)
-    fill_rectangle(pos.topleft, pos.bottomright, pygame.image.load('UI/Floor.png'))
-    screen.blit(img_list[type(item).__name__].subsurface((0, 0), (32, 32)),
-                (pos.left + 5, pos.top + 5))
-    print_string(info['item_info'][type(item).__name__]['chinese_name'] + ':',
-                 16, (pos.left + 48, pos.top + 5))
+    global TIME_FLAG, t0
+    pos = adjust_pos((item.position[1], item.position[2]))
     content = content.split('\n')
-    for i in range(len(content)):
-        print_string(content[i], 14, (pos.left + 48, pos.top + 24 + 14 * i))
-    t0 = time.process_time()
-    pygame.display.update()
     while True:
         t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            draw_map(game.map.array[item.position[0]], TIME_FLAG)
+        draw_rectangle_border(pos.topleft, pos.bottomright)
+        fill_rectangle(pos.topleft, pos.bottomright, pygame.image.load('UI/Floor.png'))
+        print_string(info['item_info'][type(item).__name__]['chinese_name'] + ':',
+                     16, (pos.left + 48, pos.top + 5))
+        for i in range(len(content)):
+            print_string(content[i], 14, (pos.left + 48, pos.top + 24 + 14 * i))
+        if type(item).__name__ != 'Warrior':
+            screen.blit(img_list['Floor'], (pos.left + 5, pos.top + 5))
+            screen.blit(img_list[type(item).__name__].subsurface((divmod(int((t1 - t0) * 3), 4)[1] * 32, 0), (32, 32)),
+                        (pos.left + 5, pos.top + 5))
+        else:
+            screen.blit(img_list[type(item).__name__].subsurface((0, 0), (32, 32)),
+                        (pos.left + 5, pos.top + 5))
         string = arial_font[10].render('-- Space --', True,
                                        (255 * (math.cos((t1 - t0) * 10) * 0.25 + 0.75),
                                         255 * (math.cos((t1 - t0) * 10) * 0.25 + 0.75),
@@ -190,4 +200,122 @@ def speak(item, pos, content):
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                draw_map(game.map.array[item.position[0]], divmod(int((t1 - t0) * 3), 4)[1])
                 return
+
+
+def draw_detector_info():
+    pass
+
+
+def draw_shop_welcome(warrior):
+    global TIME_FLAG, t0
+    pos = pygame.rect.Rect((0, 0), (6 * 32 + 16, 6 * 32 + 16))
+    pos.center = (11.5 * 32, 6.5 * 32 + 5)
+    while True:
+        t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
+        draw_rectangle_border(pos.topleft, pos.bottomright)
+        pygame.draw.rect(screen, (0, 0, 0), pos)
+        string = arial_font[10].render('-- Space --', True,
+                                       (255 * (math.cos((t1 - t0) * 10) * 0.5 + 0.5),
+                                        255 * (math.cos((t1 - t0) * 10) * 0.5 + 0.5),
+                                        255 * (math.cos((t1 - t0) * 10) * 0.5 + 0.5)))
+        rect = string.get_rect()
+        rect.bottomright = pos.bottomright
+        screen.blit(string, rect)
+        screen.blit(img_list['Shop'].subsurface((delta_t * 32, 0), (32, 32)),
+                    (pos.left + 5, pos.top + 5))
+        print_string(u'商  店  老  板', 18, (pos.left + 44, pos.top + 8))
+        welcome = [u'    嗨，你好，英雄的勇士，这里',
+                   u'是怪物商店，这里告诉你一些操',
+                   u'作方法：',
+                   u'    使用小键盘上的 8 和 2 可以',
+                   u'在菜单中进行选择，使用小键盘',
+                   u'上的 5 或是 Space 键可以用来',
+                   u'确认你的选择！',
+                   u'    同时，在商人或神秘老人处进',
+                   u'行交易也是一样的操作方法！',
+                   u'    知道了吗？勇士！']
+        for i in range(len(welcome)):
+            print_string(welcome[i], 14, (pos.left + 5, pos.top + 40 + i * 16))
+        pygame.display.update()
+        time.sleep(0.01)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or \
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                draw_map(warrior.game.map.array[warrior.position[0]], divmod(int((t1 - t0) * 3), 4)[1])
+                return
+
+
+def draw_shop_interface(warrior, price, buff):
+    global TIME_FLAG, t0
+    pos = pygame.rect.Rect((0, 0), (6 * 32 + 16, 6 * 32 + 16))
+    pos.center = (11.5 * 32, 6.5 * 32 + 5)
+    highlight = 0
+    while True:
+        t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
+            draw_info(warrior.game)
+        draw_rectangle_border(pos.topleft, pos.bottomright)
+        pygame.draw.rect(screen, (0, 0, 0), pos)
+        screen.blit(img_list['Shop'].subsurface((delta_t * 32, 0), (32, 32)),
+                    (pos.left + 5, pos.top + 5))
+        message = [u'    想要增加你的能力吗？',
+                   u'如果你有 ' + str(price) + ' 个金币，你',
+                   u'可以任意选择一项：']
+        for i in range(len(message)):
+            print_string(message[i], 14, (pos.left + 44, pos.top + 5 + 14 * i))
+        goods = [u'增加 ' + str(buff[0]) + u' 点生命',
+                 u'增加 ' + str(buff[1]) + u' 点攻击',
+                 u'增加 ' + str(buff[2]) + u' 点防御',
+                 u'离开商店']
+        for i in range(len(goods)):
+            print_string(goods[i], 16, center=(11.5 * 32, 6 * 32 - 8 + i * 32))
+        rect = pygame.rect.Rect((8.5 * 32, (5 + highlight) * 32 + 8), (6 * 32, 32))
+        map_border = [(rect.left - 2, rect.top - 2),
+                      (rect.right, rect.top - 2),
+                      (rect.right, rect.bottom),
+                      (rect.left - 2, rect.bottom)]
+        color = 255 * (math.cos((t1 - t0) * 10) * 0.25 + 0.75)
+        pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+                elif event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                    if highlight == 3:
+                        return
+                    elif warrior.gold >= price:
+                        warrior.gold -= price
+                        if highlight == 0:
+                            warrior.hp += buff[0]
+                        elif highlight == 1:
+                            warrior.attack += buff[1]
+                        elif highlight == 2:
+                            warrior.defense += buff[2]
+                        warrior.game.indicator['first_use_shop'] = True
+                        break
+                elif event.key == pygame.K_2:
+                    highlight = min(3, highlight + 1)
+                elif event.key == pygame.K_8:
+                    highlight = max(0, highlight - 1)
+
+
+
+
+
