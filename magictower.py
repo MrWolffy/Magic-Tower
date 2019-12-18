@@ -28,9 +28,10 @@ if __name__ == '__main__':
     global TIME_FLAG
     game = build_tower(info)
     add_additional_function(game)
-    game.map.array = [game.map.array[0], game.map.array[5]]
+    game.map.array = [game.map.array[0], game.map.array[1]]
+    game.indicator['warrior_get_detector'] = True
     pygame.init()
-    init_interface(game, TIME_FLAG)
+    init_interface(game)
     while True:
         t1 = time.process_time()
         delta_t = divmod(int((t1 - t0) * 3), 4)[1]
@@ -52,7 +53,7 @@ if __name__ == '__main__':
                     quit()
                 elif event.key == pygame.K_l:
                     if game.indicator.get('warrior_get_detector'):
-                        draw_detector_info()
+                        draw_detector_info(game)
             time.sleep(0.01)
 
 

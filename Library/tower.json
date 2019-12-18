@@ -3205,8 +3205,8 @@
       ],
       "level": 1,
       "hp": 1000,
-      "attack": 2550,
-      "defense": 2550,
+      "attack": 10,
+      "defense": 10,
       "gold": 0,
       "exp": 0,
       "keys": [
@@ -3254,222 +3254,257 @@
         ]
       ]
     },
+    "Detector": {
+      "chinese_name": "圣光徽",
+      "description": "该宝物可以查看怪物的基本情况，使用时按下键盘上\t的 L 键便可进行查看，再次按 L 键则取消显示。"
+    },
     "RedSlime": {
       "hp": 70,
       "attack": 15,
       "defense": 2,
       "gold": 2,
-      "exp": 2
+      "exp": 2,
+      "chinese_name": "红头怪"
     },
     "GreenSlime": {
       "hp": 50,
       "attack": 20,
       "defense": 1,
       "gold": 1,
-      "exp": 1
+      "exp": 1,
+      "chinese_name": "绿头怪"
     },
     "BlackSlime": {
       "hp": 200,
       "attack": 35,
       "defense": 10,
       "gold": 5,
-      "exp": 5
+      "exp": 5,
+      "chinese_name": "青头怪"
     },
     "BigSlime": {
       "hp": 700,
       "attack": 250,
       "defense": 125,
       "gold": 32,
-      "exp": 30
+      "exp": 30,
+      "chinese_name": "怪王"
     },
     "Skeleton": {
       "hp": 110,
       "attack": 25,
       "defense": 5,
       "gold": 5,
-      "exp": 4
+      "exp": 4,
+      "chinese_name": "骷髅人"
     },
     "SkeletonSolider": {
       "hp": 150,
       "attack": 40,
       "defense": 20,
       "gold": 8,
-      "exp": 6
+      "exp": 6,
+      "chinese_name": "骷髅士兵"
     },
     "SkeletonHeader": {
       "hp": 400,
       "attack": 90,
       "defense": 50,
       "gold": 15,
-      "exp": 12
+      "exp": 12,
+      "chinese_name": "骷髅队长"
     },
     "PrimaryWizard": {
       "hp": 125,
       "attack": 50,
       "defense": 25,
       "gold": 10,
-      "exp": 7
+      "exp": 7,
+      "chinese_name": "初级法师"
     },
     "AdvancedWizard": {
       "hp": 100,
       "attack": 200,
       "defense": 110,
       "gold": 30,
-      "exp": 25
+      "exp": 25,
+      "chinese_name": "高级法师"
     },
     "HempWizard": {
       "hp": 250,
       "attack": 120,
       "defense": 70,
       "gold": 20,
-      "exp": 17
+      "exp": 17,
+      "chinese_name": "麻衣法师"
     },
     "RedWizard": {
       "hp": 500,
       "attack": 400,
       "defense": 260,
       "gold": 47,
-      "exp": 45
+      "exp": 45,
+      "chinese_name": "红衣法师"
     },
     "SoulWizard": {
       "hp": 1500,
       "attack": 830,
       "defense": 730,
       "gold": 80,
-      "exp": 70
+      "exp": 70,
+      "chinese_name": "灵法师"
     },
     "Orc": {
       "hp": 300,
       "attack": 75,
       "defense": 45,
       "gold": 13,
-      "exp": 10
+      "exp": 10,
+      "chinese_name": "兽面人"
     },
     "OrcSolider": {
       "hp": 900,
       "attack": 450,
       "defense": 330,
       "gold": 50,
-      "exp": 50
+      "exp": 50,
+      "chinese_name": "兽面武士"
     },
     "SmallBat": {
       "hp": 100,
       "attack": 20,
       "defense": 5,
       "gold": 3,
-      "exp": 3
+      "exp": 3,
+      "chinese_name": "小蝙蝠"
     },
     "BigBat": {
       "hp": 150,
       "attack": 65,
       "defense": 30,
       "gold": 10,
-      "exp": 8
+      "exp": 8,
+      "chinese_name": "大蝙蝠"
     },
     "RedBat": {
       "hp": 550,
       "attack": 160,
       "defense": 90,
       "gold": 25,
-      "exp": 20
+      "exp": 20,
+      "chinese_name": "红蝙蝠"
     },
     "PrimarySolider": {
       "hp": 450,
       "attack": 150,
       "defense": 90,
       "gold": 22,
-      "exp": 19
+      "exp": 19,
+      "chinese_name": "初级卫兵"
     },
     "AdvancedSolider": {
       "hp": 1500,
       "attack": 560,
       "defense": 460,
       "gold": 60,
-      "exp": 60
+      "exp": 60,
+      "chinese_name": "高级卫兵"
     },
     "StoneMan": {
       "hp": 500,
       "attack": 115,
       "defense": 65,
       "gold": 15,
-      "exp": 15
+      "exp": 15,
+      "chinese_name": "石头怪人"
     },
     "WhiteSolider": {
       "hp": 1300,
       "attack": 300,
       "defense": 150,
       "gold": 40,
-      "exp": 35
+      "exp": 35,
+      "chinese_name": "白衣武士"
     },
     "GoldGuard": {
       "hp": 850,
       "attack": 350,
       "defense": 200,
       "gold": 45,
-      "exp": 40
+      "exp": 40,
+      "chinese_name": "金武士"
     },
     "GoldHeader": {
       "hp": 900,
       "attack": 750,
       "defense": 650,
       "gold": 77,
-      "exp": 70
+      "exp": 70,
+      "chinese_name": "金队长"
     },
     "DoubleSwordSolider": {
       "hp": 1200,
       "attack": 620,
       "defense": 520,
       "gold": 65,
-      "exp": 75
+      "exp": 75,
+      "chinese_name": "双手剑士"
     },
     "DarkGuard": {
       "hp": 1250,
       "attack": 500,
       "defense": 460,
       "gold": 60,
-      "exp": 60
+      "exp": 60,
+      "chinese_name": "冥卫兵"
     },
     "DarkSolider": {
       "hp": 2000,
       "attack": 680,
       "defense": 590,
       "gold": 70,
-      "exp": 65
+      "exp": 65,
+      "chinese_name": "冥战士"
     },
     "DarkHeader": {
       "hp": 2500,
       "attack": 900,
       "defense": 850,
       "gold": 84,
-      "exp": 75
+      "exp": 75,
+      "chinese_name": "冥队长"
     },
     "SoulSolider": {
       "hp": 1200,
       "attack": 980,
       "defense": 900,
       "gold": 88,
-      "exp": 75
+      "exp": 75,
+      "chinese_name": "灵武士"
     },
     "ShadowSolider": {
       "hp": 3100,
       "attack": 1150,
       "defense": 1050,
       "gold": 92,
-      "exp": 80
+      "exp": 80,
+      "chinese_name": "影子战士"
     },
     "RedBoss": {
       "hp": 15000,
       "attack": 1000,
       "defense": 1000,
       "gold": 100,
-      "exp": 100
+      "exp": 100,
+      "chinese_name": "红衣魔王"
     },
     "DarkBoss": {
       "hp": 30000,
       "attack": 1700,
       "defense": 1500,
       "gold": 250,
-      "exp": 220
+      "exp": 220,
+      "chinese_name": "冥灵魔王"
     }
   }
 }

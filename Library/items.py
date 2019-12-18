@@ -309,6 +309,9 @@ class Detector(Special):
     def __init__(self, item_info: dict, position):
         super().__init__(item_info, position)
 
+    def used_by(self, warrior):
+        warrior.game.indicator['warrior_get_detector'] = True
+
 
 class Cross(Special):
     def __init__(self, item_info: dict, position):
@@ -628,10 +631,7 @@ class Warrior(Item):
                 game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({}, next_pos)
             return
         elif issubclass(next_type, Prop):
-            if not issubclass(next_type, Special):
-                next_obj.used_by(self)
-            else:
-                pass
+            next_obj.used_by(self)
             game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({}, next_pos)
             return
         elif issubclass(next_type, Stair):
@@ -641,7 +641,7 @@ class Warrior(Item):
                 self.move_to_new_floor(self.position[0] - 1, 'down', game.map)
             return
         elif issubclass(next_type, Monster):
-            flag, est_damage = self.can_beat(next_obj)
+            flag, est_damage = self.can_beat(next_type.__name__)
             if flag:
                 self.fight_with(next_obj)
                 self.exp += info['item_info'][next_type.__name__]['exp']
@@ -676,24 +676,23 @@ class Warrior(Item):
             self.position[1] += 1   # down
         map.array[self.position[0]][self.position[1]][self.position[2]] = self
 
-    def can_beat(self, monster: Monster):
+    def can_beat(self, monster):
         monster_damage = 0
-        monster_name = type(monster).__name__
-        if monster_name == 'HempWizard':
+        if monster == 'HempWizard':
             monster_damage += 100
-        elif monster_name == 'RedWizard':
+        elif monster == 'RedWizard':
             monster_damage += 300
-        elif monster_name == 'WhiteSolider':
+        elif monster == 'WhiteSolider':
             monster_damage += math.floor(self.hp / 4)
-        elif monster_name == 'SoulWizard':
+        elif monster == 'SoulWizard':
             monster_damage += math.floor(self.hp / 3)
-        if self.attack <= info['item_info'][monster_name]['defense']:
+        if self.attack <= info['item_info'][monster]['defense']:
             return False, "???"
-        elif self.defense >= info['item_info'][monster_name]['attack']:
+        elif self.defense >= info['item_info'][monster]['attack']:
             return True, monster_damage
-        my_damage_per_round = self.attack - info['item_info'][monster_name]['defense']
-        monster_damage_per_round = info['item_info'][monster_name]['attack'] - self.defense
-        rounds_count = math.floor(info['item_info'][monster_name]['hp'] / my_damage_per_round)
+        my_damage_per_round = self.attack - info['item_info'][monster]['defense']
+        monster_damage_per_round = info['item_info'][monster]['attack'] - self.defense
+        rounds_count = math.floor(info['item_info'][monster]['hp'] / my_damage_per_round)
         monster_damage += rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
 

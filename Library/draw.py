@@ -48,14 +48,18 @@ def fill_rectangle(point1, point2, img):
                     (rect.left + width[0] * 32, rect.top + height[0] * 32))
 
 
-def print_string(string, fontsize, topleft=(0, 0), center=None):
+def print_string(string, fontsize, topleft=(0, 0), center=None, bottomright=None):
     info = arial_font[fontsize].render(string, True, (255, 255, 255))
-    if center is None:
-        screen.blit(info, topleft)
-    else:
+    if center is not None:
         info_rect = info.get_rect()
         info_rect.center = center
         screen.blit(info, info_rect)
+    elif bottomright is not None:
+        info_rect = info.get_rect()
+        info_rect.bottomright = bottomright
+        screen.blit(info, info_rect)
+    else:
+        screen.blit(info, topleft)
 
 
 def draw_map(level, time_flag):
@@ -145,7 +149,7 @@ def draw_info(game):
     draw_info_content(game.warrior)
 
 
-def init_interface(game, time_flag):
+def init_interface(game):
     global screen
     screen = pygame.display.set_mode(((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 10), 0, 32)
     screen.fill((0, 0, 0))
@@ -154,7 +158,7 @@ def init_interface(game, time_flag):
         arial_font.append(pygame.font.Font('Library/Arial.ttf', i))
     fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
     draw_rectangle_border((6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
-    draw_map(game.map.array[game.warrior.position[0]], time_flag)
+    draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
     draw_info(game)
 
 
@@ -200,12 +204,66 @@ def speak(item, content, game: items.Game):
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                draw_map(game.map.array[item.position[0]], divmod(int((t1 - t0) * 3), 4)[1])
+                draw_map(game.map.array[item.position[0]], TIME_FLAG)
                 return
 
 
-def draw_detector_info():
-    pass
+def draw_monster_info(monster, position, time_flag, damage):
+    screen.blit(img_list['Floor'], (6 * 32 + 8, 44 + 40 * position))
+    screen.blit(img_list[monster].subsurface((time_flag * 32, 0), (32, 32)),
+                (6 * 32 + 8, 44 + 40 * position))
+    rect = pygame.rect.Rect((6 * 32 + 8, 44 + 40 * position), (32, 32))
+    map_border = [(rect.left - 1, rect.top - 1),
+                  (rect.right, rect.top - 1),
+                  (rect.right, rect.bottom),
+                  (rect.left - 1, rect.bottom)]
+    pygame.draw.lines(screen, (190, 107, 39), True, map_border, 2)
+    print_string(u'名称', 14, center=(8 * 32, 52 + 40 * position))
+    print_string(u'生命', 14, center=(8 * 32, 68 + 40 * position))
+    print_string(info['item_info'][monster]['chinese_name'], 14, center=(9.5 * 32, 52 + 40 * position))
+    print_string(str(info['item_info'][monster]['hp']), 14, center=(9.5 * 32, 68 + 40 * position))
+    print_string(u'攻击', 14, center=(11 * 32 + 8, 52 + 40 * position))
+    print_string(u'防御', 14, center=(11 * 32 + 8, 68 + 40 * position))
+    print_string(str(info['item_info'][monster]['attack']), 14, bottomright=(13 * 32, 62 + 40 * position))
+    print_string(str(info['item_info'][monster]['defense']), 14, bottomright=(13 * 32, 78 + 40 * position))
+    print_string(u'金 · 经', 14, center=(14 * 32, 52 + 40 * position))
+    print_string(u'损失', 14, center=(14 * 32, 68 + 40 * position))
+    print_string(str(info['item_info'][monster]['gold']) + u' · ' + str(info['item_info'][monster]['exp']),
+                 14, center=(16 * 32 - 8, 52 + 40 * position))
+    print_string(str(damage), 14, center=(16 * 32 - 8, 68 + 40 * position))
+
+
+
+
+def draw_detector_info(game):
+    global TIME_FLAG, t0
+    map = game.map.array[game.warrior.position[0]]
+    monsters = []
+    for i in range(len(map)):
+        for j in range(len(map[0])):
+            obj_type = type(map[i][j])
+            if issubclass(obj_type, Monster) and obj_type.__name__ not in monsters:
+                monsters.append(obj_type.__name__)
+    while True:
+        t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            rect = pygame.rect.Rect((6 * 32, 32 + 5), (11 * 32, 11 * 32))
+            pygame.draw.rect(screen, (0, 0, 0), rect)
+            for i in range(len(monsters)):
+                draw_monster_info(monsters[i], i, TIME_FLAG, game.warrior.can_beat(monsters[i])[1])
+            pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+                elif event.key == pygame.K_l:
+                    return
 
 
 def draw_shop_welcome(warrior):
@@ -250,7 +308,7 @@ def draw_shop_welcome(warrior):
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                draw_map(warrior.game.map.array[warrior.position[0]], divmod(int((t1 - t0) * 3), 4)[1])
+                draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
                 return
 
 
