@@ -69,7 +69,7 @@ def draw_map(level, time_flag):
                 if issubclass(temp_type, (Door, Warrior)):
                     screen.blit(img_list[temp_type.__name__].subsurface((0, 0), (32, 32)),
                                 ((i + 6) * 32, (j + 1) * 32 + 5))
-                elif issubclass(temp_type, Creature):
+                elif issubclass(temp_type, (Creature, Lava, Star)):
                     screen.blit(img_list[temp_type.__name__].subsurface((time_flag * 32, 0), (32, 32)),
                                 ((i + 6) * 32, (j + 1) * 32 + 5))
                 else:
@@ -166,7 +166,7 @@ def speak(item, content, game: items.Game):
 
     global TIME_FLAG, t0
     pos = adjust_pos((item.position[1], item.position[2]))
-    content = content.split('\n')
+    content = content.split('\t')
     while True:
         t1 = time.process_time()
         delta_t = divmod(int((t1 - t0) * 3), 4)[1]
@@ -315,6 +315,125 @@ def draw_shop_interface(warrior, price, buff):
                 elif event.key == pygame.K_8:
                     highlight = max(0, highlight - 1)
 
+
+def draw_expshop_interface(warrior, price, buff):
+    global TIME_FLAG, t0
+    pos = pygame.rect.Rect((0, 0), (6 * 32 + 16, 6 * 32 + 16))
+    pos.center = (11.5 * 32, 6.5 * 32 + 5)
+    highlight = 0
+    while True:
+        t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
+            draw_info(warrior.game)
+        draw_rectangle_border(pos.topleft, pos.bottomright)
+        pygame.draw.rect(screen, (0, 0, 0), pos)
+        screen.blit(img_list['Elder'].subsurface((delta_t * 32, 0), (32, 32)),
+                    (pos.left + 5, pos.top + 5))
+        message = [u'    你好，英雄的人类，只',
+                   u'要你有足够的经验，我就',
+                   u'可以让你变得更强大：']
+        for i in range(len(message)):
+            print_string(message[i], 14, (pos.left + 44, pos.top + 5 + 14 * i))
+        goods = [u'提升 ' + str(buff[0]) + u' 级 (需要 ' + str(price[0]) + u' 点)',
+                 u'增加攻击 ' + str(buff[1]) + u' (需要' + str(price[1]) + u' 点)',
+                 u'增加防御 ' + str(buff[2]) + u' (需要' + str(price[2]) + u' 点)',
+                 u'离开商店']
+        for i in range(len(goods)):
+            print_string(goods[i], 16, center=(11.5 * 32, 6 * 32 - 8 + i * 32))
+        rect = pygame.rect.Rect((8.5 * 32, (5 + highlight) * 32 + 8), (6 * 32, 32))
+        map_border = [(rect.left - 2, rect.top - 2),
+                      (rect.right, rect.top - 2),
+                      (rect.right, rect.bottom),
+                      (rect.left - 2, rect.bottom)]
+        color = 255 * (math.cos((t1 - t0) * 10) * 0.25 + 0.75)
+        pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+                elif event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                    if highlight == 3:
+                        return
+                    elif warrior.exp >= price[highlight]:
+                        warrior.exp -= price[highlight]
+                        if highlight == 0:
+                            warrior.level += buff[0]
+                            warrior.hp += buff[0] * 1000
+                            warrior.attack += buff[0] * 10
+                            warrior.defense += buff[0] * 10
+                        elif highlight == 1:
+                            warrior.attack += buff[1]
+                        elif highlight == 2:
+                            warrior.defense += buff[2]
+                        break
+                elif event.key == pygame.K_2:
+                    highlight = min(3, highlight + 1)
+                elif event.key == pygame.K_8:
+                    highlight = max(0, highlight - 1)
+
+
+def draw_keyshop_interface(warrior, price, buff):
+    global TIME_FLAG, t0
+    pos = pygame.rect.Rect((0, 0), (6 * 32 + 16, 6 * 32 + 16))
+    pos.center = (11.5 * 32, 6.5 * 32 + 5)
+    highlight = 0
+    while True:
+        t1 = time.process_time()
+        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        if TIME_FLAG != delta_t:
+            TIME_FLAG = delta_t
+            draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
+            draw_info(warrior.game)
+        draw_rectangle_border(pos.topleft, pos.bottomright)
+        pygame.draw.rect(screen, (0, 0, 0), pos)
+        screen.blit(img_list['Merchant'].subsurface((delta_t * 32, 0), (32, 32)),
+                    (pos.left + 5, pos.top + 5))
+        message = [u'    相信你一定有特殊的需',
+                   u'要，只要你有金币，我就',
+                   u'可以帮你：']
+        for i in range(len(message)):
+            print_string(message[i], 14, (pos.left + 44, pos.top + 5 + 14 * i))
+        goods = [u'购买 ' + str(buff[0]) + u' 把黄钥匙 ($ ' + str(price[0]) + u' )',
+                 u'购买 ' + str(buff[1]) + u' 把蓝钥匙 ($ ' + str(price[1]) + u' )',
+                 u'购买 ' + str(buff[2]) + u' 把红钥匙 ($ ' + str(price[2]) + u' )',
+                 u'离开商店']
+        for i in range(len(goods)):
+            print_string(goods[i], 16, center=(11.5 * 32, 6 * 32 - 8 + i * 32))
+        rect = pygame.rect.Rect((8.5 * 32, (5 + highlight) * 32 + 8), (6 * 32, 32))
+        map_border = [(rect.left - 2, rect.top - 2),
+                      (rect.right, rect.top - 2),
+                      (rect.right, rect.bottom),
+                      (rect.left - 2, rect.bottom)]
+        color = 255 * (math.cos((t1 - t0) * 10) * 0.25 + 0.75)
+        pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+                elif event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                    if highlight == 3:
+                        return
+                    elif warrior.gold >= price[highlight]:
+                        warrior.gold -= price[highlight]
+                        warrior.keys[highlight] += 1
+                        break
+                elif event.key == pygame.K_2:
+                    highlight = min(3, highlight + 1)
+                elif event.key == pygame.K_8:
+                    highlight = max(0, highlight - 1)
 
 
 

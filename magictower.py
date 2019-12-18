@@ -28,7 +28,7 @@ if __name__ == '__main__':
     global TIME_FLAG
     game = build_tower(info)
     add_additional_function(game)
-    game.map.array = [game.map.array[0], game.map.array[3]]
+    game.map.array = [game.map.array[0], game.map.array[5]]
     pygame.init()
     init_interface(game, TIME_FLAG)
     while True:
