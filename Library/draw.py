@@ -169,7 +169,10 @@ def speak(item, content, game: items.Game):
         return rect
 
     global TIME_FLAG, t0
-    pos = adjust_pos((item.position[1], item.position[2]))
+    if type(item).__name__ == 'Warrior':
+        pos = pygame.rect.Rect((8 * 32, 8 * 32), (7 * 32, 2 * 32 + 8))
+    else:
+        pos = pygame.rect.Rect((7 * 32, 5 * 32), (7 * 32, 2 * 32 + 8))
     content = content.split('\t')
     while True:
         t1 = time.process_time()
@@ -179,7 +182,7 @@ def speak(item, content, game: items.Game):
             draw_map(game.map.array[item.position[0]], TIME_FLAG)
         draw_rectangle_border(pos.topleft, pos.bottomright)
         fill_rectangle(pos.topleft, pos.bottomright, pygame.image.load('UI/Floor.png'))
-        print_string(info['item_info'][type(item).__name__]['chinese_name'] + ':',
+        print_string(info['creature_info'][type(item).__name__]['chinese_name'] + ':',
                      16, (pos.left + 48, pos.top + 5))
         for i in range(len(content)):
             print_string(content[i], 14, (pos.left + 48, pos.top + 24 + 14 * i))
@@ -220,19 +223,17 @@ def draw_monster_info(monster, position, time_flag, damage):
     pygame.draw.lines(screen, (190, 107, 39), True, map_border, 2)
     print_string(u'名称', 14, center=(8 * 32, 52 + 40 * position))
     print_string(u'生命', 14, center=(8 * 32, 68 + 40 * position))
-    print_string(info['item_info'][monster]['chinese_name'], 14, center=(9.5 * 32, 52 + 40 * position))
-    print_string(str(info['item_info'][monster]['hp']), 14, center=(9.5 * 32, 68 + 40 * position))
+    print_string(info['creature_info'][monster]['chinese_name'], 14, center=(9.5 * 32, 52 + 40 * position))
+    print_string(str(info['creature_info'][monster]['hp']), 14, center=(9.5 * 32, 68 + 40 * position))
     print_string(u'攻击', 14, center=(11 * 32 + 8, 52 + 40 * position))
     print_string(u'防御', 14, center=(11 * 32 + 8, 68 + 40 * position))
-    print_string(str(info['item_info'][monster]['attack']), 14, bottomright=(13 * 32, 62 + 40 * position))
-    print_string(str(info['item_info'][monster]['defense']), 14, bottomright=(13 * 32, 78 + 40 * position))
+    print_string(str(info['creature_info'][monster]['attack']), 14, bottomright=(13 * 32, 62 + 40 * position))
+    print_string(str(info['creature_info'][monster]['defense']), 14, bottomright=(13 * 32, 78 + 40 * position))
     print_string(u'金 · 经', 14, center=(14 * 32, 52 + 40 * position))
     print_string(u'损失', 14, center=(14 * 32, 68 + 40 * position))
-    print_string(str(info['item_info'][monster]['gold']) + u' · ' + str(info['item_info'][monster]['exp']),
+    print_string(str(info['creature_info'][monster]['gold']) + u' · ' + str(info['creature_info'][monster]['exp']),
                  14, center=(16 * 32 - 8, 52 + 40 * position))
     print_string(str(damage), 14, center=(16 * 32 - 8, 68 + 40 * position))
-
-
 
 
 def draw_detector_info(game):

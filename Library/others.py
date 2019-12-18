@@ -14,7 +14,7 @@ def test_talk(self, warrior):
 
 
 def fairy_lv0_talk1(self, warrior):
-    dialog = items.info["item_info"]["Fairy"]["dialog"][0]
+    dialog = items.info["creature_info"]["Fairy"]["dialog"][0]
     for item in dialog:
         exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
 
@@ -47,19 +47,22 @@ def shop_lv3_talk(self, warrior):
     draw.draw_shop_interface(warrior, 25, [800, 4, 4])
 
 
-def thief_talk1(thief, warrior):
+def thief_talk1(self, warrior):
+    dialog = items.info["creature_info"]["Thief"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
     warrior.game.map.array[2][6][1] = items.Floor({}, [2, 6, 1])
-    thief.talk_to = thief_talk2
+    self.talk_to = thief_talk2
 
 
-def thief_talk2(thief, warrior):
+def thief_talk2(self, warrior):
     if warrior.game.indicator.get('warrior_get_hoe'):
         # warrior.game.map.array[20][7][5] = items.UpStair({})
-        thief.talk_to = thief_talk3
-        pass
+        self.__delattr__('talk_to')
 
 
-def thief_talk3(thief, warrior):
+def thief_talk3(self, warrior):
     pass
 
 
@@ -71,6 +74,10 @@ def merchant_lv5_talk(self, warrior):
     draw.draw_keyshop_interface(warrior, [10, 50, 100], [1, 1, 1])
 
 
+def shop_lv11_talk(self, warrior):
+    draw.draw_shop_interface(warrior, 100, [4000, 20, 20])
+
+
 def add_additional_function(game):
     # add NPC dialogs
     game.map.array[0][8][5].talk_to = test_talk
@@ -80,6 +87,7 @@ def add_additional_function(game):
     game.map.array[4][0][5].talk_to = thief_talk1
     game.map.array[5][7][1].talk_to = elder_lv5_talk
     game.map.array[5][3][10].talk_to = merchant_lv5_talk
+    game.map.array[11][8][5].talk_to = shop_lv11_talk
 
     # adjust access of IronFence
     game.map.array[2][7][7].can_open = True
