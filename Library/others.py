@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import Library.items as items
 import Library.draw as draw
+import math
 
 
 def test_talk(self, warrior):
@@ -28,15 +29,30 @@ def fairy_lv0_talk1(self, warrior):
 
 def fairy_lv0_talk2(self, warrior):
     if warrior.game.indicator.get('warrior_get_cross'):
+        dialog = items.info["creature_info"]["Fairy"]["dialog"][1]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
         warrior.game.map.array[20][7][5] = items.UpStair({}, [20, 7, 5])
+        warrior.hp = math.floor(warrior.hp * 4 / 3)
+        warrior.attack = math.floor(warrior.attack * 4 / 3)
+        warrior.defense = math.floor(warrior.defense * 4 / 3)
 
 
 def elder_lv2_talk(self, warrior):
+    dialog = items.info["creature_info"]["Elder"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
     items.SteelSword({}, [0, 0, 0]).used_by(warrior)
     warrior.game.map.array[2][10][7] = items.Floor({}, [2, 10, 7])
 
 
 def merchant_lv2_talk(self, warrior):
+    dialog = items.info["creature_info"]["Merchant"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
     items.SteelShield({}, [0, 0, 0]).used_by(warrior)
     warrior.game.map.array[2][10][9] = items.Floor({}, [2, 10, 9])
 
@@ -47,23 +63,24 @@ def shop_lv3_talk(self, warrior):
     draw.draw_shop_interface(warrior, 25, [800, 4, 4])
 
 
-def thief_talk1(self, warrior):
+def thief_lv4_talk1(self, warrior):
     dialog = items.info["creature_info"]["Thief"]["dialog"][0]
     for item in dialog:
         exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
 
     warrior.game.map.array[2][6][1] = items.Floor({}, [2, 6, 1])
-    self.talk_to = thief_talk2
+    self.talk_to = thief_lv4_talk2
 
 
-def thief_talk2(self, warrior):
+def thief_lv4_talk2(self, warrior):
     if warrior.game.indicator.get('warrior_get_hoe'):
-        # warrior.game.map.array[20][7][5] = items.UpStair({})
-        self.__delattr__('talk_to')
+        dialog = items.info["creature_info"]["Thief"]["dialog"][1]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
 
-
-def thief_talk3(self, warrior):
-    pass
+        warrior.game.map.array[18][8][5] = items.Floor({}, [18, 8, 5])
+        warrior.game.map.array[18][9][5] = items.Floor({}, [18, 9, 5])
+        warrior.game.map.array[4][0][5] = items.Floor({}, [4, 0, 5])
 
 
 def elder_lv5_talk(self, warrior):
@@ -71,23 +88,122 @@ def elder_lv5_talk(self, warrior):
 
 
 def merchant_lv5_talk(self, warrior):
-    draw.draw_keyshop_interface(warrior, [10, 50, 100], [1, 1, 1])
+    draw.draw_keyshop_interface(warrior, [10, 50, 100], [1, 1, 1], 5)
 
 
 def shop_lv11_talk(self, warrior):
     draw.draw_shop_interface(warrior, 100, [4000, 20, 20])
 
 
-def add_additional_function(game):
+def merchant_lv12_talk(self, warrior):
+    draw.draw_keyshop_interface(warrior, [7, 35, 70], [1, 1, 1], 12)
+
+
+def elder_lv13_talk(self, warrior):
+    draw.draw_expshop_interface(warrior, [270, 95, 95], [3, 17, 17])
+
+
+def elder_lv15_talk(self, warrior):
+    dialog = items.info["creature_info"]["Elder"]["dialog"][1]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+    if warrior.exp >= 500:
+        warrior.exp -= 500
+        dialog = items.info["creature_info"]["Elder"]["dialog"][2]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+        items.SacredSword({}, [0, 0, 0]).used_by(warrior)
+    else:
+        dialog = items.info["creature_info"]["Merchant"]["dialog"][3]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+
+def merchant_lv15_talk(self, warrior):
+    dialog = items.info["creature_info"]["Merchant"]["dialog"][1]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+    if warrior.gold >= 500:
+        warrior.gold -= 500
+        dialog = items.info["creature_info"]["Merchant"]["dialog"][2]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+        items.SacredShield({}, [0, 0, 0]).used_by(warrior)
+    else:
+        dialog = items.info["creature_info"]["Merchant"]["dialog"][3]
+        for item in dialog:
+            exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+
+def redboss_lv16_talk(self, warrior):
+    dialog = items.info["creature_info"]["RedBoss"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+
+def redboss_lv16_callback(self, warrior):
+    adjust = ["SoulSoilder", "DarkHeader", "SoulWizard", "RedBoss"]
+    entries = ['hp', 'attack', 'defense', 'gold', 'exp']
+    for obj in adjust:
+        for entry in entries:
+            items.info['creature_info'][obj][entry] = \
+                math.floor(items.info['creature_info'][obj][entry] * 4 / 3)
+
+
+def princess_lv18_talk(self, warrior):
+    dialog = items.info["creature_info"]["Princess"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+    warrior.game.map.array[18][10][10] = items.UpStair({}, [18, 10, 10])
+    self.__delattr__('talk_to')
+
+
+def darkboss_lv19_talk(self, warrior):
+    dialog = items.info["creature_info"]["DarkBoss"]["dialog"][0]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+
+
+def darkboss_lv19_callback(self, warrior):
+    dialog = items.info["creature_info"]["DarkBoss"]["dialog"][1]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+    items.info['creature_info']['DarkBoss']['hp'] = 45000
+    items.info['creature_info']['DarkBoss']['attack'] = 2550
+    items.info['creature_info']['DarkBoss']['defense'] = 2250
+    items.info['creature_info']['DarkBoss']['gold'] = 375
+    items.info['creature_info']['DarkBoss']['exp'] = 330
+
+
+def darkboss_lv21_callback(self, warrior):
+    dialog = items.info["creature_info"]["DarkBoss"]["dialog"][2]
+    for item in dialog:
+        exec('draw.speak(' + item[0] + ', "' + item[1] + '", warrior.game)')
+    warrior.game.indicator['win'] = True
+
+
+def add_additional_attr(game):
     # add NPC dialogs
     game.map.array[0][8][5].talk_to = test_talk
     game.map.array[2][10][7].talk_to = elder_lv2_talk
     game.map.array[2][10][9].talk_to = merchant_lv2_talk
     game.map.array[3][0][5].talk_to = shop_lv3_talk
-    game.map.array[4][0][5].talk_to = thief_talk1
+    game.map.array[4][0][5].talk_to = thief_lv4_talk1
     game.map.array[5][7][1].talk_to = elder_lv5_talk
     game.map.array[5][3][10].talk_to = merchant_lv5_talk
     game.map.array[11][8][5].talk_to = shop_lv11_talk
+    game.map.array[12][0][0].talk_to = merchant_lv12_talk
+    game.map.array[13][6][4].talk_tp = elder_lv13_talk
+    game.map.array[15][3][4].talk_to = elder_lv15_talk
+    game.map.array[15][3][6].talk_to = merchant_lv15_talk
+    game.map.array[16][5][5].talk_to = redboss_lv16_talk
+    game.map.array[16][5][5].callback = redboss_lv16_callback
+    game.map.array[19][7][5].talk_to = darkboss_lv19_talk
+    game.map.array[19][7][5].callback = darkboss_lv19_callback
+    game.map.array[21][1][5].callback = darkboss_lv21_callback
 
     # adjust access of IronFence
     game.map.array[2][7][7].can_open = True

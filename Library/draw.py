@@ -163,11 +163,6 @@ def init_interface(game):
 
 
 def speak(item, content, game: items.Game):
-    def adjust_pos(pos):
-        rect = pygame.rect.Rect((0, 0), (7.5 * 32, 2 * 32 + 8))
-        rect.center = ((pos[1] + 6.5) * 32, ((pos[0] + 1.5) * 32 + 5))
-        return rect
-
     global TIME_FLAG, t0
     if type(item).__name__ == 'Warrior':
         pos = pygame.rect.Rect((8 * 32, 8 * 32), (7 * 32, 2 * 32 + 8))
@@ -245,6 +240,8 @@ def draw_detector_info(game):
             obj_type = type(map[i][j])
             if issubclass(obj_type, Monster) and obj_type.__name__ not in monsters:
                 monsters.append(obj_type.__name__)
+    if len(monsters) == 0:
+        return
     while True:
         t1 = time.process_time()
         delta_t = divmod(int((t1 - t0) * 3), 4)[1]
@@ -439,7 +436,7 @@ def draw_expshop_interface(warrior, price, buff):
                     highlight = max(0, highlight - 1)
 
 
-def draw_keyshop_interface(warrior, price, buff):
+def draw_keyshop_interface(warrior, price, buff, level):
     global TIME_FLAG, t0
     pos = pygame.rect.Rect((0, 0), (6 * 32 + 16, 6 * 32 + 16))
     pos.center = (11.5 * 32, 6.5 * 32 + 5)
@@ -455,15 +452,26 @@ def draw_keyshop_interface(warrior, price, buff):
         pygame.draw.rect(screen, (0, 0, 0), pos)
         screen.blit(img_list['Merchant'].subsurface((delta_t * 32, 0), (32, 32)),
                     (pos.left + 5, pos.top + 5))
-        message = [u'    相信你一定有特殊的需',
-                   u'要，只要你有金币，我就',
-                   u'可以帮你：']
+        if level == 5:
+            message = [u'    相信你一定有特殊的需',
+                       u'要，只要你有金币，我就',
+                       u'可以帮你：']
+        elif level == 12:
+            message = [u'    哦，欢迎你的到来，如',
+                       u'果你手里缺少金币，我可',
+                       u'以帮你：']
         for i in range(len(message)):
             print_string(message[i], 14, (pos.left + 44, pos.top + 5 + 14 * i))
-        goods = [u'购买 ' + str(buff[0]) + u' 把黄钥匙 ($ ' + str(price[0]) + u' )',
-                 u'购买 ' + str(buff[1]) + u' 把蓝钥匙 ($ ' + str(price[1]) + u' )',
-                 u'购买 ' + str(buff[2]) + u' 把红钥匙 ($ ' + str(price[2]) + u' )',
-                 u'离开商店']
+        if level == 5:
+            goods = [u'购买 ' + str(buff[0]) + u' 把黄钥匙 ($ ' + str(price[0]) + u' )',
+                     u'购买 ' + str(buff[1]) + u' 把蓝钥匙 ($ ' + str(price[1]) + u' )',
+                     u'购买 ' + str(buff[2]) + u' 把红钥匙 ($ ' + str(price[2]) + u' )',
+                     u'离开商店']
+        elif level == 12:
+            goods = [u'卖出 ' + str(buff[0]) + u' 把黄钥匙 ($ ' + str(price[0]) + u' )',
+                     u'卖出 ' + str(buff[1]) + u' 把蓝钥匙 ($ ' + str(price[1]) + u' )',
+                     u'卖出 ' + str(buff[2]) + u' 把红钥匙 ($ ' + str(price[2]) + u' )',
+                     u'离开商店']
         for i in range(len(goods)):
             print_string(goods[i], 16, center=(11.5 * 32, 6 * 32 - 8 + i * 32))
         rect = pygame.rect.Rect((8.5 * 32, (5 + highlight) * 32 + 8), (6 * 32, 32))
@@ -485,10 +493,15 @@ def draw_keyshop_interface(warrior, price, buff):
                 elif event.key == pygame.K_SPACE or event.key == pygame.K_5:
                     if highlight == 3:
                         return
-                    elif warrior.gold >= price[highlight]:
-                        warrior.gold -= price[highlight]
-                        warrior.keys[highlight] += 1
-                        break
+                    else:
+                        if level == 5 and warrior.gold >= price[highlight]:
+                            warrior.gold -= price[highlight]
+                            warrior.keys[highlight] += buff[highlight]
+                            break
+                        elif level == 12 and warrior.keys[highlight] >= buff[highlight]:
+                            warrior.keys[highlight] -= buff[highlight]
+                            warrior.gold += price[highlight]
+                            break
                 elif event.key == pygame.K_2:
                     highlight = min(3, highlight + 1)
                 elif event.key == pygame.K_8:

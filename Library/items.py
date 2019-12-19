@@ -40,6 +40,15 @@ t0 = 0
 info = json.loads(''.join(open('Library/tower.json').readlines()))
 
 
+def getattr(obj, name):
+    ret = None
+    try:
+        ret = obj.__getattr__(name)
+    except:
+        pass
+    return ret
+
+
 class Item:
     def __init__(self, creature_info: dict, position):
         self.position = position
@@ -649,15 +658,22 @@ class Warrior(Item):
                 self.move_to_new_floor(self.position[0] - 1, 'down', game.map)
             return
         elif issubclass(next_type, Monster):
+            if getattr(next_obj, 'talk_to') is not None:
+                next_obj.talk_to(next_obj, self)
+                next_obj.__delattr__('talk_to')
+                return
             flag, est_damage = self.can_beat(next_type.__name__)
             if flag:
                 self.fight_with(next_obj)
                 self.exp += info['creature_info'][next_type.__name__]['exp']
                 self.gold += info['creature_info'][next_type.__name__]['gold']
                 game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({}, next_pos)
+                if getattr(next_obj, 'callback') is not None:
+                    next_obj.callback(next_obj, self)
+                    next_obj.__delattr__('callback')
             return
         elif issubclass(next_type, NPC):
-            if next_obj.__getattribute__('talk_to') is not None:
+            if getattr(next_obj, 'talk_to') is not None:
                 next_obj.talk_to(next_obj, self)
             return
         game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self

@@ -27,11 +27,10 @@ def build_tower(tower_info):
 if __name__ == '__main__':
     global TIME_FLAG
     game = build_tower(info)
-    add_additional_function(game)
-    # game.map.array = [game.map.array[0], game.map.array[11]]
+    add_additional_attr(game)
     pygame.init()
     init_interface(game)
-    while True:
+    while game.indicator.get('win') is not True:
         t1 = time.process_time()
         delta_t = divmod(int((t1 - t0) * 3), 4)[1]
         if TIME_FLAG != delta_t:
