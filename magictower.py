@@ -32,7 +32,7 @@ if __name__ == '__main__':
     init_interface(game)
     while game.indicator.get('win') is not True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = int((t1 - t0) * 3) % 4
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
@@ -45,7 +45,6 @@ if __name__ == '__main__':
                     game.warrior.move(event.key, game)
                     draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
                     draw_info(game)
-                    # game.map.debug(game.warrior.position[0])
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -56,12 +55,20 @@ if __name__ == '__main__':
                 elif event.key == pygame.K_r:
                     pass
                 elif event.key == pygame.K_l:
-                    if game.indicator.get('warrior_get_detector'):
+                    if info['indicator']['warrior_get_detector']:
                         draw_detector_info(game)
                 elif event.key == pygame.K_j:
                     pass
             time.sleep(0.01)
+    draw_end()
 
+
+# what else to do:
+#   aircraft
+#   alert
+#   begin/end
+#   restart
+#   save/load
 
 
 

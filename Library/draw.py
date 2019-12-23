@@ -171,7 +171,7 @@ def speak(item, content, game: items.Game):
     content = content.split('\t')
     while True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = int((t1 - t0) * 3) % 4
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             draw_map(game.map.array[item.position[0]], TIME_FLAG)
@@ -244,7 +244,7 @@ def draw_detector_info(game):
         return
     while True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = int((t1 - t0) * 3) % 4
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             rect = pygame.rect.Rect((6 * 32, 32 + 5), (11 * 32, 11 * 32))
@@ -270,7 +270,7 @@ def draw_shop_welcome(warrior):
     pos.center = (11.5 * 32, 6.5 * 32 + 5)
     while True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = int((t1 - t0) * 3) % 4
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
@@ -317,7 +317,7 @@ def draw_shop_interface(warrior, price, buff):
     highlight = 0
     while True:
         t1 = time.process_time()
-        delta_t = divmod(int((t1 - t0) * 3), 4)[1]
+        delta_t = int((t1 - t0) * 3) % 4
         if TIME_FLAG != delta_t:
             TIME_FLAG = delta_t
             draw_map(warrior.game.map.array[warrior.position[0]], TIME_FLAG)
@@ -507,6 +507,9 @@ def draw_keyshop_interface(warrior, price, buff, level):
                 elif event.key == pygame.K_8:
                     highlight = max(0, highlight - 1)
 
+
+def draw_end():
+    pass
 
 
 

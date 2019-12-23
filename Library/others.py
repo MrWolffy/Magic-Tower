@@ -58,8 +58,7 @@ def merchant_lv2_talk(self, warrior):
 
 
 def shop_lv3_talk(self, warrior):
-    if not warrior.game.indicator.get('first_use_shop'):
-        draw.draw_shop_welcome(warrior)
+    draw.draw_shop_welcome(warrior)
     draw.draw_shop_interface(warrior, 25, [800, 4, 4])
 
 

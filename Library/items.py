@@ -16,8 +16,9 @@ import random
 #       Bottle: RedBottle, BlueBottle
 #       Key: YellowKey, BlueKey, RedKey, KeyKit
 #       Gem: RedGem, BlueGem
-#       Equipment: IronSword, IronShield, SteelSword, SteelShield, QingFengSword
-#                  GoldenShield, SacredSword, SacredShield
+#       Equipment
+#           Sword: IronSword, SteelSword, QingFengSword, SacredSword
+#           Shield: IronShield, SteelShield, GoldenShield, SacredShield
 #       OtherProp: SmallWing, GoldCoin, BigWing, HolyWater
 #       Special: Detector, Cross, Aircraft, Hoe
 #   Stair: UpStair, DownStair
@@ -36,17 +37,8 @@ import random
 #   Warrior
 
 
-t0 = 0
+t0 = time.process_time()
 info = json.loads(''.join(open('Library/tower.json').readlines()))
-
-
-def getattr(obj, name):
-    ret = None
-    try:
-        ret = obj.__getattr__(name)
-    except:
-        pass
-    return ret
 
 
 class Item:
@@ -201,68 +193,60 @@ class Equipment(Prop):
         super().__init__(creature_info, position)
 
 
-class IronSword(Equipment):
+class Sword(Equipment):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.attack += 10
+        warrior.attack += info['prop_info'][type(self).__name__]['buff']
 
 
-class IronShield(Equipment):
+class Shield(Equipment):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.defense += 10
+        warrior.defense += info['prop_info'][type(self).__name__]['buff']
 
 
-class SteelSword(Equipment):
+class IronSword(Sword):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.attack += 30
 
-
-class SteelShield(Equipment):
+class SteelSword(Sword):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.defense += 30
 
-
-class QingFengSword(Equipment):
+class QingFengSword(Sword):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.attack += 70
 
-
-class GoldenShield(Equipment):
+class SacredSword(Sword):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.defense += 85
 
-
-class SacredSword(Equipment):
+class IronShield(Shield):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.defense += 150
 
-
-class SacredShield(Equipment):
+class SteelShield(Shield):
     def __init__(self, creature_info: dict, position):
         super().__init__(creature_info, position)
 
-    def used_by(self, warrior):
-        warrior.defense += 190
+
+class GoldenShield(Shield):
+    def __init__(self, creature_info: dict, position):
+        super().__init__(creature_info, position)
+
+
+class SacredShield(Shield):
+    def __init__(self, creature_info: dict, position):
+        super().__init__(creature_info, position)
 
 
 class OtherProp(Prop):
@@ -318,7 +302,7 @@ class Detector(Special):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.game.indicator['warrior_get_detector'] = True
+        info['indicator']['warrior_get_detector'] = True
 
 
 class Cross(Special):
@@ -326,7 +310,7 @@ class Cross(Special):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.game.indicator['warrior_get_cross'] = True
+        info['indicator']['warrior_get_cross'] = True
 
 
 class Aircraft(Special):
@@ -334,7 +318,7 @@ class Aircraft(Special):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.game.indicator['warrior_get_aircraft'] = True
+        info['indicator']['warrior_get_aircraft'] = True
 
 
 class Hoe(Special):
@@ -342,7 +326,7 @@ class Hoe(Special):
         super().__init__(creature_info, position)
 
     def used_by(self, warrior):
-        warrior.game.indicator['warrior_get_hoe'] = True
+        info['indicator']['warrior_get_hoe'] = True
 
 
 class Stair(Item):
@@ -654,11 +638,12 @@ class Warrior(Item):
         elif issubclass(next_type, Stair):
             if next_type.__name__ == 'UpStair':
                 self.move_to_new_floor(self.position[0] + 1, 'up', game.map)
+                info['creature_info']['Warrior']['indicator']['visited'][self.position[0]] = True
             elif next_type.__name__ == 'DownStair':
                 self.move_to_new_floor(self.position[0] - 1, 'down', game.map)
             return
         elif issubclass(next_type, Monster):
-            if getattr(next_obj, 'talk_to') is not None:
+            if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
                 next_obj.__delattr__('talk_to')
                 return
@@ -668,12 +653,12 @@ class Warrior(Item):
                 self.exp += info['creature_info'][next_type.__name__]['exp']
                 self.gold += info['creature_info'][next_type.__name__]['gold']
                 game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor({}, next_pos)
-                if getattr(next_obj, 'callback') is not None:
+                if hasattr(next_obj, 'callback'):
                     next_obj.callback(next_obj, self)
                     next_obj.__delattr__('callback')
             return
         elif issubclass(next_type, NPC):
-            if getattr(next_obj, 'talk_to') is not None:
+            if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
             return
         game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self

@@ -3244,6 +3244,37 @@
       [0, 0]
     ]
   },
+  "indicator": {
+    "visited": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "warrior_get_detector": false,
+    "warrior_get_cross": false,
+    "warrior_get_aircraft": false,
+    "warrior_get_hoe": false
+  },
   "creature_info": {
     "Warrior": {
       "position": [
@@ -3262,7 +3293,8 @@
         10,
         10
       ],
-      "chinese_name": "勇士"
+      "chinese_name": "勇士",
+
     },
     "Fairy": {
       "chinese_name": "仙子",
@@ -3567,7 +3599,16 @@
             "    那好吧，这把剑就给你\t了！"
           ]
         ],
-        []
+        [
+          [
+            "warrior",
+            "    这，可我现在还没有那\t么多的经验。"
+          ],
+          [
+            "self",
+            "    那等你的经验够了而且\t想要的时候再来吧！"
+          ]
+        ]
       ]
     },
     "Merchant": {
@@ -4048,6 +4089,38 @@
     }
   },
   "prop_info": {
+    "IronSword": {
+      "chinese_name": "铁剑",
+      "buff": 10
+    },
+    "IronShield": {
+      "chinese_name": "铁盾",
+      "buff": 10
+    },
+    "SteelSword": {
+      "chinese_name": "钢剑",
+      "buff": 30
+    },
+    "SteelShield": {
+      "chinese_name": "钢盾",
+      "buff": 30
+    },
+    "QingFengSword": {
+      "chinese_name": "青锋剑",
+      "buff": 70
+    },
+    "GoldenShield": {
+      "chinese_name": "黄金盾",
+      "buff": 85
+    },
+    "SacredSword": {
+      "chinese_name": "星光神剑",
+      "buff": 150
+    },
+    "SacredShield": {
+      "chinese_name": "星光神盾",
+      "buff": 150
+    },
     "Detector": {
       "chinese_name": "圣光徽",
       "description": [
