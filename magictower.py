@@ -1,66 +1,32 @@
 # -*- coding: utf-8 -*-
-from Library.draw import *
+import Library.draw as draw
 import pygame
 import time
 
 
-def build_tower(tower_info):
-    tower_structure = tower_info['tower_structure']
-    creature_info = tower_info['creature_info']
-    level = tower_structure['total_level']
-    height = tower_structure['height']
-    width = tower_structure['width']
-    map = Container(level, height, width)
-    for i in range(level):
-        for j in range(height):
-            for k in range(width):
-                # print(i, j, k)
-                map.array[i][j][k] = \
-                    eval(tower_structure['level_structure'][i][j][k] +
-                         '(creature_info, [' + str(i) + ', ' + str(j) + ', ' + str(k) + '])')
-    warrior_position = creature_info['Warrior']['position']
-    warrior = map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
-    game = Game(map, warrior)
-    return game
+def exec_game(game):
+    global TIME_FLAG
+    draw.init_interface(game)
+    while game.indicator.get('win') is not True:
+        t1 = time.process_time()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or \
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                game.process_event(event)
+        time_flag = int((t1 - game.t0) * 24) % 24
+        if time_flag != int((game.t1 - game.t0) * 24) % 24:
+            game.t1 = t1
+            draw.draw(game, time_flag)
+    # draw.draw_end()
 
 
 if __name__ == '__main__':
-    global TIME_FLAG
-    game = build_tower(info)
-    add_additional_attr(game)
     pygame.init()
-    init_interface(game)
-    while game.indicator.get('win') is not True:
-        t1 = time.process_time()
-        delta_t = int((t1 - t0) * 3) % 4
-        if TIME_FLAG != delta_t:
-            TIME_FLAG = delta_t
-            draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
-                    game.warrior.move(event.key, game)
-                    draw_map(game.map.array[game.warrior.position[0]], TIME_FLAG)
-                    draw_info(game)
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    quit()
-                elif event.key == pygame.K_a:
-                    pass
-                elif event.key == pygame.K_s:
-                    pass
-                elif event.key == pygame.K_r:
-                    pass
-                elif event.key == pygame.K_l:
-                    if info['indicator']['warrior_get_detector']:
-                        draw_detector_info(game)
-                elif event.key == pygame.K_j:
-                    pass
-            time.sleep(0.01)
-    draw_end()
+    while True:
+        exec_game(draw.game)
 
 
 # what else to do:
@@ -69,7 +35,3 @@ if __name__ == '__main__':
 #   begin/end
 #   restart
 #   save/load
-
-
-
-
