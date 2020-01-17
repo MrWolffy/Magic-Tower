@@ -63,7 +63,7 @@ frame = 0
 def draw(game, ts):
     global frame
     frame = ts
-    draw_map(game.map.array[game.warrior.position[0]])
+    draw_map(game)
     draw_info(game)
     if game.status["instruction"]["display"]:
         draw_instruction(game)
@@ -86,7 +86,8 @@ def init_interface(game):
         arial_font.append(pygame.font.Font('Library/Arial.ttf', i))
 
 
-def draw_map(level):
+def draw_map(game):
+    level = game.map.array[game.warrior.position[0]]
     bg = pygame.image.load('UI/Background.png')
     fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
     width = len(level[0])

@@ -3,8 +3,9 @@ import json
 import pygame
 import math
 import time
-from Library.others import *
+from Library.others import add_additional_attr
 import random
+import os
 
 # structure of objects:
 #
@@ -41,124 +42,124 @@ info = json.loads(''.join(open('Library/tower.json').readlines()))
 
 
 class Item:
-    def __init__(self):
+    def __init__(self, info=None):
         pass
 
 
 class Floor(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Barrier(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Wall(Barrier):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Lava(Barrier):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Star(Barrier):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Door(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class YellowDoor(Door):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class BlueDoor(Door):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedDoor(Door):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SpecialDoor(Door):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class IronFence(Door):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
         self.can_open = False
 
 
 class Prop(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Bottle(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedBottle(Bottle):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.hp += 200
 
 
 class BlueBottle(Bottle):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.hp += 500
 
 
 class Key(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class YellowKey(Key):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.keys[0] += 1
 
 
 class BlueKey(Key):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.keys[1] += 1
 
 
 class RedKey(Key):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.keys[2] += 1
 
 
 class KeyKit(Key):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.keys[0] += 1
@@ -167,95 +168,95 @@ class KeyKit(Key):
 
 
 class Gem(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedGem(Gem):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.attack += 3
 
 
 class BlueGem(Gem):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.defense += 3
 
 
 class Equipment(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Sword(Equipment):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.attack += game.info['prop_info'][type(self).__name__]['buff']
 
 
 class Shield(Equipment):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.defense += game.info['prop_info'][type(self).__name__]['buff']
 
 
 class IronSword(Sword):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SteelSword(Sword):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class QingFengSword(Sword):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SacredSword(Sword):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class IronShield(Shield):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SteelShield(Shield):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class GoldenShield(Shield):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SacredShield(Shield):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class OtherProp(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SmallWing(OtherProp):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.level += 1
@@ -265,16 +266,16 @@ class SmallWing(OtherProp):
 
 
 class GoldCoin(OtherProp):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.gold += 300
 
 
 class BigWing(OtherProp):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.level += 3
@@ -284,21 +285,21 @@ class BigWing(OtherProp):
 
 
 class HolyWater(OtherProp):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         warrior.hp *= 2
 
 
 class Special(Prop):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Detector(Special):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_detector'] = True
@@ -307,8 +308,8 @@ class Detector(Special):
 
 
 class Cross(Special):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_cross'] = True
@@ -317,8 +318,8 @@ class Cross(Special):
 
 
 class Aircraft(Special):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_aircraft'] = True
@@ -327,8 +328,8 @@ class Aircraft(Special):
 
 
 class Hoe(Special):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_hoe'] = True
@@ -337,274 +338,274 @@ class Hoe(Special):
 
 
 class Stair(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class UpStair(Stair):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DownStair(Stair):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Creature(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class NPC(Creature):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Fairy(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Elder(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Merchant(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Shop(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class ShopLeft(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class ShopRight(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Thief(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Princess(NPC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Monster(Creature):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
         self.hp = info["creature_info"][type(self).__name__]['hp']
 
 
 class Slime(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedSlime(Slime):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class GreenSlime(Slime):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class BlackSlime(Slime):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class BigSlime(Slime):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class _Skeleton(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Skeleton(_Skeleton):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SkeletonSolider(_Skeleton):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SkeletonHeader(_Skeleton):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Wizard(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class PrimaryWizard(Wizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class AdvancedWizard(Wizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class HempWizard(Wizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedWizard(Wizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SoulWizard(Wizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class _Orc(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Orc(_Orc):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class OrcSolider(_Orc):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Bat(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SmallBat(Bat):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class BigBat(Bat):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedBat(Bat):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Solider(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class PrimarySolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class IntermediateSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class AdvancedSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class StoneMan(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class WhiteSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class GoldGuard(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class GoldHeader(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DoubleSwordSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DarkGuard(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DarkSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DarkHeader(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class SoulSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class ShadowSolider(Solider):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Boss(Monster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class RedBoss(Boss):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class DarkBoss(Boss):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
 
 
 class Warrior(Item):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info=None):
+        super().__init__(info)
         warrior_info = info["creature_info"]['Warrior']
         self.position = warrior_info['position']
         self.level = warrior_info['level']
@@ -741,10 +742,10 @@ class Container:
 
 
 class Game:
-    def __init__(self, info):
+    def __init__(self, info=None):
         self.info = info
-        tower_structure = info['tower_structure']
-        creature_info = info['creature_info']
+        tower_structure = self.info['tower_structure']
+        creature_info = self.info['creature_info']
         level = tower_structure['total_level']
         height = tower_structure['height']
         width = tower_structure['width']
@@ -752,7 +753,7 @@ class Game:
         for i in range(level):
             for j in range(height):
                 for k in range(width):
-                    map.array[i][j][k] = eval(tower_structure['level_structure'][i][j][k] + '()')
+                    map.array[i][j][k] = eval(tower_structure['level_structure'][i][j][k] + '(info)')
         warrior_position = creature_info['Warrior']['position']
         warrior = map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
         self.map = map
@@ -788,9 +789,15 @@ class Game:
                 "welcome": False,
                 "highlight": None
             },
+            "alert": {
+                "display": False,
+                "content": None
+            },
             "win": False
         }
         add_additional_attr(self)
+        if os.path.exists('Library/save.json'):
+            os.remove('Library/save.json')
 
     def process_event(self, event):
         if self.status["instruction"]["display"]:
@@ -883,11 +890,12 @@ class Game:
             if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
                 game.warrior.move(event.key, game)
             elif event.key == pygame.K_a:
-                pass
+                if os.path.exists('Library/save.json'):
+                    self.process_load('Library/save.json')
             elif event.key == pygame.K_s:
-                pass
+                self.process_save()
             elif event.key == pygame.K_r:
-                pass
+                self.process_load('Library/tower.json')
             elif event.key == pygame.K_l:
                 if game.info['indicator']['warrior_get_detector']:
                     self.status["detector"]["display"] = True
@@ -920,6 +928,40 @@ class Game:
         self.status["shop"]["price"] = price
         self.status["shop"]["buff"] = buff
         self.status["shop"]["highlight"] = 0
+
+    def process_save(self):
+        # 存图
+        tower_structure = self.info['tower_structure']
+        for i in range(tower_structure['total_level']):
+            for j in range(tower_structure['height']):
+                for k in range(tower_structure['width']):
+                    self.info['tower_structure']["level_structure"][i][j][k] = type(self.map.array[i][j][k]).__name__
+
+        # 存勇士
+        self.info["creature_info"]["Warrior"]["position"] = self.warrior.position
+        self.info["creature_info"]["Warrior"]['level'] = self.warrior.level
+        self.info["creature_info"]["Warrior"]['attack'] = self.warrior.attack
+        self.info["creature_info"]["Warrior"]['defense'] = self.warrior.defense
+        self.info["creature_info"]["Warrior"]['hp'] = self.warrior.hp
+        self.info["creature_info"]["Warrior"]['exp'] = self.warrior.exp
+        self.info["creature_info"]["Warrior"]['gold'] = self.warrior.gold
+        self.info["creature_info"]["Warrior"]['keys'] = self.warrior.keys
+
+        # 保存至文件
+        with open('Library/save.json', 'w', encoding='utf8') as f:
+            f.write(json.dumps(self.info))
+
+    def process_load(self, path):
+        self.info = json.loads(''.join(open(path).readlines()))
+        tower_structure = self.info['tower_structure']
+        for i in range(tower_structure['total_level']):
+            for j in range(tower_structure['height']):
+                for k in range(tower_structure['width']):
+                    if type(self.map.array[i][j][k]).__name__ != tower_structure['level_structure'][i][j][k]:
+                        self.map.array[i][j][k] = eval(tower_structure['level_structure'][i][j][k] + '(self.info)')
+        warrior_position = self.info['creature_info']['Warrior']['position']
+        warrior = self.map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
+        self.warrior = warrior
 
 
 game = Game(info)

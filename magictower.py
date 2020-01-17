@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import Library.draw as draw
+from Library.items import game
 import pygame
 import time
 
@@ -25,11 +26,10 @@ def exec_game(game):
 if __name__ == '__main__':
     pygame.init()
     while True:
-        exec_game(draw.game)
+        exec_game(game)
 
 
 # what else to do:
-#   aircraft
 #   alert
 #   begin/end
 #   restart
