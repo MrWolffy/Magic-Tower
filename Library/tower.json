@@ -89,7 +89,7 @@
           "Star",
           "Star",
           "Star",
-          "Floor",
+          "Aircraft",
           "Star",
           "Star",
           "Star",
@@ -157,7 +157,7 @@
           "GreenSlime",
           "RedSlime",
           "GreenSlime",
-          "Aircraft",
+          "Floor",
           "Floor",
           "Floor",
           "Floor",
@@ -1622,9 +1622,9 @@
           "Wall",
           "RedKey",
           "Wall",
-          "DarkSolider",
+          "DarkGuard",
           "AdvancedSolider",
-          "DarkSolider"
+          "DarkGuard"
         ],
         [
           "RedBottle",
@@ -1636,8 +1636,8 @@
           "RedKey",
           "Wall",
           "Floor",
-          "DarkSolider",
-          "Wall"
+          "DarkGuard",
+          "Floor"
         ],
         [
           "YellowDoor",
@@ -1682,11 +1682,11 @@
           "BlueGem",
           "Wall",
           "Floor",
-          "DarkSolider",
+          "DarkGuard",
           "BlueBottle",
           "DoubleSwordSolider",
           "BlueBottle",
-          "DarkSolider",
+          "DarkGuard",
           "Floor",
           "Wall",
           "RedGem"
@@ -2382,7 +2382,7 @@
           "Star",
           "Star",
           "Wall",
-          "Elder",
+          "Wall",
           "Floor",
           "Wall",
           "Wall",
@@ -3273,7 +3273,10 @@
     "warrior_get_detector": false,
     "warrior_get_cross": false,
     "warrior_get_aircraft": false,
-    "warrior_get_hoe": false
+    "warrior_get_hoe": false,
+    "fairy_lv0_talk": 0,
+    "thief_lv4_talk": 0,
+    "princess_lv18_talk": 0
   },
   "creature_info": {
     "Warrior": {
@@ -4148,6 +4151,22 @@
         "    把它交给第四层的小偷，小偷便会用它打开第十八",
         "层的隐藏地面（你就可以救出公主了）。"
       ]
+    },
+    "RedBottle": {
+      "chinese_name": "小血瓶",
+      "buff": 200
+    },
+    "BlueBottle": {
+      "chinese_name": "大血瓶",
+      "buff": 500
+    },
+    "RedGem": {
+      "chinese_name": "红宝石",
+      "buff": 3
+    },
+    "BlueGem": {
+      "chinese_name": "蓝宝石",
+      "buff": 3
     }
   }
 }

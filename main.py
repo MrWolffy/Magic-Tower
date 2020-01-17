@@ -6,7 +6,7 @@ import time
 
 
 def exec_game(game):
-    draw.init_interface(game)
+    draw.draw_begin()
     while game.status['win'] is not True:
         t1 = time.process_time()
         for event in pygame.event.get():
@@ -20,17 +20,15 @@ def exec_game(game):
         if time_flag != int((game.t1 - game.t0) * 24):
             game.t1 = t1
             draw.draw(game, time_flag)
-    # draw.draw_end()
+    draw.draw_end()
 
 
 if __name__ == '__main__':
     pygame.init()
+    draw.init_interface(game)
     while True:
         exec_game(game)
 
 
 # what else to do:
 #   alert
-#   begin/end
-#   restart
-#   save/load

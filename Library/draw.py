@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 import pygame
 from Library.items import *
 
@@ -55,6 +54,7 @@ def print_string(string, fontsize, topleft=(0, 0), center=None, bottomright=None
 
 
 arial_font = [None]
+arial_font64 = pygame.font.Font('Library/Arial.ttf', 64)
 screen = None
 img_list = read_image()
 frame = 0
@@ -559,8 +559,99 @@ def draw_aircraft_selection(game):
     screen.blit(string, rect)
 
 
+def draw_begin():
+    message = ["    这是一个很古老的故事",
+               "    在很久很久以前，在遥远的西方大地上，有",
+               "着这样一个王国，王国虽小但全国的人民都生",
+               "活的非常幸福和快乐。",
+               "    突然有一天，从天空飞来一群可怕的怪物，",
+               "它们来到皇宫，抢走了国王唯一的女儿。",
+               "    第二天，国王便向全国下达了紧急令，只要",
+               "谁能将公主给找回来，他便将王位让给他。",
+               "    于是，全国的勇士都出发了。他们的足迹",
+               "走遍了全国的各个角落，可一点儿线索都没有",
+               "找到，时间很快过去了一个月。",
+               "    终于，在国王下达命令的第三十一天，一个",
+               "从远方归来的人告诉国王，说在海边的一座小",
+               "岛上，曾看到一群怪物出现过。",
+               "    勇士们又出发了，可是，却没有一个人可以",
+               "回来，有幸回来的，都再也不敢去了。",
+               "    而我们的故事，便是从这里开始……"]
+    t0 = time.process_time()
+    time_flag = 0
+    while time_flag < 700:
+        t1 = time.process_time()
+        if int((t1 - t0) * 24) != time_flag:
+            time_flag = int((t1 - t0) * 24)
+            screen.fill((0, 0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    return
+            # 滚动字
+            for i in range(len(message)):
+                print_string(message[i], 24, (50, 30 * (i + 10) - time_flag))
+
+            # 右下角的Space
+            color = 255 * (math.cos(time_flag / 3) * 0.25 + 0.75)
+            string = arial_font[10].render('-- Space --', True, (color, color, color))
+            rect = string.get_rect()
+            rect.bottomright = ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 10)
+            screen.blit(string, rect)
+            pygame.display.update()
+    # 结束
+    screen.fill((0, 0, 0))
+
+
 def draw_end():
-    pass
+    message = ["    大魔头被杀死了，公主也被救出了塔，蝶仙",
+               "的精力也恢复了。",
+               "    当勇士和公主一起走出塔来的时候，国王也",
+               "带着军队来到了岛外。",
+               "    一切都是那么的平常。",
+               "    回国后，国王为勇士和公主举行了隆重而且",
+               "盛大的婚礼，并且宣布由勇士继承国王的位",
+               "置。从此以后，勇士和公主就幸福的生活在一",
+               "起了。"]
+    t0 = time.process_time()
+    time_flag = 0
+    # 结束语
+    while time_flag < 700:
+        t1 = time.process_time()
+        if int((t1 - t0) * 24) != time_flag:
+            time_flag = int((t1 - t0) * 24)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+            screen.fill((0, 0, 0))
+            # 滚动字
+            for i in range(len(message)):
+                print_string(message[i], 24, (50, 30 * (i + 15) - time_flag))
+            pygame.display.update()
+    # "终"字
+    t0 = time.process_time()
+    time_flag = 0
+    while time_flag < 300:
+        t1 = time.process_time()
+        if int((t1 - t0) * 24) != time_flag:
+            time_flag = int((t1 - t0) * 24)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+            screen.fill((0, 0, 0))
+            # 字
+            color = 255 * (-math.cos(time_flag / 48) * 0.5 + 0.5)
+            string = arial_font64.render('终', True, (color, color, color))
+            rect = string.get_rect()
+            rect.center = ((game.map.width + 7) * 16, (game.map.height + 2) * 16 + 5)
+            screen.blit(string, rect)
+            string = arial_font[32].render('The End', True, (color, color, color))
+            rect = string.get_rect()
+            rect.center = ((game.map.width + 7) * 16, (game.map.height + 5) * 16 + 5)
+            screen.blit(string, rect)
+            pygame.display.update()
+
 
 
 

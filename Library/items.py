@@ -38,9 +38,6 @@ import os
 #   Warrior
 
 
-info = json.loads(''.join(open('Library/tower.json').readlines()))
-
-
 class Item:
     def __init__(self, info=None):
         pass
@@ -117,7 +114,7 @@ class RedBottle(Bottle):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.hp += 200
+        warrior.hp += game.info["prop_info"]["RedBottle"]["buff"]
 
 
 class BlueBottle(Bottle):
@@ -125,7 +122,7 @@ class BlueBottle(Bottle):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.hp += 500
+        warrior.hp += game.info["prop_info"]["BlueBottle"]["buff"]
 
 
 class Key(Prop):
@@ -177,7 +174,7 @@ class RedGem(Gem):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.attack += 3
+        warrior.attack += game.info["prop_info"]["RedGem"]["buff"]
 
 
 class BlueGem(Gem):
@@ -185,7 +182,7 @@ class BlueGem(Gem):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.defense += 3
+        warrior.defense += game.info["prop_info"]["BlueGem"]["buff"]
 
 
 class Equipment(Prop):
@@ -616,7 +613,7 @@ class Warrior(Item):
         self.gold = warrior_info['gold']
         self.keys = warrior_info['keys']
 
-    def move(self, key, game):
+    def move(self, key):
         next_pos = {pygame.K_LEFT: [0, 0, -1],
                     pygame.K_RIGHT: [0, 0, 1],
                     pygame.K_UP: [0, -1, 0],
@@ -644,10 +641,10 @@ class Warrior(Item):
             return
         elif issubclass(next_type, Stair):
             if next_type.__name__ == 'UpStair':
-                self.move_to_new_floor(self.position[0] + 1, 'up', game.map)
+                self.move_to_new_floor(self.position[0] + 1, 'up')
                 game.info['indicator']['visited'][self.position[0]] = True
             elif next_type.__name__ == 'DownStair':
-                self.move_to_new_floor(self.position[0] - 1, 'down', game.map)
+                self.move_to_new_floor(self.position[0] - 1, 'down')
             return
         elif issubclass(next_type, Monster):
             if hasattr(next_obj, 'talk_to'):
@@ -661,7 +658,7 @@ class Warrior(Item):
                 self.gold += game.info['creature_info'][next_type.__name__]['gold']
                 game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
                 if hasattr(next_obj, 'callback'):
-                    next_obj.callback(next_obj, self)
+                    next_obj.callback()
                     next_obj.__delattr__('callback')
             return
         elif issubclass(next_type, NPC):
@@ -672,8 +669,8 @@ class Warrior(Item):
         game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
         self.position = next_pos
 
-    def move_to_new_floor(self, level, mode, map):
-        map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
+    def move_to_new_floor(self, level, mode):
+        game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
         if mode == 'up':
             next_pos = [level, game.info['tower_structure']['up_position'][level][0],
                         game.info['tower_structure']['up_position'][level][1]]
@@ -681,7 +678,7 @@ class Warrior(Item):
             next_pos = [level, game.info['tower_structure']['down_position'][level][0],
                         game.info['tower_structure']['down_position'][level][1]]
         self.position = next_pos.copy()
-        map.array[self.position[0]][self.position[1]][self.position[2]] = self
+        game.map.array[self.position[0]][self.position[1]][self.position[2]] = self
 
     def can_beat(self, monster):
         monster_damage = 0
@@ -793,7 +790,7 @@ class Game:
                 "display": False,
                 "content": None
             },
-            "win": False
+            "win": True
         }
         add_additional_attr(self)
         if os.path.exists('Library/save.json'):
@@ -818,8 +815,10 @@ class Game:
                     dialog["talking"] = None
                     dialog["content"] = None
                     dialog["content_left"] = None
-                    dialog["callback"].__call__()
-                return
+                    if dialog["callback"] is not None:
+                        tmp = dialog["callback"]
+                        dialog["callback"] = None
+                        tmp.__call__()
         elif self.status["shop"]["display"]:
             shop = self.status["shop"]
             if self.status["shop"]["first_use"]:
@@ -879,7 +878,7 @@ class Game:
                     #     self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up", self.map)
                     # else:
                     #     self.warrior.move_to_new_floor(self.warrior.position[0], "up", self.map)
-                    self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up", self.map)
+                    self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
                     aircraft["display"] = False
                     aircraft["highlight"] = None
                 elif event.key == pygame.K_2:
@@ -888,7 +887,7 @@ class Game:
                     aircraft["highlight"] = (aircraft["highlight"] - 1) % 20
         else:
             if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
-                game.warrior.move(event.key, game)
+                game.warrior.move(event.key)
             elif event.key == pygame.K_a:
                 if os.path.exists('Library/save.json'):
                     self.process_load('Library/save.json')
@@ -962,6 +961,7 @@ class Game:
         warrior_position = self.info['creature_info']['Warrior']['position']
         warrior = self.map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
         self.warrior = warrior
+        add_additional_attr(self)
 
 
-game = Game(info)
+game = Game(json.loads(''.join(open('Library/tower.json').readlines())))
