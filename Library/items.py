@@ -302,6 +302,8 @@ class Detector(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_detector'] = True
+        instruction = game.info["prop_info"]["Detector"]
+        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Cross(Special):
@@ -310,6 +312,8 @@ class Cross(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_cross'] = True
+        instruction = game.info["prop_info"]["Cross"]
+        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Aircraft(Special):
@@ -318,6 +322,8 @@ class Aircraft(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_aircraft'] = True
+        instruction = game.info["prop_info"]["Aircraft"]
+        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Hoe(Special):
@@ -326,6 +332,8 @@ class Hoe(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_hoe'] = True
+        instruction = game.info["prop_info"]["Hoe"]
+        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Stair(Item):
@@ -751,8 +759,12 @@ class Game:
         self.warrior = warrior
         self.t0 = time.process_time()
         self.t1 = 0
-        self.indicator = {}
         self.status = {
+            "instruction": {
+                "display": False,
+                "name": None,
+                "content": None
+            },
             "dialog": {
                 "display": False,
                 "talking": None,
@@ -770,12 +782,24 @@ class Game:
             },
             "detector": {
                 "display": False
-            }
+            },
+            "aircraft": {
+                "display": False,
+                "welcome": False,
+                "highlight": None
+            },
+            "win": False
         }
         add_additional_attr(self)
 
     def process_event(self, event):
-        if self.status["dialog"]["display"]:
+        if self.status["instruction"]["display"]:
+            instruction = self.status["instruction"]
+            if event.key == pygame.K_SPACE:
+                instruction["display"] = False
+                instruction["name"] = None
+                instruction["content"] = None
+        elif self.status["dialog"]["display"]:
             dialog = self.status["dialog"]
             if event.key == pygame.K_SPACE:
                 if dialog["content_left"]:
@@ -837,6 +861,24 @@ class Game:
         elif self.status["detector"]["display"]:
             if event.key == pygame.K_l:
                 self.status["detector"]["display"] = False
+        elif self.status["aircraft"]["display"]:
+            aircraft = self.status["aircraft"]
+            if aircraft["welcome"]:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                    aircraft["welcome"] = False
+            else:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                    # if self.info["indicator"]["visited"][aircraft["highlight"] + 1]:
+                    #     self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up", self.map)
+                    # else:
+                    #     self.warrior.move_to_new_floor(self.warrior.position[0], "up", self.map)
+                    self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up", self.map)
+                    aircraft["display"] = False
+                    aircraft["highlight"] = None
+                elif event.key == pygame.K_2:
+                    aircraft["highlight"] = (aircraft["highlight"] + 1) % 20
+                elif event.key == pygame.K_8:
+                    aircraft["highlight"] = (aircraft["highlight"] - 1) % 20
         else:
             if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
                 game.warrior.move(event.key, game)
@@ -850,11 +892,20 @@ class Game:
                 if game.info['indicator']['warrior_get_detector']:
                     self.status["detector"]["display"] = True
             elif event.key == pygame.K_j:
-                pass
+                if game.info['indicator']['warrior_get_aircraft']:
+                    self.status["aircraft"]["display"] = True
+                    self.status["aircraft"]["welcome"] = True
+                    self.status["aircraft"]["highlight"] = 0
 
-    def process_talk(self, dialog, callback):
+    def process_instruction(self, name, instruction):
+        self.status["instruction"]["display"] = True
+        self.status["instruction"]["name"] = name
+        self.status["instruction"]["content"] = instruction
+
+    def process_talk(self, dialog, callback=None):
         if not dialog:
-            callback.__call__()
+            if callback is not None:
+                callback.__call__()
             return
         self.status["dialog"]["display"] = True
         self.status["dialog"]["talking"] = dialog[0][0]

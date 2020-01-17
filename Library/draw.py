@@ -65,12 +65,16 @@ def draw(game, ts):
     frame = ts
     draw_map(game.map.array[game.warrior.position[0]])
     draw_info(game)
-    if game.status["dialog"]["display"]:
+    if game.status["instruction"]["display"]:
+        draw_instruction(game)
+    elif game.status["dialog"]["display"]:
         draw_dialog(game)
     elif game.status["shop"]["display"]:
         draw_shop(game)
     elif game.status["detector"]["display"]:
         draw_detector(game)
+    elif game.status["aircraft"]["display"]:
+        draw_aircraft(game)
     pygame.display.update()
 
 
@@ -78,17 +82,17 @@ def init_interface(game):
     global screen
     screen = pygame.display.set_mode(((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 10), 0, 32)
     screen.fill((0, 0, 0))
-    bg = pygame.image.load('UI/Background.png')
     for i in range(1, 33):
         arial_font.append(pygame.font.Font('Library/Arial.ttf', i))
-    fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
-    draw_rectangle_border((6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
 
 
 def draw_map(level):
+    bg = pygame.image.load('UI/Background.png')
+    fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
     width = len(level[0])
     height = len(level)
     fill_rectangle((6 * 32, 32 + 5), ((width + 6) * 32, ((height + 1) * 32 + 5)), img_list['Floor'])
+    draw_rectangle_border((6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
     for i in range(width):
         for j in range(height):
             temp_type = type(level[j][i])
@@ -171,6 +175,31 @@ def draw_info_content(warrior):
     # forth
     print_string(u'S 保存   Q 退出程序', 14, (32 + 2, 11 * 32 - 6))
     print_string(u'A 读取   R 重新开始', 14, (32 + 2, 12 * 32 - 16))
+
+
+def draw_instruction(game):
+    instruction = game.status["instruction"]
+
+    # 画矩形和边框
+    pos = pygame.rect.Rect((5 * 32, 5 * 32), (12 * 32 + 24, 4 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    pygame.draw.rect(screen, (0, 0, 0), pos)
+
+    # 名字
+    string = ' '.join(instruction["name"])
+    print_string(string, 24, center=(pos.centerx, 6 * 32 - 8))
+
+    # 内容
+    message = instruction["content"]
+    for i in range(len(message)):
+        print_string(message[i], 16, (pos.left + 4, pos.top + 48 + 20 * i))
+
+    # 右下角的Space
+    color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
+    string = arial_font[10].render('-- Space --', True, (color, color, color))
+    rect = string.get_rect()
+    rect.bottomright = pos.bottomright
+    screen.blit(string, rect)
 
 
 def draw_dialog(game):
@@ -294,7 +323,7 @@ def draw_shop_interface(game):
                   (rect.right, rect.bottom),
                   (rect.left - 2, rect.bottom)]
     color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
-    pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+    pygame.draw.lines(screen, (color, color, color), True, map_border, 2)
 
 
 def draw_expshop_interface(game):
@@ -332,7 +361,7 @@ def draw_expshop_interface(game):
                   (rect.right, rect.bottom),
                   (rect.left - 2, rect.bottom)]
     color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
-    pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+    pygame.draw.lines(screen, (color, color, color), True, map_border, 2)
 
 
 def draw_keyshop_interface(game):
@@ -370,7 +399,7 @@ def draw_keyshop_interface(game):
                   (rect.right, rect.bottom),
                   (rect.left - 2, rect.bottom)]
     color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
-    pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+    pygame.draw.lines(screen, (color, color, color), True, map_border, 2)
 
 
 def draw_keyshop_sell_interface(game):
@@ -407,7 +436,7 @@ def draw_keyshop_sell_interface(game):
                   (rect.right, rect.bottom),
                   (rect.left - 2, rect.bottom)]
     color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
-    pygame.draw.lines(screen, (color, color, color), True, map_border, 3)
+    pygame.draw.lines(screen, (color, color, color), True, map_border, 2)
 
 
 def draw_detector(game):
@@ -454,6 +483,79 @@ def draw_monster_info(monster, position, time_flag, damage):
     print_string(str(game.info['creature_info'][monster]['gold']) + u' · ' + str(game.info['creature_info'][monster]['exp']),
                  14, center=(16 * 32 - 8, 52 + 40 * position))
     print_string(str(damage), 14, center=(16 * 32 - 8, 68 + 40 * position))
+
+
+def draw_aircraft(game):
+    if game.status["aircraft"]["welcome"]:
+        draw_aircraft_welcome(game)
+    else:
+        draw_aircraft_selection(game)
+
+
+def draw_aircraft_welcome(game):
+    # 画矩形和边框
+    pos = pygame.rect.Rect((7 * 32, 2 * 32), (9 * 32, 9 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    pygame.draw.rect(screen, (0, 0, 0), pos)
+
+    # 标题
+    string = ' '.join("楼层跳跃")
+    print_string(string, 32, center=(pos.centerx, 3 * 32))
+
+    # 指导语
+    message = ["    本功能可以使您快速地在已经走",
+               "过的各个楼层间进行快速转换。",
+               "    其具体操作方法为：",
+               "    8 键  代表光标上移一格",
+               "    2 键  代表光标下移一格",
+               "    Space 或 5 键代表确认选择",
+               "    本功能只允许在已经走过的楼层",
+               "间进行转换，如果该楼层还没有走",
+               "过，那么将无法转换到位置。"]
+    for i in range(len(message)):
+        print_string(message[i], 18, (pos.left + 8, pos.top + 64 + 20 * i))
+
+    # 右下角的Space
+    color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
+    string = arial_font[10].render('-- Space --', True, (color, color, color))
+    rect = string.get_rect()
+    rect.bottomright = pos.bottomright
+    screen.blit(string, rect)
+
+
+def draw_aircraft_selection(game):
+    # 画矩形和边框
+    pos = pygame.rect.Rect((7 * 32, 2 * 32), (9 * 32, 9 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    pygame.draw.rect(screen, (0, 0, 0), pos)
+
+    # 标题
+    string = ' '.join("楼层跳跃")
+    print_string(string, 32, center=(pos.centerx, 3 * 32))
+
+    # 选项
+    for i in range(1, 21):
+        message = "第 " + str(i) + " 层"
+        x_offset, y_offset = divmod(i - 1, 7)
+        print_string(message, 18,
+                     center=(pos.left + 48 + 3 * 32 * x_offset, pos.top + 30 * (y_offset + 2.5)))
+
+    # 高亮框
+    x_offset, y_offset = divmod(game.status["aircraft"]["highlight"], 7)
+    rect = pygame.rect.Rect((0, 0), (3 * 32 - 8, 24))
+    rect.center = (pos.left + 48 + 3 * 32 * x_offset, pos.top + 30 * (y_offset + 2.5))
+    map_border = [(rect.left - 2, rect.top - 2),
+                  (rect.right, rect.top - 2),
+                  (rect.right, rect.bottom),
+                  (rect.left - 2, rect.bottom)]
+    color = 255 * (math.cos(frame / 3) * 0.25 + 0.75)
+    pygame.draw.lines(screen, (color, color, color), True, map_border, 2)
+
+    # 右下角的Space
+    string = arial_font[10].render('-- Space --', True, (color, color, color))
+    rect = string.get_rect()
+    rect.bottomright = pos.bottomright
+    screen.blit(string, rect)
 
 
 def draw_end():

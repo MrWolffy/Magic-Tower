@@ -5,9 +5,8 @@ import time
 
 
 def exec_game(game):
-    global TIME_FLAG
     draw.init_interface(game)
-    while game.indicator.get('win') is not True:
+    while game.status['win'] is not True:
         t1 = time.process_time()
         for event in pygame.event.get():
             if event.type == pygame.QUIT or \
@@ -16,8 +15,8 @@ def exec_game(game):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 game.process_event(event)
-        time_flag = int((t1 - game.t0) * 24) % 24
-        if time_flag != int((game.t1 - game.t0) * 24) % 24:
+        time_flag = int((t1 - game.t0) * 24)
+        if time_flag != int((game.t1 - game.t0) * 24):
             game.t1 = t1
             draw.draw(game, time_flag)
     # draw.draw_end()
