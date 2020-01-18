@@ -39,8 +39,8 @@ def fill_rectangle(point1, point2, img):
                     (rect.left + width[0] * 32, rect.top + height[0] * 32))
 
 
-def print_string(string, fontsize, topleft=(0, 0), center=None, bottomright=None):
-    info = arial_font[fontsize].render(string, True, (255, 255, 255))
+def print_string(string, fontsize, topleft=(0, 0), center=None, bottomright=None, color=(255, 255, 255)):
+    info = arial_font[fontsize].render(string, True, color)
     if center is not None:
         info_rect = info.get_rect()
         info_rect.center = center
@@ -62,8 +62,10 @@ frame = 0
 def draw(game, ts):
     global frame
     frame = ts
+    # 先画地图和信息
     draw_map(game)
     draw_info(game)
+    # 逐个判断有没有mask，有的话就叠到原有界面上
     if game.status["instruction"]["display"]:
         draw_instruction(game)
     elif game.status["dialog"]["display"]:
@@ -92,19 +94,35 @@ def init_interface(game):
 
 def draw_map(game):
     level = game.map.array[game.warrior.position[0]]
+    # 画整体大背景
     bg = pygame.image.load('UI/Background.png')
     fill_rectangle((0, 5), ((game.map.width + 7) * 32, (game.map.height + 2) * 32 + 5), bg)
+    # 画地图背景（用Floor当作地图背景）
     width = len(level[0])
     height = len(level)
     fill_rectangle((6 * 32, 32 + 5), ((width + 6) * 32, ((height + 1) * 32 + 5)), img_list['Floor'])
     draw_rectangle_border((6 * 32, 32 + 5), ((game.map.width + 6) * 32, (game.map.height + 1) * 32 + 5))
+    # 逐个格画物体
     for i in range(width):
         for j in range(height):
             temp_type = type(level[j][i])
             if temp_type.__name__ != 'Floor':
-                # 有保留动作的
-                if issubclass(temp_type, (Door, Warrior)):
-                    screen.blit(img_list[temp_type.__name__].subsurface((0, 0), (32, 32)),
+                # 门有开门动作
+                if issubclass(temp_type, Door):
+                    if game.status['door_open']['display'] and \
+                            j == game.status['door_open']['position'][1] and \
+                            i == game.status['door_open']['position'][2]:
+                        y_offset = game.status['door_open']['frame']
+                        screen.blit(img_list[temp_type.__name__].subsurface((0, 32 * 2 * y_offset), (32, 32)),
+                                    ((i + 6) * 32, (j + 1) * 32 + 5))
+                    else:
+                        screen.blit(img_list[temp_type.__name__].subsurface((0, 0), (32, 32)),
+                                    ((i + 6) * 32, (j + 1) * 32 + 5))
+                # 勇士有朝向问题
+                elif temp_type == Warrior:
+                    x_offset = {0: 0, 1: 1, 2: 3, 3: 2}[int(game.status['walk']['frame'] / 2)]
+                    y_offset = {'down': 0, 'left': 1, 'right': 2, 'up': 3}[level[j][i].toward]
+                    screen.blit(img_list['Warrior'].subsurface((32 * x_offset, 33 * y_offset), (32, 32)),
                                 ((i + 6) * 32, (j + 1) * 32 + 5))
                 # 能动的
                 elif issubclass(temp_type, (Creature, Lava, Star)):
@@ -135,11 +153,14 @@ def draw_info_background():
 
 def draw_info_content(warrior):
     # first
+    # 勇士头像
     print_string(str(frame % 24), 10, (32, 32 + 5))
     warrior_image = img_list['Warrior'].subsurface((0, 0), (32, 32))
     screen.blit(pygame.transform.scale(warrior_image, (40, 40)), (40, 40))
+    # 等级
     print_string(str(warrior.level), 32, (3 * 32, 44))
     print_string(u'级', 16, (4 * 32 + 8, 62))
+    # 基本信息
     info = [u'生命', u'攻击', u'防御', u'金币', u'经验']
     for i in range(len(info)):
         print_string(info[i], 16, (32 + 6, 2 * 32 + 28 + i * 20))
@@ -148,36 +169,35 @@ def draw_info_content(warrior):
     print_string(str(warrior.defense), 16, center=(3.5 * 32 + 4, 3 * 32 + 8 + 2 * 20))
     print_string(str(warrior.gold), 16, center=(3.5 * 32 + 4, 3 * 32 + 8 + 3 * 20))
     print_string(str(warrior.exp), 16, center=(3.5 * 32 + 4, 3 * 32 + 8 + 4 * 20))
+
     # second
+    # 钥匙图片
     key_image = img_list['YellowKey']
     screen.blit(key_image, (32 + 4, 6 * 32 + 5 + 8))
     key_image = img_list['BlueKey']
     screen.blit(key_image, (32 + 4, 7 * 32 + 5 + 8))
     key_image = img_list['RedKey']
     screen.blit(key_image, (32 + 4, 8 * 32 + 5 + 8))
-    info = arial_font[22].render(str(warrior.keys[0]), True, (255, 255, 255))
-    info_rect = info.get_rect()
-    info_rect.bottomright = (4 * 32, 7 * 32 + 5 + 6)
-    screen.blit(info, info_rect)
-    info = arial_font[22].render(str(warrior.keys[1]), True, (255, 255, 255))
-    info_rect = info.get_rect()
-    info_rect.bottomright = (4 * 32, 8 * 32 + 5 + 6)
-    screen.blit(info, info_rect)
-    info = arial_font[22].render(str(warrior.keys[2]), True, (255, 255, 255))
-    info_rect = info.get_rect()
-    info_rect.bottomright = (4 * 32, 9 * 32 + 5 + 6)
-    screen.blit(info, info_rect)
+    # 钥匙数量
+    print_string(str(warrior.keys[0]), 22, bottomright=(4 * 32, 7 * 32 + 5 + 6))
+    print_string(str(warrior.keys[1]), 22, bottomright=(4 * 32, 8 * 32 + 5 + 6))
+    print_string(str(warrior.keys[2]), 22, bottomright=(4 * 32, 9 * 32 + 5 + 6))
+    # 单位"个"
     info = arial_font[16].render(u'个', True, (255, 255, 255))
     screen.blit(info, (4 * 32 + 12, 6 * 32 + 18))
     screen.blit(info, (4 * 32 + 12, 7 * 32 + 18))
     screen.blit(info, (4 * 32 + 12, 8 * 32 + 18))
+
     # third
+    # 当前层数
     level = warrior.position[0]
     if level == 0:
         print_string(u'序  章', 16, center=(3 * 32, 9.5 * 32 + 5 + 8))
     else:
         print_string(u'第 ' + str(level) + u' 层', 16, center=(3 * 32, 9.5 * 32 + 5 + 8))
+
     # forth
+    # 指令
     print_string(u'S 保存   Q 退出程序', 14, (32 + 2, 11 * 32 - 6))
     print_string(u'A 读取   R 重新开始', 14, (32 + 2, 12 * 32 - 16))
 
@@ -246,6 +266,7 @@ def draw_dialog(game):
 
 
 def draw_shop(game):
+    # 不同种类商店的格式过于复杂，所以拆成多个函数
     if game.status["shop"]["first_use"]:
         draw_shop_welcome()
     elif game.status["shop"]["type"] == 'gold':
@@ -445,6 +466,7 @@ def draw_keyshop_sell_interface(game):
 
 
 def draw_detector(game):
+    # 获取怪物种类
     map = game.map.array[game.warrior.position[0]]
     monsters = []
     for i in range(len(map)):
@@ -452,10 +474,13 @@ def draw_detector(game):
             obj_type = type(map[i][j])
             if issubclass(obj_type, Monster) and obj_type.__name__ not in monsters:
                 monsters.append(obj_type.__name__)
+    # 没有怪物就不展示
     if len(monsters) == 0:
         return
+    # 背景涂黑
     rect = pygame.rect.Rect((6 * 32, 32 + 5), (11 * 32, 11 * 32))
     pygame.draw.rect(screen, (0, 0, 0), rect)
+    # 依次画怪物信息
     for i in range(len(monsters)):
         draw_monster_info(monsters[i], i, int(frame / 8) % 4, game.warrior.can_beat(monsters[i])[1])
 
@@ -485,8 +510,9 @@ def draw_monster_info(monster, position, time_flag, damage):
     print_string(str(game.info['creature_info'][monster]['defense']), 14, bottomright=(13 * 32, 78 + 40 * position))
     print_string(u'金 · 经', 14, center=(14 * 32, 52 + 40 * position))
     print_string(u'损失', 14, center=(14 * 32, 68 + 40 * position))
-    print_string(str(game.info['creature_info'][monster]['gold']) + u' · ' + str(game.info['creature_info'][monster]['exp']),
-                 14, center=(16 * 32 - 8, 52 + 40 * position))
+    print_string(
+        str(game.info['creature_info'][monster]['gold']) + u' · ' + str(game.info['creature_info'][monster]['exp']),
+        14, center=(16 * 32 - 8, 52 + 40 * position))
     print_string(str(damage), 14, center=(16 * 32 - 8, 68 + 40 * position))
 
 
@@ -645,7 +671,6 @@ def draw_fight(game):
     print_string(str(game.warrior.defense), 20, (point[0], point[1] + 4))
 
 
-
 def draw_begin():
     message = ["    这是一个很古老的故事",
                "    在很久很久以前，在遥远的西方大地上，有",
@@ -665,6 +690,7 @@ def draw_begin():
                "回来，有幸回来的，都再也不敢去了。",
                "    而我们的故事，便是从这里开始……"]
     t0 = time.process_time()
+    # 开始界面持续的帧数为700，试验得到
     time_flag = 0
     while time_flag < 700:
         t1 = time.process_time()
@@ -738,8 +764,3 @@ def draw_end():
             rect.center = ((game.map.width + 7) * 16, (game.map.height + 5) * 16 + 5)
             screen.blit(string, rect)
             pygame.display.update()
-
-
-
-
-

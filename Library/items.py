@@ -647,60 +647,84 @@ class Warrior(Item):
         self.exp = warrior_info['exp']
         self.gold = warrior_info['gold']
         self.keys = warrior_info['keys']
+        self.toward = 'down'
 
     def move(self, key):
+        # 计算下一步的位置
+        self.toward = {pygame.K_LEFT: 'left',
+                       pygame.K_RIGHT: 'right',
+                       pygame.K_UP: 'up',
+                       pygame.K_DOWN: 'down'}[key]
         next_pos = {pygame.K_LEFT: [0, 0, -1],
                     pygame.K_RIGHT: [0, 0, 1],
                     pygame.K_UP: [0, -1, 0],
                     pygame.K_DOWN: [0, 1, 0]}[key]
         next_pos = [next_pos[i] + self.position[i] for i in range(3)]
+        # 如果超出边界是不走的
         if next_pos[1] < 0 or next_pos[2] < 0 or next_pos[1] >= game.map.height or next_pos[2] >= game.map.width:
             return
+        # 没超出边界，判断要走到的位置上有什么
         next_obj = game.map.array[next_pos[0]][next_pos[1]][next_pos[2]]
         next_type = type(next_obj)
         if issubclass(next_type, Barrier):
+            # 障碍物：不走
             return
         elif issubclass(next_type, Door):
+            # 门：判断是不是能用钥匙开的
             idx = {'YellowDoor': 0, 'BlueDoor': 1, 'RedDoor': 2}.get(next_type.__name__)
             if idx is None:
+                # 不是，代表铁门，判断铁门能不能开
                 if next_type.__name__ == 'IronFence' and next_obj.can_open:
-                    game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
+                    game.status['door_open']['display'] = True
+                    game.status['door_open']['position'] = next_pos
                 return
             if self.keys[idx] != 0:
+                # 是，尝试用钥匙开
                 self.keys[idx] -= 1
-                game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
+                game.status['door_open']['display'] = True
+                game.status['door_open']['position'] = next_pos
         elif issubclass(next_type, Prop):
+            # 道具：用道具
             next_obj.used_by(self)
             game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
             if not issubclass(next_type, Special):
+                # 非特殊道具弹alert
                 game.process_alert(next_type.generate_alert_from_prop(next_type))
             else:
+                # 特殊道具弹instruction
                 instruction = game.info["prop_info"][next_type.__name__]
                 game.process_instruction(instruction["chinese_name"], instruction["description"])
         elif issubclass(next_type, Stair):
+            # 楼梯：上下楼
             if next_type.__name__ == 'UpStair':
                 self.move_to_new_floor(self.position[0] + 1, 'up')
                 game.info['indicator']['visited'][self.position[0]] = True
             elif next_type.__name__ == 'DownStair':
                 self.move_to_new_floor(self.position[0] - 1, 'down')
         elif issubclass(next_type, Monster):
+            # 怪
+            # 先判断有没有对话
             if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
                 next_obj.__delattr__('talk_to')
                 return
+            # 判断能不能打，能打就打
             flag, est_damage = self.can_beat(next_type.__name__)
             if flag:
                 game.process_fight(next_obj, next_pos)
         elif issubclass(next_type, NPC):
+            # NPC：有对话的要对话
             if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
         else:
+            # 否则就是平地，直接走
             game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
             game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
             self.position = next_pos
 
     def move_to_new_floor(self, level, mode):
         game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
+        # 获取下一层要走到的位置，已经存好
         if mode == 'up':
             next_pos = [level, game.info['tower_structure']['up_position'][level][0],
                         game.info['tower_structure']['up_position'][level][1]]
@@ -712,6 +736,7 @@ class Warrior(Item):
 
     def can_beat(self, monster):
         monster_damage = 0
+        # 特殊怪物的攻击先发出
         if monster == 'HempWizard':
             monster_damage += 100
         elif monster == 'RedWizard':
@@ -720,28 +745,40 @@ class Warrior(Item):
             monster_damage += math.floor(self.hp / 4)
         elif monster == 'SoulWizard':
             monster_damage += math.floor(self.hp / 3)
+
         if self.attack <= game.info['creature_info'][monster]['defense']:
+            # 攻比对方防低，伤害无限大
             return False, "???"
         elif self.defense >= game.info['creature_info'][monster]['attack']:
+            # 自己防比对方攻高，损失为0 + 特殊攻击
             return True, monster_damage
+        # 计算每回合伤害
         my_damage_per_round = self.attack - game.info['creature_info'][monster]['defense']
         monster_damage_per_round = game.info['creature_info'][monster]['attack'] - self.defense
+        # 计算回合数
+        # 勇士先攻，对方死了就不打了，取下整
         rounds_count = math.floor(game.info['creature_info'][monster]['hp'] / my_damage_per_round)
+        # 计算受到的总伤害
         monster_damage += rounds_count * monster_damage_per_round
+        # 返回能否打过和伤害值
         return monster_damage < self.hp, monster_damage
 
     def after_fight(self, next_pos):
+        # 获取怪物
         monster = game.map.array[next_pos[0]][next_pos[1]][next_pos[2]]
         monster_name = type(monster).__name__
+        game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
+        # 加经验和金币
         self.exp += game.info['creature_info'][monster_name]['exp']
         self.gold += game.info['creature_info'][monster_name]['gold']
-        game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
+        # 弹获得金币和经验的alert
         message = ' '.join(['得到金币数',
                             str(game.info['creature_info'][monster_name]['exp']),
                             '经验值',
                             str(game.info['creature_info'][monster_name]['gold']),
                             '！'])
         game.process_alert(message)
+        # 有副作用的把副作用做了
         if hasattr(monster, 'callback'):
             monster.callback()
             monster.__delattr__('callback')
@@ -826,47 +863,69 @@ class Game:
                 "my_damage_per_round": 0,
                 "monster_damage_per_round": 0
             },
+            "walk": {
+                "display": False,
+                "frame": 0
+            },
+            "door_open": {
+                "display": False,
+                "frame": 0,
+                "position": None
+            },
             "win": False
         }
         add_additional_attr(self)
         if os.path.exists('Library/save.json'):
             os.remove('Library/save.json')
 
-    def process_event(self, event):
+    def process_event(self, key):
+        if key == pygame.K_q:
+            pygame.quit()
+            quit()
         if self.status["alert"]["display"]:
+            # 有alert的时候不能做别的
             return
         elif self.status["fight"]["display"]:
+            # 战斗的时候不能做别的
             return
         elif self.status["instruction"]["display"]:
+            # 有instruction的时候只能完成instruction
             instruction = self.status["instruction"]
-            if event.key == pygame.K_SPACE:
+            if key == pygame.K_SPACE:
                 instruction["display"] = False
                 instruction["name"] = None
                 instruction["content"] = None
         elif self.status["dialog"]["display"]:
+            # 对话，只能按space往下读
             dialog = self.status["dialog"]
-            if event.key == pygame.K_SPACE:
+            if key == pygame.K_SPACE:
                 if dialog["content_left"]:
+                    # 如果对话还有，就读下一句
                     dialog["talking"] = dialog["content_left"][0][0]
                     dialog["content"] = dialog["content_left"][0][1]
                     dialog["content_left"] = dialog["content_left"][1:]
                 else:
+                    # 如果没了，就重置
                     dialog["display"] = False
                     dialog["talking"] = None
                     dialog["content"] = None
                     dialog["content_left"] = None
                     if dialog["callback"] is not None:
+                        # 如果有副作用
                         tmp = dialog["callback"]
                         dialog["callback"] = None
                         tmp.__call__()
         elif self.status["shop"]["display"]:
             shop = self.status["shop"]
+            # 三楼的商店有指导
             if self.status["shop"]["first_use"]:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                if key == pygame.K_SPACE or key == pygame.K_5:
                     self.status["shop"]["first_use"] = False
                 return
-            if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+            # 5代表买或退出
+            if key == pygame.K_SPACE or key == pygame.K_5:
                 if shop["highlight"] == 3:
+                    # 当前选中3是退出
                     self.status["shop"]["display"] = False
                     self.status["shop"]["highlight"] = None
                     self.status["shop"]["type"] = None
@@ -874,6 +933,7 @@ class Game:
                     self.status["shop"]["buff"] = None
                     return
                 else:
+                    # 否则根据商店类别和选中商品处理
                     if shop["type"] == "gold" and self.warrior.gold >= shop["price"]:
                         self.warrior.gold -= shop["price"]
                         if shop["highlight"] == 0:
@@ -900,24 +960,31 @@ class Game:
                             self.warrior.keys[shop["highlight"]] >= shop["buff"][shop["highlight"]]:
                         self.warrior.keys[shop["highlight"]] -= shop["buff"][shop["highlight"]]
                         self.warrior.gold += shop["price"][shop["highlight"]]
-            elif event.key == pygame.K_2:
+            # 2代表下一个
+            elif key == pygame.K_2:
                 shop["highlight"] = min(3, shop["highlight"] + 1)
-            elif event.key == pygame.K_8:
+            # 8代表上一个
+            elif key == pygame.K_8:
                 shop["highlight"] = max(0, shop["highlight"] - 1)
         elif self.status["detector"]["display"]:
-            if event.key == pygame.K_l:
+            # 查看怪物信息
+            if key == pygame.K_l:
                 self.status["detector"]["display"] = False
         elif self.status["aircraft"]["display"]:
+            # 飞行器
             aircraft = self.status["aircraft"]
-            if event.key == pygame.K_j:
+            # 可以随时用j退出
+            if key == pygame.K_j:
                 aircraft["display"] = False
                 aircraft["highlight"] = None
                 return
+            # 飞行器每次都要读指导
             if aircraft["welcome"]:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                if key == pygame.K_SPACE or key == pygame.K_5:
                     aircraft["welcome"] = False
             else:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_5:
+                # 5是选中
+                if key == pygame.K_SPACE or key == pygame.K_5:
                     if self.info["indicator"]["visited"][aircraft["highlight"] + 1]:
                         self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
                     else:
@@ -925,25 +992,36 @@ class Game:
                     # self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
                     aircraft["display"] = False
                     aircraft["highlight"] = None
-                elif event.key == pygame.K_2:
+                # 2选下一个，超过20了会回到1
+                elif key == pygame.K_2:
                     aircraft["highlight"] = (aircraft["highlight"] + 1) % 20
-                elif event.key == pygame.K_8:
+                # 8选上一个
+                elif key == pygame.K_8:
                     aircraft["highlight"] = (aircraft["highlight"] - 1) % 20
         else:
-            if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
-                game.warrior.move(event.key)
-            elif event.key == pygame.K_a:
+            # 否则是正常逻辑
+            if key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN]:
+                # 方向键：走路
+                self.status['walk']['display'] = True
+                self.status['walk']['frame'] = 1
+                game.warrior.move(key)
+            elif key == pygame.K_a:
+                # A：读取
                 if os.path.exists('Library/save.json'):
                     self.process_load('Library/save.json')
-            elif event.key == pygame.K_s:
+            elif key == pygame.K_s:
+                # S：保存
                 self.process_save()
                 self.process_alert('保存数据成功 ！')
-            elif event.key == pygame.K_r:
+            elif key == pygame.K_r:
+                # R：重新开始
                 self.process_load('Library/tower.json')
-            elif event.key == pygame.K_l:
+            elif key == pygame.K_l:
+                # L：检查怪物数值
                 if game.info['indicator']['warrior_get_detector']:
                     self.status["detector"]["display"] = True
-            elif event.key == pygame.K_j:
+            elif key == pygame.K_j:
+                # J：飞行器
                 if game.info['indicator']['warrior_get_aircraft']:
                     self.status["aircraft"]["display"] = True
                     self.status["aircraft"]["welcome"] = True
@@ -996,17 +1074,20 @@ class Game:
             f.write(json.dumps(self.info))
 
     def process_load(self, path):
+        # 读信息
         self.info = json.loads(''.join(open(path).readlines()))
+        # 读图
         tower_structure = self.info['tower_structure']
         for i in range(tower_structure['total_level']):
             for j in range(tower_structure['height']):
                 for k in range(tower_structure['width']):
                     if type(self.map.array[i][j][k]).__name__ != tower_structure['level_structure'][i][j][k]:
                         self.map.array[i][j][k] = eval(tower_structure['level_structure'][i][j][k] + '(self.info)')
+        add_additional_attr(self)
+        # 读勇士
         warrior_position = self.info['creature_info']['Warrior']['position']
         warrior = self.map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
         self.warrior = warrior
-        add_additional_attr(self)
 
     def process_alert(self, content):
         self.status["alert"]["display"] = True
@@ -1039,13 +1120,31 @@ class Game:
             fight['warrior']['hp'] -= math.floor(fight['warrior']['hp'] / 3)
 
     def process_next_frame(self):
+        # 开门的时候不走路
+        if self.status['door_open']['display']:
+            self.status['door_open']['frame'] += 1
+            if self.status['door_open']['frame'] >= 2:
+                self.status['door_open']['display'] = False
+                self.status['door_open']['frame'] = 0
+                pos = self.status['door_open']['position']
+                self.map.array[pos[0]][pos[1]][pos[2]] = Floor()
+                self.status['door_open']['position'] = None
+            return
+        # 走路和其他逻辑之间不用else
+        if self.status['walk']['display']:
+            self.status['walk']['frame'] += 1
+            if self.status['walk']['frame'] >= 8:
+                self.status['walk']['display'] = False
+                self.status['walk']['frame'] = 0
         if self.status["alert"]["display"]:
+            # alert保留12帧
             self.status["alert"]["frame"] += 1
             if self.status["alert"]["frame"] >= 12:
                 self.status["alert"]["display"] = False
                 self.status["alert"]["content"] = None
                 self.status["alert"]["frame"] = 0
         elif self.status["fight"]["display"]:
+            # fight中每4帧攻击一次
             self.status["fight"]["frame"] += 1
             if self.status["fight"]["frame"] % 4 == 0:
                 # 如果怪被打死了
