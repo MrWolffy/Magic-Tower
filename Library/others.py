@@ -200,7 +200,7 @@ def add_callback(npc, callback):
 
 def add_additional_attr(game):
     # add NPC dialogs
-    add_dialog(game.map.array[0][8][5], fairy_lv0_talk)
+    add_dialog(game.map.array[0][8][5], test_talk)
     add_dialog(game.map.array[2][10][7], elder_lv2_talk)
     add_dialog(game.map.array[2][10][9], merchant_lv2_talk)
     add_dialog(game.map.array[3][0][5], shop_lv3_talk)

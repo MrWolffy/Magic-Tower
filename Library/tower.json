@@ -89,7 +89,7 @@
           "Star",
           "Star",
           "Star",
-          "Aircraft",
+          "Floor",
           "Star",
           "Star",
           "Star",
@@ -3287,14 +3287,14 @@
       ],
       "level": 1,
       "hp": 1000,
-      "attack": 2550,
-      "defense": 2550,
+      "attack": 10,
+      "defense": 10,
       "gold": 0,
       "exp": 0,
       "keys": [
-        10,
-        10,
-        10
+        0,
+        0,
+        0
       ],
       "chinese_name": "勇士"
     },
@@ -4091,6 +4091,35 @@
     }
   },
   "prop_info": {
+    "RedBottle": {
+      "chinese_name": "小血瓶",
+      "buff": 200
+    },
+    "BlueBottle": {
+      "chinese_name": "大血瓶",
+      "buff": 500
+    },
+    "YellowKey": {
+      "chinese_name": "黄钥匙"
+    },
+    "BlueKey": {
+      "chinese_name": "蓝钥匙"
+    },
+    "RedKey": {
+      "chinese_name": "红钥匙"
+    },
+    "KeyKit": {
+      "chinese_name": "钥匙盒",
+      "buff": 1
+    },
+    "RedGem": {
+      "chinese_name": "红宝石",
+      "buff": 3
+    },
+    "BlueGem": {
+      "chinese_name": "蓝宝石",
+      "buff": 3
+    },
     "IronSword": {
       "chinese_name": "铁剑",
       "buff": 10
@@ -4123,6 +4152,24 @@
       "chinese_name": "星光神盾",
       "buff": 150
     },
+    "SmallWing": {
+      "chinese_name": "小飞羽",
+      "buff": 1
+    },
+    "GoldCoin": {
+      "chinese_name": "金块",
+      "buff": 300
+    },
+    "BigWing": {
+      "chinese_name": "大飞羽",
+      "buff": 3
+    },
+    "HolyWater": {
+      "chinese_name": "圣水瓶",
+      "description": [
+        "    它可以将你的体质增加一倍（生命值加倍）。"
+      ]
+    },
     "Detector": {
       "chinese_name": "圣光徽",
       "description": [
@@ -4151,22 +4198,6 @@
         "    把它交给第四层的小偷，小偷便会用它打开第十八",
         "层的隐藏地面（你就可以救出公主了）。"
       ]
-    },
-    "RedBottle": {
-      "chinese_name": "小血瓶",
-      "buff": 200
-    },
-    "BlueBottle": {
-      "chinese_name": "大血瓶",
-      "buff": 500
-    },
-    "RedGem": {
-      "chinese_name": "红宝石",
-      "buff": 3
-    },
-    "BlueGem": {
-      "chinese_name": "蓝宝石",
-      "buff": 3
     }
   }
 }

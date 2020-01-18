@@ -54,7 +54,6 @@ def print_string(string, fontsize, topleft=(0, 0), center=None, bottomright=None
 
 
 arial_font = [None]
-arial_font64 = pygame.font.Font('Library/Arial.ttf', 64)
 screen = None
 img_list = read_image()
 frame = 0
@@ -75,6 +74,10 @@ def draw(game, ts):
         draw_detector(game)
     elif game.status["aircraft"]["display"]:
         draw_aircraft(game)
+    elif game.status["alert"]["display"]:
+        draw_alert(game)
+    elif game.status["fight"]["display"]:
+        draw_fight(game)
     pygame.display.update()
 
 
@@ -84,6 +87,7 @@ def init_interface(game):
     screen.fill((0, 0, 0))
     for i in range(1, 33):
         arial_font.append(pygame.font.Font('Library/Arial.ttf', i))
+    arial_font.append(pygame.font.Font('Library/Arial.ttf', 64))
 
 
 def draw_map(game):
@@ -559,6 +563,89 @@ def draw_aircraft_selection(game):
     screen.blit(string, rect)
 
 
+def draw_alert(game):
+    alert = game.status["alert"]
+
+    # 画矩形和边框
+    pos = pygame.rect.Rect((8, 4 * 32), ((game.map.width + 7) * 32 - 16, 2 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    fill_rectangle(pos.topleft, pos.bottomright, pygame.image.load('UI/Floor.png'))
+
+    # 写字
+    print_string(alert["content"], 32, center=pos.center)
+
+
+def draw_fight(game):
+    fight = game.status["fight"]
+
+    # 画矩形和边框
+    pos = pygame.rect.Rect((8, 32), ((game.map.width + 7) * 32 - 16, 7 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    fill_rectangle(pos.topleft, pos.bottomright, pygame.image.load('UI/Floor.png'))
+
+    # "vs"
+    print_string("VS", 32, center=pos.center)
+
+    # 怪的信息
+    # 头像
+    pos = pygame.rect.Rect((16, 2 * 32 - 8), (3 * 32, 3 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    pygame.draw.rect(screen, (85, 85, 85), pos)
+    image = img_list['Floor'].subsurface((0, 0), (32, 32))
+    screen.blit(pygame.transform.scale(image, (64, 64)), (32, 2 * 32 + 8))
+    image = img_list[fight['monster']['name']].subsurface((int(frame / 8) % 4 * 32, 0), (32, 32))
+    screen.blit(pygame.transform.scale(image, (64, 64)), (32, 2 * 32 + 8))
+    # "怪物"二字
+    print_string("怪物", 24, center=(2 * 32, 6 * 32))
+    # 生命值
+    point = (pos.right + 8, pos.top)
+    print_string("生命值：", 16, point)
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(fight['monster']['hp']), 20, bottomright=(point[0] + 3 * 32, point[1] + 32))
+    # 攻击力
+    point = (point[0], point[1] + 32)
+    print_string("攻击力：", 16, point)
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(fight['monster']['attack']), 20, bottomright=(point[0] + 3 * 32, point[1] + 32))
+    # 防御力
+    point = (point[0], point[1] + 32)
+    print_string("防御力：", 16, point)
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(fight['monster']['defense']), 20, bottomright=(point[0] + 3 * 32, point[1] + 32))
+
+    # 勇士的信息
+    # 头像
+    pos = pygame.rect.Rect(((game.map.width + 3) * 32 + 8, 2 * 32 - 8), (3 * 32, 3 * 32))
+    draw_rectangle_border(pos.topleft, pos.bottomright)
+    pygame.draw.rect(screen, (85, 85, 85), pos)
+    image = img_list['Warrior'].subsurface((0, 0), (32, 32))
+    screen.blit(pygame.transform.scale(image, (64, 64)), ((game.map.width + 3) * 32 + 24, 2 * 32 + 8))
+    # "勇士"二字
+    print_string("勇士", 24, center=((game.map.width + 4.5) * 32 + 4, 6 * 32))
+    # 生命值
+    point = (pos.left - 3 * 32 - 8, pos.top)
+    print_string("：生命值", 16, bottomright=(point[0] + 3 * 32, point[1] + 22))
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(fight['warrior']['hp']), 20, (point[0], point[1] + 4))
+    # 攻击力
+    point = (point[0], point[1] + 32)
+    print_string("：攻击力", 16, bottomright=(point[0] + 3 * 32, point[1] + 22))
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(game.warrior.attack), 20, (point[0], point[1] + 4))
+    # 防御力
+    point = (point[0], point[1] + 32)
+    print_string("：防御力", 16, bottomright=(point[0] + 3 * 32, point[1] + 22))
+    point = (point[0], point[1] + 24)
+    pygame.draw.line(screen, (255, 255, 255), point, (point[0] + 3 * 32, point[1]), 2)
+    print_string(str(game.warrior.defense), 20, (point[0], point[1] + 4))
+
+
+
 def draw_begin():
     message = ["    这是一个很古老的故事",
                "    在很久很久以前，在遥远的西方大地上，有",
@@ -642,7 +729,7 @@ def draw_end():
             screen.fill((0, 0, 0))
             # 字
             color = 255 * (-math.cos(time_flag / 48) * 0.5 + 0.5)
-            string = arial_font64.render('终', True, (color, color, color))
+            string = arial_font[33].render('终', True, (color, color, color))
             rect = string.get_rect()
             rect.center = ((game.map.width + 7) * 16, (game.map.height + 2) * 16 + 5)
             screen.blit(string, rect)

@@ -19,8 +19,11 @@ def exec_game(game):
         time_flag = int((t1 - game.t0) * 24)
         if time_flag != int((game.t1 - game.t0) * 24):
             game.t1 = t1
+            game.process_next_frame()
             draw.draw(game, time_flag)
     draw.draw_end()
+    game.status['win'] = False
+    game.process_load('Library/tower.json')
 
 
 if __name__ == '__main__':
@@ -31,4 +34,6 @@ if __name__ == '__main__':
 
 
 # what else to do:
-#   alert
+#   fighting
+#   walk
+#   continuous

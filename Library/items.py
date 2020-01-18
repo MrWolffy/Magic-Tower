@@ -7,6 +7,7 @@ from Library.others import add_additional_attr
 import random
 import os
 
+
 # structure of objects:
 #
 # Item
@@ -15,13 +16,13 @@ import os
 #   Door: YellowDoor, BlueDoor, RedDoor, SpecialDoor, IronFence
 #   Prop
 #       Bottle: RedBottle, BlueBottle
-#       Key: YellowKey, BlueKey, RedKey, KeyKit
+#       Key: YellowKey, BlueKey, RedKey
 #       Gem: RedGem, BlueGem
 #       Equipment
 #           Sword: IronSword, SteelSword, QingFengSword, SacredSword
 #           Shield: IronShield, SteelShield, GoldenShield, SacredShield
-#       OtherProp: SmallWing, GoldCoin, BigWing, HolyWater
-#       Special: Detector, Cross, Aircraft, Hoe
+#       OtherProp: KeyKit, SmallWing, GoldCoin, BigWing
+#       Special: Detector, Cross, Aircraft, Hoe, HolyWater
 #   Stair: UpStair, DownStair
 #   Creature
 #       Monster
@@ -103,6 +104,46 @@ class Prop(Item):
     def __init__(self, info=None):
         super().__init__(info)
 
+    @staticmethod
+    def generate_alert_from_prop(prop):
+        message = '得到'
+        prop_info = game.info["prop_info"][prop.__name__]
+        type_name = prop_info["chinese_name"]
+        buff = str(prop_info.get("buff"))
+        if issubclass(prop, Bottle):
+            # 得到一个大血瓶 生命加 500 ！
+            message = ' '.join([message + '一个' + type_name, '生命加', buff])
+        elif issubclass(prop, Key):
+            # 得到一把 黄钥匙！
+            message = ' '.join([message + '一把', type_name])
+        elif issubclass(prop, Gem):
+            # 得到一个红宝石 攻击力加 3 ！
+            message = message + '一个' + type_name
+            if prop == BlueGem:
+                message = ' '.join([message, '防御力加', buff])
+            elif prop == RedGem:
+                message = ' '.join([message, '攻击力加', buff])
+        elif issubclass(prop, Sword):
+            # 得到铁剑 攻击加 10 ！
+            message = ' '.join([message + type_name, '攻击加', buff])
+        elif issubclass(prop, Shield):
+            # 得到铁盾 防御加 10 ！
+            message = ' '.join([message + type_name, '防御加', buff])
+        elif issubclass(prop, OtherProp):
+            if prop == KeyKit:
+                # 得到 钥匙盒 各种钥匙数加 1 ！
+                message = ' '.join([message, type_name, '各种钥匙数加', buff])
+            elif prop == SmallWing:
+                # 得到 小飞羽 等级提升一级 ！
+                message = ' '.join([message, type_name, '等级提升', buff, '级'])
+            elif prop == GoldCoin:
+                # 得到 金块 金币数加 300 ！
+                message = ' '.join([message, type_name, '金币数加', buff])
+            elif prop == BigWing:
+                # 得到 大飞羽 等级提升三级 ！
+                message = ' '.join([message, type_name, '等级提升', buff, '级'])
+        return message + ' ！'
+
 
 class Bottle(Prop):
     def __init__(self, info=None):
@@ -151,16 +192,6 @@ class RedKey(Key):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.keys[2] += 1
-
-
-class KeyKit(Key):
-    def __init__(self, info=None):
-        super().__init__(info)
-
-    def used_by(self, warrior):
-        warrior.keys[0] += 1
-        warrior.keys[1] += 1
         warrior.keys[2] += 1
 
 
@@ -251,15 +282,27 @@ class OtherProp(Prop):
         super().__init__(info)
 
 
+class KeyKit(OtherProp):
+    def __init__(self, info=None):
+        super().__init__(info)
+
+    def used_by(self, warrior):
+        buff = game.info["prop_info"]["KeyKit"]["buff"]
+        warrior.keys[0] += buff
+        warrior.keys[1] += buff
+        warrior.keys[2] += buff
+
+
 class SmallWing(OtherProp):
     def __init__(self, info=None):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.level += 1
-        warrior.hp += 1000
-        warrior.attack += 10
-        warrior.defense += 10
+        level = game.info["prop_info"]["SmallWing"]["buff"]
+        warrior.level += level
+        warrior.hp += level * 1000
+        warrior.attack += level * 10
+        warrior.defense += level * 10
 
 
 class GoldCoin(OtherProp):
@@ -267,7 +310,7 @@ class GoldCoin(OtherProp):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.gold += 300
+        warrior.gold += game.info["prop_info"]["GoldCoin"]["buff"]
 
 
 class BigWing(OtherProp):
@@ -275,18 +318,11 @@ class BigWing(OtherProp):
         super().__init__(info)
 
     def used_by(self, warrior):
-        warrior.level += 3
-        warrior.hp += 3000
-        warrior.attack += 30
-        warrior.defense += 30
-
-
-class HolyWater(OtherProp):
-    def __init__(self, info=None):
-        super().__init__(info)
-
-    def used_by(self, warrior):
-        warrior.hp *= 2
+        level = game.info["prop_info"]["BigWing"]["buff"]
+        warrior.level += level
+        warrior.hp += level * 1000
+        warrior.attack += level * 10
+        warrior.defense += level * 10
 
 
 class Special(Prop):
@@ -300,8 +336,6 @@ class Detector(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_detector'] = True
-        instruction = game.info["prop_info"]["Detector"]
-        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Cross(Special):
@@ -310,8 +344,6 @@ class Cross(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_cross'] = True
-        instruction = game.info["prop_info"]["Cross"]
-        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Aircraft(Special):
@@ -320,8 +352,6 @@ class Aircraft(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_aircraft'] = True
-        instruction = game.info["prop_info"]["Aircraft"]
-        game.process_instruction(instruction["chinese_name"], instruction["description"])
 
 
 class Hoe(Special):
@@ -330,8 +360,14 @@ class Hoe(Special):
 
     def used_by(self, warrior):
         game.info['indicator']['warrior_get_hoe'] = True
-        instruction = game.info["prop_info"]["Hoe"]
-        game.process_instruction(instruction["chinese_name"], instruction["description"])
+
+
+class HolyWater(Special):
+    def __init__(self, info=None):
+        super().__init__(info)
+
+    def used_by(self, warrior):
+        warrior.hp *= 2
 
 
 class Stair(Item):
@@ -402,7 +438,6 @@ class Princess(NPC):
 class Monster(Creature):
     def __init__(self, info=None):
         super().__init__(info)
-        self.hp = info["creature_info"][type(self).__name__]['hp']
 
 
 class Slime(Monster):
@@ -634,18 +669,20 @@ class Warrior(Item):
             if self.keys[idx] != 0:
                 self.keys[idx] -= 1
                 game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
-            return
         elif issubclass(next_type, Prop):
             next_obj.used_by(self)
             game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
-            return
+            if not issubclass(next_type, Special):
+                game.process_alert(next_type.generate_alert_from_prop(next_type))
+            else:
+                instruction = game.info["prop_info"][next_type.__name__]
+                game.process_instruction(instruction["chinese_name"], instruction["description"])
         elif issubclass(next_type, Stair):
             if next_type.__name__ == 'UpStair':
                 self.move_to_new_floor(self.position[0] + 1, 'up')
                 game.info['indicator']['visited'][self.position[0]] = True
             elif next_type.__name__ == 'DownStair':
                 self.move_to_new_floor(self.position[0] - 1, 'down')
-            return
         elif issubclass(next_type, Monster):
             if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
@@ -653,21 +690,14 @@ class Warrior(Item):
                 return
             flag, est_damage = self.can_beat(next_type.__name__)
             if flag:
-                self.fight_with(next_obj)
-                self.exp += game.info['creature_info'][next_type.__name__]['exp']
-                self.gold += game.info['creature_info'][next_type.__name__]['gold']
-                game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
-                if hasattr(next_obj, 'callback'):
-                    next_obj.callback()
-                    next_obj.__delattr__('callback')
-            return
+                game.process_fight(next_obj, next_pos)
         elif issubclass(next_type, NPC):
             if hasattr(next_obj, 'talk_to'):
                 next_obj.talk_to(next_obj, self)
-            return
-        game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
-        game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
-        self.position = next_pos
+        else:
+            game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = self
+            game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
+            self.position = next_pos
 
     def move_to_new_floor(self, level, mode):
         game.map.array[self.position[0]][self.position[1]][self.position[2]] = Floor()
@@ -700,25 +730,21 @@ class Warrior(Item):
         monster_damage += rounds_count * monster_damage_per_round
         return monster_damage < self.hp, monster_damage
 
-    def fight_with(self, monster: Monster):
+    def after_fight(self, next_pos):
+        monster = game.map.array[next_pos[0]][next_pos[1]][next_pos[2]]
         monster_name = type(monster).__name__
-        if monster_name == 'HempWizard':
-            self.hp -= 100
-        elif monster_name == 'RedWizard':
-            self.hp -= 300
-        elif monster_name == 'WhiteSolider':
-            self.hp -= math.floor(self.hp / 4)
-        elif monster_name == 'SoulWizard':
-            self.hp -= math.floor(self.hp / 3)
-        my_damage_per_round = self.attack - game.info['creature_info'][monster_name]['defense']
-        monster_damage_per_round = max(game.info['creature_info'][monster_name]['attack'] - self.defense, 0)
-        while monster.hp > 0:
-            rand = random.random()
-            if rand < self.level * 0.005:
-                monster.hp = max(monster.hp - 2 * my_damage_per_round, 0)
-            else:
-                monster.hp = max(monster.hp - my_damage_per_round, 0)
-            self.hp -= monster_damage_per_round
+        self.exp += game.info['creature_info'][monster_name]['exp']
+        self.gold += game.info['creature_info'][monster_name]['gold']
+        game.map.array[next_pos[0]][next_pos[1]][next_pos[2]] = Floor()
+        message = ' '.join(['得到金币数',
+                            str(game.info['creature_info'][monster_name]['exp']),
+                            '经验值',
+                            str(game.info['creature_info'][monster_name]['gold']),
+                            '！'])
+        game.process_alert(message)
+        if hasattr(monster, 'callback'):
+            monster.callback()
+            monster.__delattr__('callback')
 
 
 class Container:
@@ -788,16 +814,30 @@ class Game:
             },
             "alert": {
                 "display": False,
-                "content": None
+                "content": None,
+                "frame": 0
             },
-            "win": True
+            "fight": {
+                "display": False,
+                "monster": None,
+                "warrior": None,
+                "frame": 0,
+                "round": 0,
+                "my_damage_per_round": 0,
+                "monster_damage_per_round": 0
+            },
+            "win": False
         }
         add_additional_attr(self)
         if os.path.exists('Library/save.json'):
             os.remove('Library/save.json')
 
     def process_event(self, event):
-        if self.status["instruction"]["display"]:
+        if self.status["alert"]["display"]:
+            return
+        elif self.status["fight"]["display"]:
+            return
+        elif self.status["instruction"]["display"]:
             instruction = self.status["instruction"]
             if event.key == pygame.K_SPACE:
                 instruction["display"] = False
@@ -869,16 +909,20 @@ class Game:
                 self.status["detector"]["display"] = False
         elif self.status["aircraft"]["display"]:
             aircraft = self.status["aircraft"]
+            if event.key == pygame.K_j:
+                aircraft["display"] = False
+                aircraft["highlight"] = None
+                return
             if aircraft["welcome"]:
                 if event.key == pygame.K_SPACE or event.key == pygame.K_5:
                     aircraft["welcome"] = False
             else:
                 if event.key == pygame.K_SPACE or event.key == pygame.K_5:
-                    # if self.info["indicator"]["visited"][aircraft["highlight"] + 1]:
-                    #     self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up", self.map)
-                    # else:
-                    #     self.warrior.move_to_new_floor(self.warrior.position[0], "up", self.map)
-                    self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
+                    if self.info["indicator"]["visited"][aircraft["highlight"] + 1]:
+                        self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
+                    else:
+                        self.warrior.move_to_new_floor(self.warrior.position[0], "up")
+                    # self.warrior.move_to_new_floor(aircraft["highlight"] + 1, "up")
                     aircraft["display"] = False
                     aircraft["highlight"] = None
                 elif event.key == pygame.K_2:
@@ -893,6 +937,7 @@ class Game:
                     self.process_load('Library/save.json')
             elif event.key == pygame.K_s:
                 self.process_save()
+                self.process_alert('保存数据成功 ！')
             elif event.key == pygame.K_r:
                 self.process_load('Library/tower.json')
             elif event.key == pygame.K_l:
@@ -962,6 +1007,77 @@ class Game:
         warrior = self.map.array[warrior_position[0]][warrior_position[1]][warrior_position[2]]
         self.warrior = warrior
         add_additional_attr(self)
+
+    def process_alert(self, content):
+        self.status["alert"]["display"] = True
+        self.status["alert"]["content"] = content
+        self.status["alert"]["frame"] = 0
+
+    def process_fight(self, monster, position):
+        fight = self.status["fight"]
+        fight["display"] = True
+        monster_info = self.info['creature_info'][type(monster).__name__]
+        fight["monster"] = {"name": type(monster).__name__,
+                            "hp": monster_info['hp'],
+                            "attack": monster_info['attack'],
+                            "defense": monster_info['defense'],
+                            "position": position}
+        fight['warrior'] = {"hp": game.warrior.hp}
+        fight['frame'] = 0
+        fight['round'] = 0
+        fight['my_damage_per_round'] = game.warrior.attack - fight['monster']['defense']
+        fight['monster_damage_per_round'] = max(fight['monster']['attack'] - game.warrior.defense, 0)
+        # 处理特殊怪物
+        monster_name = type(monster).__name__
+        if monster_name == 'HempWizard':
+            fight['warrior']['hp'] -= 100
+        elif monster_name == 'RedWizard':
+            fight['warrior']['hp'] -= 300
+        elif monster_name == 'WhiteSolider':
+            fight['warrior']['hp'] -= math.floor(fight['warrior']['hp'] / 4)
+        elif monster_name == 'SoulWizard':
+            fight['warrior']['hp'] -= math.floor(fight['warrior']['hp'] / 3)
+
+    def process_next_frame(self):
+        if self.status["alert"]["display"]:
+            self.status["alert"]["frame"] += 1
+            if self.status["alert"]["frame"] >= 12:
+                self.status["alert"]["display"] = False
+                self.status["alert"]["content"] = None
+                self.status["alert"]["frame"] = 0
+        elif self.status["fight"]["display"]:
+            self.status["fight"]["frame"] += 1
+            if self.status["fight"]["frame"] % 4 == 0:
+                # 如果怪被打死了
+                if self.status["fight"]['monster']['hp'] <= 0:
+                    next_pos = self.status['fight']['monster']['position']
+                    self.warrior.after_fight(next_pos)
+                    self.status["fight"]['display'] = False
+                    self.status["fight"]['monster'] = None
+                    self.warrior.hp = self.status["fight"]['warrior']['hp']
+                    self.status["fight"]['warrior'] = None
+                    self.status["fight"]['frame'] = 0
+                    self.status["fight"]['round'] = 0
+                    self.status["fight"]['my_damage_per_round'] = 0
+                    self.status["fight"]['monster_damage_per_round'] = 0
+                    return
+                # 如果还在战斗
+                if self.status["fight"]['round'] % 2 == 0:
+                    # 人的回合
+                    rand = random.random()
+                    if rand < self.warrior.level * 0.005:
+                        # 暴击
+                        self.status["fight"]['monster']['hp'] = \
+                            max(self.status["fight"]['monster']['hp'] -
+                                2 * self.status["fight"]['my_damage_per_round'], 0)
+                    else:
+                        self.status["fight"]['monster']['hp'] = \
+                            max(self.status["fight"]['monster']['hp'] -
+                                self.status["fight"]['my_damage_per_round'], 0)
+                else:
+                    # 怪的回合
+                    self.status["fight"]['warrior']['hp'] -= self.status["fight"]['monster_damage_per_round']
+                self.status["fight"]['round'] += 1
 
 
 game = Game(json.loads(''.join(open('Library/tower.json').readlines())))
